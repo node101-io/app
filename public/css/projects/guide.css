@@ -1,0 +1,203 @@
+.all-header-wrapper {
+  border-bottom: 1px solid rgb(236, 236, 236);
+  box-shadow: 0 0 10px rgb(236, 236, 236);
+}
+
+.all-content-wrapper {
+  height: calc(100vh - 80px);
+  padding: 60px 0px;
+  display: flex;
+  flex-direction: column;
+}
+
+.project-name {
+  padding: 0px 60px;
+  color: rgb(10, 10, 20);
+  font-weight: 800;
+  font-size: 50px;
+  margin-bottom: 30px;
+}
+
+.projects-title-wrapper {
+  display: flex;
+  align-items: flex-end;
+  height: 60px;
+  padding: 0 60px;
+  margin-bottom: 30px;
+}
+.project-title {
+  color: rgb(10, 10, 20);
+  font-weight: 800;
+  font-size: 35px;
+}
+.project-title-info {
+  margin-bottom: 7px;
+  margin-left: 8px;
+  color: rgb(130, 170, 235);
+  font-weight: 300;
+  font-size: 16px;
+}
+
+.project-requirements-wrapper {
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+  margin-bottom: 30px;
+  padding: 0 60px;
+}
+.each-project-requirement {
+  margin-right: 30px;
+  width: 350px;
+  height: 150px;
+  border: 1px solid rgb(236, 236, 236);
+  box-shadow: 0 0 10px rgb(236, 236, 236);
+  display: inline-flex;
+  align-items: flex-start;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+.each-project-requirement-name {
+  width: 90px;
+  height: 100%;
+  font-weight: 800;
+  font-size: 16px;
+  color: rgb(10, 10, 20);
+}
+.each-project-requirement-seperator {
+  width: 20px;
+  height: 100%;
+  font-weight: 800;
+  font-size: 16px;
+  color: rgb(10, 10, 20);
+  display: flex;
+  padding-left: 2px;
+}
+.each-project-requirement-value {
+  width: 200px;
+  height: 100%;
+  font-weight: 600;
+  font-size: 16px;
+  color: rgba(10, 10, 20, 0.6);
+}
+
+.project-guide-wrapper {
+  margin: 0 60px;
+  padding: 30px;
+  padding-bottom: 0px;
+  background-color: rgb(254, 254, 254);
+  border: 2px solid rgb(236, 236, 236);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgb(236, 236, 236);
+  margin-bottom: 30px;
+  width: auto;
+  height: fit-content;
+  min-height: fit-content;
+}
+.guide-title {
+  color: rgb(10, 10, 20);
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.guide-text {
+  color: rgba(10, 10, 20, 0.6);
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+.guide-code, .guide-code-copied {
+  padding: 15px 20px;
+  background-color: rgb(10, 10, 20);
+  color: rgb(65,144,34);
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.guide-code-copied::after {
+  content: "copied!";
+  color: rgb(130, 170, 235);
+  font-weight: 800;
+  font-size: 14px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.guide-code::after {
+  content: "copy";
+  color: rgb(130, 170, 235);
+  font-weight: 800;
+  font-size: 14px;
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-left: 2px;
+}
+.guide-info {
+  color: rgb(130, 170, 235);
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.guide-info::before {
+  content: "!";
+  background-color: rgb(130, 170, 235);
+  color: rgb(254, 254, 254);
+  font-weight: 900;
+  font-size: 17px;
+  width: 20px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.guide-image {
+  width: 200px;
+  min-width: 200px;
+  height: 200px;
+  margin-bottom: 30px;
+  background-size: cover;
+  background-color: rgb(248, 248, 248);
+  border-radius: 8px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.no-info-text {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(10, 10, 20, 0.4);
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.footer-wrapper {
+  height: fit-content;
+  min-height: fit-content;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: auto;
+  color: rgba(10, 10, 20, 0.3);
+  font-weight: 800;
+  font-size: 16px;
+  padding: 0px 60px;
+  padding-top: 5px;
+  padding-bottom: 60px;
+}

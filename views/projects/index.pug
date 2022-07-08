@@ -1,0 +1,24 @@
+extends ../partials/header
+block main
+  .projects-title-wrapper
+    .project-title= __('Projects')
+    .project-title-info= __('click to see details')
+  .projects-header-wrapper
+    .status-colors-wrapper
+      .each-status-color-wrapper#status-active
+        .each-status-color(style='background-color: rgb(57, 129, 29)')
+        .each-status-color-text(style='color: rgb(57, 129, 29)')= __('Active')
+      .each-status-color-wrapper#status-upcoming
+        .each-status-color(style='background-color: rgb(130, 170, 235)')
+        .each-status-color-text(style='color: rgb(130, 170, 235')= __('Upcoming')
+      .each-status-color-wrapper#status-ended
+        .each-status-color(style='background-color: rgb(255, 22, 3)')
+        .each-status-color-text(style='color: rgb(255, 22, 3)')= __('Ended')
+    .projects-info-titles-wrapper 
+      .each-project-info-title= __('Dates')
+      .each-project-info-title-seperator
+      .each-project-info-title= __('Reward')
+      .each-project-info-title-seperator
+      .each-project-info-title= __('Popularity')
+  .projects-wrapper= __('loading...')
+  .footer-wrapper Copyright 2022 - node101.io

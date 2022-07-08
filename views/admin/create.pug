@@ -1,0 +1,62 @@
+extends ../partials/admin
+block main
+  .new-project-form
+    .new-project-form-title New Project
+    .new-project-form-subtitle The new project will be created as 'inactive'. You may activate the project once you create it. Users cannot see inactive projects.
+    .new-project-form-title General Information
+    .project-inputs-outer-wrapper
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Language
+        input.new-project-form-input#language-input(type='text' placeholder='Allowed Values: en, tr, ru' autofocus)
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Name
+        input.new-project-form-input#name-input(type='text' placeholder='Project name')
+      .each-project-input-wrapper#image-input-wrapper
+        .new-project-form-input-title.required-input Image
+        .image-input-outer-wrapper
+          label.choose-image-input-text
+            span Click to choose an image from your device
+            input.display-none.image-input(type="file" accept="image/*")
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Description
+        input.new-project-form-input#description-input(type='text' placeholder='Project description')
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Dates
+        input.new-project-form-input#dates-input(type='text' placeholder='Project dates')
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Reward
+        input.new-project-form-input#reward-input(type='text' placeholder='Project reward')
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Status
+        input.new-project-form-input#status-input(type='text' placeholder='Allowed Values: active, upcoming, ended')
+      .each-project-input-wrapper
+        .new-project-form-input-title.required-input Popularity
+        input.new-project-form-input#popularity-input(type='text' placeholder='Allowed Values: low, medium, high')
+      .each-project-input-wrapper
+        .new-project-form-input-title Stake URL
+        input.new-project-form-input#stake-url-input(type='text' placeholder='Enter only if the project is stakable')
+      .each-project-input-wrapper
+        .new-project-form-input-title Get Involved URL
+        input.new-project-form-input#get-involved-url-input(type='text' placeholder='Optional. Project web-site, discord link, or such')
+    .new-project-form-title Project Guide
+    .new-project-form-subtitle Items you add below will be created in the order shown. Click enter to add a new one.
+    .project-guide-items-wrapper.drag-and-drop-wrapper
+    .add-new-guide-item-button
+      .new-guide-item-type-selection-button
+        .new-guide-item-type-selected
+          span Title
+          i.fas.fa-chevron-down
+        each type in guide_type_values
+          .each-new-guide-item-type= type.substring(0, 1).toUpperCase() + type.substring(1)
+      input.new-guide-item-text-input#new-guide-item-text-input.new-project-form-input(type='text' placeholder='Enter the title')
+    .new-project-form-title Project Requirements
+    .new-project-form-subtitle Items you add below will be created in order. Click enter to add a new one.
+    .project-requirements-wrapper
+      .add-new-requirement-form
+        input.new-requirement-name-input#new-requirement-name-input(type='text' placeholder='Enter the name of the requirement')
+        textarea.new-requirement-value-input#new-requirement-value-input(placeholder='Enter the value of the requirement')
+        .new-requirement-add-button Add Requirement
+    .new-project-buttons-line
+      .new-project-back-button#new-project-back-button Cancel
+      .new-project-create-button#new-project-create-button Add
+    .new-project-error#new-project-form-error

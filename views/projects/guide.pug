@@ -1,0 +1,26 @@
+extends ../partials/header
+block main
+  .project-name= project.name
+  if project.requirements && project.requirements.length
+    .projects-title-wrapper
+      .project-title= __('Requirements')
+      .project-title-info= __('Contact our team if you are not sure if your device met the requirements.')
+    .project-requirements-wrapper
+      each requirement in project.requirements
+        .each-project-requirement
+          .each-project-requirement-name= requirement.name
+          .each-project-requirement-seperator :
+          .each-project-requirement-value= requirement.content
+  if project.guide && project.guide.length
+    .projects-title-wrapper
+      .project-title= __('Guide')
+      .project-title-info= __('Follow these steps to be a tester in this project.')
+    .project-guide-wrapper
+      each item in project.guide
+        if item.type == 'image'
+          .guide-image(style=`background-image: url(${item.content})`)
+        else
+          div(class='guide-' + item.type)= item.content
+  if (!project.requirements || !project.requirements.length) && (!project.guide || !project.guide.length)
+    .no-info-text= __('Nothing found for this project')
+  .footer-wrapper Copyright 2022 - node101.io
