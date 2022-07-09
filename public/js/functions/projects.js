@@ -16,6 +16,7 @@ const popularityColors = {
   low: 'rgb(255, 22, 3)'
 };
 
+let is_admin = false;
 let language = null;
 let isUploadFistCall = true;
 let isUploadingFinished = false;
@@ -26,12 +27,16 @@ function uploadProjects() {
   if (isUploadingFinished)
     return;
 
-  serverRequest('/projects/filter', 'POST', {
+  const filters = {
     language,
     limit: PROJECT_LIMIT_PER_QUERY,
-    nin_id_list: projectIds,
-    is_active: true
-  }, res => {
+    nin_id_list: projectIds
+  };
+
+  if (!is_admin)
+    filters.is_active = true;
+
+  serverRequest('/projects/filter', 'POST', filters, res => {
     if (!res.success) {
       if (isUploadFistCall && document.querySelector('.projects-wrapper'))
         document.querySelector('.projects-wrapper').innerHTML = 'Upload Error. Please try again later.';
@@ -78,5 +83,7 @@ function uploadProjects() {
 window.addEventListener('load', () => {
   if (document.getElementById('language'))
     language = document.getElementById('language').value;
+  if (document.getElementById('is-admin'))
+    is_admin = true;
   uploadProjects();
 });

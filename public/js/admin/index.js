@@ -1,10 +1,21 @@
 function createProject(project) {
   const projectWrapper = document.createElement('div');
+  projectWrapper.id = project._id;
   projectWrapper.classList.add('each-project-wrapper');
   projectWrapper.classList.add('each-project-' + project.language);
 
   const projectHeaderWrapper = document.createElement('div');
   projectHeaderWrapper.classList.add('each-project-header-wrapper');
+  
+  const projectStatusButton = document.createElement('i');
+  projectStatusButton.classList.add('each-project-edit-button');
+  projectStatusButton.classList.add('each-project-status-button');
+  projectStatusButton.classList.add('fas');
+  if (project.is_active)
+    projectStatusButton.classList.add('fa-pause');
+  else
+    projectStatusButton.classList.add('fa-play');
+  projectHeaderWrapper.appendChild(projectStatusButton);
 
   const projectEditButton = document.createElement('a');
   projectEditButton.href = '/admin/edit?id=' + project._id;
@@ -103,7 +114,7 @@ function createProject(project) {
 
 window.addEventListener('load', () => {
   document.addEventListener('click', event => {
-    if (event.target.classList.contains('each-project-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('each-project-wrapper'))))))) {
+    if (!event.target.classList.contains('each-project-edit-button') && (event.target.classList.contains('each-project-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('each-project-wrapper')))))))) {
       const target = event.target.classList.contains('each-project-wrapper') ? event.target : (event.target.parentNode.classList.contains('each-project-wrapper') ? event.target.parentNode : (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') ? event.target.parentNode.parentNode : event.target.parentNode.parentNode.parentNode));
 
       if (target.classList.contains('each-project-wrapper-opened'))
@@ -137,6 +148,26 @@ window.addEventListener('load', () => {
           else
             projects[i].style.display = 'flex';
       }
+    }
+
+    if (event.target.classList.contains('each-project-status-button')) {
+      const id = event.target.parentNode.parentNode.id;
+
+      serverRequest('/admin/status?id=' + id, 'POST', {}, res => {
+        if (!res.success) return createConfirm({
+          title: 'An Error Occured',
+          text: 'An unknown error occured while updating the status of the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
+          reject: 'Close'
+        }, res => { return; });
+
+        if (event.target.classList.contains('fa-play')) {
+          event.target.classList.remove('fa-play');
+          event.target.classList.add('fa-pause');
+        } else {
+          event.target.classList.remove('fa-pause');
+          event.target.classList.add('fa-play');
+        }
+      })
     }
   });
 });

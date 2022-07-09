@@ -12,6 +12,7 @@ const createPostController = require('../controllers/admin/create/post');
 const editPostController = require('../controllers/admin/edit/post');
 const imagePostController = require('../controllers/admin/image/post');
 const loginPostController = require('../controllers/admin/login/post');
+const statusPostController = require('../controllers/admin/status/post');
 
 router.get(
   '/',
@@ -51,6 +52,11 @@ router.post(
 router.post(
   '/login',
     loginPostController
+);
+router.post(
+  '/status',
+    isAdmin,
+    statusPostController
 );
 
 module.exports = router;

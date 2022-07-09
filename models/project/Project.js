@@ -297,4 +297,20 @@ ProjectSchema.statics.findProjectByIdAndUpdateImage = function (id, data, callba
   });
 };
 
+ProjectSchema.statics.findProjectByIdAndReverseStatus = function (id, callback) {
+  const Project = this;
+
+  Project.findProjectById(id, (err, project) => {
+    if (err) return callback(err);
+
+    Project.findByIdAndUpdate(project._id, {$set: {
+      is_active: !project.is_active
+    }}, err => {
+      if (err) return callback('database_error');
+
+      return callback(null);
+    });
+  });
+};
+
 module.exports = mongoose.model('Project', ProjectSchema);

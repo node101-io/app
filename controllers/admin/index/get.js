@@ -4,8 +4,8 @@ module.exports = (req, res) => {
     title: 'Admin Page',
     includes: {
       external: {
-        css: ['admin', 'fontawesome', 'general', 'page'],
-        js: ['admin', 'page', 'serverRequest', 'projects']
+        css: ['confirm', 'admin', 'fontawesome', 'general', 'page'],
+        js: ['confirm', 'admin', 'page', 'serverRequest', 'projects']
       }
     },
     url: '/admin'
