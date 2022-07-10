@@ -60,15 +60,6 @@ window.addEventListener('load', () => {
 
   const searchInput = document.getElementById('all-header-search-input');
 
-  document.addEventListener('keyup', event => {
-    if (document.activeElement.id != 'all-header-search-input') {
-      searchInput.focus();
-      document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
-      if (alphaNumeric.includes(event.key))
-        searchInput.value += event.key;
-    }
-  });
-
   searchInput.addEventListener('input', event => {
     document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
 

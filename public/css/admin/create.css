@@ -271,17 +271,34 @@
 .each-project-requirement {
   margin-right: 30px;
   width: 350px;
-  height: 150px;
+  height: 160px;
   border: 1px solid rgb(236, 236, 236);
   box-shadow: 0 0 10px rgb(236, 236, 236);
   display: inline-flex;
-  align-items: flex-start;
+  flex-direction: column;
   padding: 20px;
   border-radius: 5px;
   margin-bottom: 30px;
 }
+.each-project-requirement-delete-button {
+  font-size: 14px;
+  color: rgba(255, 22, 3, 0.8);
+  cursor: pointer;
+  margin-left: auto;
+}
+.each-project-requirement-delete-button:hover {
+  color: rgb(255, 22, 3);
+}
+.each-project-requirement-content-wrapper {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: flex-start;
+  margin-top: auto;
+}
 .each-project-requirement-name {
   width: 90px;
+  min-width: 90px;
   height: 100%;
   font-weight: 800;
   font-size: 16px;
@@ -289,12 +306,12 @@
 }
 .each-project-requirement-seperator {
   width: 20px;
+  min-width: 20px;
   height: 100%;
   font-weight: 800;
   font-size: 16px;
   color: rgb(10, 10, 20);
   display: flex;
-  padding-left: 2px;
 }
 .each-project-requirement-value {
   width: 200px;

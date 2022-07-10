@@ -59,7 +59,6 @@ function createUploadedImage (url, wrapper) {
   imageWrapper.classList.add('image-input-wrapper-image');
   const image = document.createElement('img');
   image.src = url;
-  image.alt = 'usersmagic';
   imageWrapper.appendChild(image);
   imageInputWrapper.appendChild(imageWrapper);
 
@@ -187,25 +186,40 @@ window.addEventListener('load', () => {
       const newProjectRequirement = document.createElement('div');
       newProjectRequirement.classList.add('each-project-requirement');
 
+      const requirementDeleteButton = document.createElement('i');
+      requirementDeleteButton.classList.add('each-project-requirement-delete-button');
+      requirementDeleteButton.classList.add('fas');
+      requirementDeleteButton.classList.add('fa-trash-alt');
+      newProjectRequirement.appendChild(requirementDeleteButton);
+
+      const requirementContentWrapper = document.createElement('div');
+      requirementContentWrapper.classList.add('each-project-requirement-content-wrapper');
+
       const requirementName = document.createElement('div');
       requirementName.classList.add('each-project-requirement-name');
       requirementName.innerHTML = name;
-      newProjectRequirement.appendChild(requirementName);
+      requirementContentWrapper.appendChild(requirementName);
 
       const requirementSeperator = document.createElement('div');
       requirementSeperator.classList.add('each-project-requirement-seperator');
       requirementSeperator.innerHTML = ':';
-      newProjectRequirement.appendChild(requirementSeperator);
+      requirementContentWrapper.appendChild(requirementSeperator);
 
       const requirementValue = document.createElement('div');
       requirementValue.classList.add('each-project-requirement-value');
       requirementValue.innerHTML = value;
-      newProjectRequirement.appendChild(requirementValue);
+      requirementContentWrapper.appendChild(requirementValue);
+
+      newProjectRequirement.appendChild(requirementContentWrapper);
 
       document.querySelector('.project-requirements-wrapper').appendChild(newProjectRequirement);
       document.querySelector('.project-requirements-wrapper').insertBefore(newProjectRequirement, newProjectRequirement.previousElementSibling);
       document.getElementById('new-requirement-name-input').value = '';
       document.getElementById('new-requirement-value-input').value = '';
+    }
+
+    if (event.target.classList.contains('each-project-requirement-delete-button')) {
+      event.target.parentNode.remove();
     }
 
     if (event.target.id == 'new-project-create-button') {
@@ -265,7 +279,7 @@ window.addEventListener('load', () => {
         });
       }
 
-      const requirements = document.querySelectorAll('.each-project-requirement');
+      const requirements = document.querySelectorAll('.each-project-requirement-content-wrapper');
 
       for (let i = 0; i < requirements.length; i++)
         project.requirements.push({

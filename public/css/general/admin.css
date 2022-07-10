@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   padding: 0 60px;
+  z-index: 2;
 }
 
 .all-header-logo {

@@ -1,3 +1,5 @@
+let project;
+
 let selected_guide_item_type = 'title'; // Default
 const guide_item_type_placeholders = {
   title: 'Enter the title',
@@ -59,7 +61,6 @@ function createUploadedImage (url, wrapper) {
   imageWrapper.classList.add('image-input-wrapper-image');
   const image = document.createElement('img');
   image.src = url;
-  image.alt = 'usersmagic';
   imageWrapper.appendChild(image);
   imageInputWrapper.appendChild(imageWrapper);
 
@@ -74,6 +75,8 @@ function createUploadedImage (url, wrapper) {
 }
 
 window.addEventListener('load', () => {
+  project = JSON.parse(document.getElementById('project-json').value);
+
   const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
   const guideItemInput = document.getElementById('new-guide-item-text-input');
   let lastGuideItemExists = false;
@@ -122,13 +125,10 @@ window.addEventListener('load', () => {
   document.addEventListener('click', event => {
     if (event.target.classList.contains('delete-image-button')) {
       const wrapper = event.target.parentNode.parentNode;
-      const url = event.target.parentNode.childNodes[0].childNodes[0].src;
 
-      serverRequest(`/image/delete?url=${url}`, 'GET', {}, res => {
-        if (!res.success) return throwError(res.error);
+      // Do not delete the image. This is edit, will delete image when the new one is uploaded
 
-        createImagePicker(wrapper);
-      });
+      createImagePicker(wrapper);
     }
 
     if (event.target.classList.contains('guide-item-delete-button')) {
@@ -166,17 +166,6 @@ window.addEventListener('load', () => {
       document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
     }
 
-    if (event.target.id == 'new-project-back-button') {
-      createConfirm({
-        title: 'Are you sure you want to exit this page?',
-        text: 'The page will not be saved. You may loose your progress.',
-        accept: 'Exit the Page',
-        reject: 'Cancel'
-      }, res => {
-        if (res) history.back();
-      })
-    }
-
     if (event.target.classList.contains('new-requirement-add-button')) {
       const name = document.getElementById('new-requirement-name-input').value;
       const value = document.getElementById('new-requirement-value-input').value;
@@ -187,20 +176,31 @@ window.addEventListener('load', () => {
       const newProjectRequirement = document.createElement('div');
       newProjectRequirement.classList.add('each-project-requirement');
 
+      const requirementDeleteButton = document.createElement('i');
+      requirementDeleteButton.classList.add('each-project-requirement-delete-button');
+      requirementDeleteButton.classList.add('fas');
+      requirementDeleteButton.classList.add('fa-trash-alt');
+      newProjectRequirement.appendChild(requirementDeleteButton);
+
+      const requirementContentWrapper = document.createElement('div');
+      requirementContentWrapper.classList.add('each-project-requirement-content-wrapper');
+
       const requirementName = document.createElement('div');
       requirementName.classList.add('each-project-requirement-name');
       requirementName.innerHTML = name;
-      newProjectRequirement.appendChild(requirementName);
+      requirementContentWrapper.appendChild(requirementName);
 
       const requirementSeperator = document.createElement('div');
       requirementSeperator.classList.add('each-project-requirement-seperator');
       requirementSeperator.innerHTML = ':';
-      newProjectRequirement.appendChild(requirementSeperator);
+      requirementContentWrapper.appendChild(requirementSeperator);
 
       const requirementValue = document.createElement('div');
       requirementValue.classList.add('each-project-requirement-value');
       requirementValue.innerHTML = value;
-      newProjectRequirement.appendChild(requirementValue);
+      requirementContentWrapper.appendChild(requirementValue);
+
+      newProjectRequirement.appendChild(requirementContentWrapper);
 
       document.querySelector('.project-requirements-wrapper').appendChild(newProjectRequirement);
       document.querySelector('.project-requirements-wrapper').insertBefore(newProjectRequirement, newProjectRequirement.previousElementSibling);
@@ -208,19 +208,29 @@ window.addEventListener('load', () => {
       document.getElementById('new-requirement-value-input').value = '';
     }
 
-    if (event.target.id == 'new-project-create-button') {
+    if (event.target.classList.contains('each-project-requirement-delete-button')) {
+      event.target.parentNode.remove();
+    }
+
+    if (event.target.id == 'edit-project-back-button') {
+      createConfirm({
+        title: 'Are you sure you want to exit this page?',
+        text: 'Your changes will not be saved. You may loose your progress.',
+        accept: 'Exit the Page',
+        reject: 'Cancel'
+      }, res => {
+        if (res) history.back();
+      });
+    }
+
+    if (event.target.id == 'edit-project-save-button') {
       const error = document.getElementById('new-project-form-error');
-      const imageWrapper = document.getElementById('image-input-wrapper');
 
       error.innerHTML = '';
 
-      if (!imageWrapper.querySelector('img') || !imageWrapper.querySelector('img').src)
-        return error.innerHTML = 'Please choose an image';
-
-      const project = {
+      const data = {
         language: document.getElementById('language-input').value,
         name: document.getElementById('name-input').value,
-        image: imageWrapper.querySelector('img').src,
         description: document.getElementById('description-input').value,
         dates: document.getElementById('dates-input').value,
         reward: document.getElementById('reward-input').value,
@@ -232,25 +242,25 @@ window.addEventListener('load', () => {
         requirements: []
       };
 
-      if (!project.language || !language_values.includes(project.language))
+      if (!data.language || !language_values.includes(data.language))
         return error.innerHTML = 'Please enter a valid language.';
 
-      if (!project.name || !project.name.length)
+      if (!data.name || !data.name.length)
         return error.innerHTML = 'Please enter a name.';
       
-      if (!project.description || !project.description.length)
+      if (!data.description || !data.description.length)
         return error.innerHTML = 'Please enter a description.';
 
-      if (!project.dates || !project.dates.length)
+      if (!data.dates || !data.dates.length)
         return error.innerHTML = 'Please enter the dates.';
 
-      if (!project.reward || !project.reward.length)
+      if (!data.reward || !data.reward.length)
         return error.innerHTML = 'Please enter the reward.';
 
-      if (!project.status || !status_values.includes(project.status))
+      if (!data.status || !status_values.includes(data.status))
         return error.innerHTML = 'Please enter a valid status.';
 
-      if (!project.popularity || !popularity_values.includes(project.popularity))
+      if (!data.popularity || !popularity_values.includes(data.popularity))
         return error.innerHTML = 'Please enter a valid popularity.';
 
       const guideItems = document.querySelectorAll('.guide-item-outer-wrapper');
@@ -259,21 +269,21 @@ window.addEventListener('load', () => {
         const guide = guideItems[i].childNodes[0];
         const type = guide.className.replace('guide-', '');
         const content = type == 'image' ? guide.style.backgroundImage.replace('url(', '').replace(')', '').trim() : guide.innerHTML;
-        project.guide.push({
+        data.guide.push({
           type,
           content
         });
       }
 
-      const requirements = document.querySelectorAll('.each-project-requirement');
+      const requirements = document.querySelectorAll('.each-project-requirement-content-wrapper');
 
       for (let i = 0; i < requirements.length; i++)
-        project.requirements.push({
+        data.requirements.push({
           name: requirements[i].childNodes[0].innerHTML,
           content: requirements[i].childNodes[2].innerHTML
         });
 
-      serverRequest('/admin/create', 'POST', project, res => {
+      serverRequest('/admin/edit?id=' + project._id, 'POST', data, res => {
         if (res.success)
           return window.location = '/admin';
 
@@ -297,7 +307,17 @@ window.addEventListener('load', () => {
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
 
-        createUploadedImage(url, event.target.parentNode.parentNode);
+        serverRequest('/admin/image?id=' + project._id, 'POST', {
+          image: url
+        }, res => {
+          if (!res.success) return createConfirm({
+            title: 'An Error Occured',
+            text: 'An error occured while uploading the image. Please try again later or contact our developer team. Error message: ' + res.error ? res.error : 'unknown_error',
+            reject: 'Close'
+          }, res => { return; });
+
+          createUploadedImage(url, event.target.parentNode.parentNode);
+        });
       });
     }
   });

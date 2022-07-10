@@ -248,10 +248,9 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
     if (err) return callback(err);
 
     Project.findByIdAndUpdate(project._id, {$set: {
-      is_active: 'is_active' in data ? (data.is_active ? true : false) : project.is_active,
       language: data.language && language_values.includes(data.language) ? data.language : project.language,
       name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
-      name: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
+      description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
       guide: getGuide(data.guide),
       requirements: getRequirements(data.requirements),
       status: data.status && status_values.includes(data.status) ? data.status : project.status,

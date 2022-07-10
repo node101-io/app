@@ -1,5 +1,6 @@
 extends ../partials/admin
 block main
+  input.display-none#project-json(type='text' value=JSON.stringify(project))
   .new-project-form
     .new-project-form-title= project.name
     .new-project-form-subtitle Edit the project and save.
@@ -14,15 +15,15 @@ block main
       .each-project-input-wrapper#image-input-wrapper
         .new-project-form-input-title.required-input Image
         .image-input-outer-wrapper
-          label.choose-image-input-text
-            span Click to choose an image from your device
-            input.display-none.image-input(type="file" accept="image/*")
+          .image-input-wrapper
+            img.image-input-wrapper-image(src=project.image)
+            i.delete-image-button.fas.fa-times
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Description
         input.new-project-form-input#description-input(type='text' value=project.description placeholder='Project description')
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Dates
-        input.new-project-form-input#dates-input(type='text' value=project.description placeholder='Project dates')
+        input.new-project-form-input#dates-input(type='text' value=project.dates placeholder='Project dates')
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Reward
         input.new-project-form-input#reward-input(type='text' value=project.reward placeholder='Project reward')
@@ -60,11 +61,18 @@ block main
     .new-project-form-title Project Requirements
     .new-project-form-subtitle Items you add below will be created in order. Click enter to add a new one.
     .project-requirements-wrapper
+      each requirement in project.requirements
+        .each-project-requirement
+          i.each-project-requirement-delete-button.fas.fa-trash-alt
+          .each-project-requirement-content-wrapper
+            .each-project-requirement-name= requirement.name
+            .each-project-requirement-seperator :
+            .each-project-requirement-value= requirement.content
       .add-new-requirement-form
         input.new-requirement-name-input#new-requirement-name-input(type='text' placeholder='Enter the name of the requirement')
         textarea.new-requirement-value-input#new-requirement-value-input(placeholder='Enter the value of the requirement')
         .new-requirement-add-button Add Requirement
     .new-project-buttons-line
-      .new-project-back-button#new-project-back-button Cancel
-      .new-project-create-button#new-project-create-button Save
+      .new-project-back-button#edit-project-back-button Cancel
+      .new-project-create-button#edit-project-save-button Save
     .new-project-error#new-project-form-error
