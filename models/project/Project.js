@@ -148,7 +148,7 @@ ProjectSchema.statics.createProject = function (data, callback) {
     if (err) return callback(err);
 
     const newProjectData = {
-      identifier: data.name.trim() + (data.language == 'en' ? '_' + data.language : ''),
+      identifier: data.name.toLowerCase().trim() + (data.language == 'en' ? '_' + data.language : ''),
       is_active: data.is_active ? true : false,
       language: data.language,
       name: data.name.trim(),
