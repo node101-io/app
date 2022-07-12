@@ -291,7 +291,14 @@ window.addEventListener('load', () => {
         if (res.success)
           return window.location = '/admin';
 
-        createConfirm({
+        if (res.error && res.error == 'duplicated_unique_field')
+          return createConfirm({
+            title: 'Duplicated Project Name',
+            text: 'A project with this name and language already exists. Please edit this project instead of adding a new one or change the project name.',
+            reject: 'Close'
+          }, res => { return; });
+
+        return createConfirm({
           title: 'An Error Occured',
           text: 'An error occured while creating your project. Please try again later or contact our developer team. Error message: ' + res.error ? res.error : 'unknown_error',
           reject: 'Close'

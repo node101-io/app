@@ -1,13 +1,15 @@
 const Project = require('../../../models/project/Project');
 
 module.exports = (req, res) => {
-  Project.findProjectByIdAndFormat(req.query.id, (err, project) => {
+  const identifier = req.originalUrl.replace('/projects/guide/', '');
+
+  Project.findProjectByIdentifier(identifier, (err, project) => {
     if (err)
       return res.redirect('/error?message=' + err);
 
     return res.render('projects/guide', {
       page: 'projects/guide',
-      title: project.name,
+      title: project.name + '-' + project.description,
       includes: {
         external: {
           css: ['confirm', 'fontawesome', 'general', 'header', 'page'],

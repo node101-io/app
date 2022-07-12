@@ -11,7 +11,7 @@ router.get(
     indexGetController
 );
 router.get(
-  '/guide',
+  '/guide/*',
     guideGetController
 );
 

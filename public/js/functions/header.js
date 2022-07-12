@@ -20,7 +20,7 @@ function isSimilarStrings(str1, str2) {
 function createSearchProject(project) {
   const searchProject = document.createElement('div');
   searchProject.classList.add('each-all-header-search-result');
-  searchProject.id = 'search-project-' + project._id;
+  searchProject.id = 'search-project-' + project.identifier;
 
   const searchProjectImage = document.createElement('div');
   searchProjectImage.style.backgroundImage = `url(${project.image})`;
@@ -91,8 +91,8 @@ window.addEventListener('load', () => {
     }
     
     if (event.target.id == 'all-header-search-input' && event.key == 'Enter' && highlightedSearchResult) {
-      const project_id = highlightedSearchResult.id.replace('search-project-', '');
-      window.location = '/projects/guide?id=' + project_id; 
+      const identifier = highlightedSearchResult.id.replace('search-project-', '');
+      window.location = '/projects/guide/' + identifier; 
     }
 
     if (event.target.id == 'all-header-search-input' && event.key == 'ArrowUp') {
@@ -156,8 +156,8 @@ window.addEventListener('load', () => {
   document.addEventListener('click', event => {
     if (event.target.classList.contains('each-all-header-search-result') || (event.target.parentNode && event.target.parentNode.classList.contains('each-all-header-search-result'))) {
       const target = event.target.classList.contains('each-all-header-search-result') ? event.target : event.target.parentNode;
-      const project_id = target.id.replace('search-project-', '');
-      window.location = '/projects/guide?id=' + project_id; 
+      const identifier = target.id.replace('search-project-', '');
+      window.location = '/projects/guide/' + identifier; 
     } else if (event.target.classList.contains('all-header-search-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('all-header-search-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('all-header-search-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('all-header-search-wrapper'))))))) {
       searchInput.focus();
       isSearchMenuOpen = true;

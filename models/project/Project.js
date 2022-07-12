@@ -12,14 +12,22 @@ const language_values = ['en', 'tr', 'ru'];
 const status_values = ['active', 'upcoming', 'ended'];
 const popularity_values = ['low', 'medium', 'high'];
 
+const DUPLICATED_UNIQUE_FIELD_ERROR_CODE = 11000;
+const DOCUMENT_LIMIT_FOR_FIND_QUERY = 20;
 const MAX_DATABASE_ARRAY_FIELD_LENGTH = 1e4;
 const MAX_DATABASE_TEXT_FIELD_LENGTH = 1e4;
 const LANGUAGE_LENGTH = 2;
-const DOCUMENT_LIMIT_FOR_FIND_QUERY = 20;
 
 const Schema = mongoose.Schema;
 
 const ProjectSchema = new Schema({
+  identifier: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+    maxlenght: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
   is_active: {
     type: Boolean,
     default: false
@@ -140,6 +148,7 @@ ProjectSchema.statics.createProject = function (data, callback) {
     if (err) return callback(err);
 
     const newProjectData = {
+      identifier: data.name.trim() + (data.language == 'en' ? '_' + data.language : ''),
       is_active: data.is_active ? true : false,
       language: data.language,
       name: data.name.trim(),
@@ -160,6 +169,7 @@ ProjectSchema.statics.createProject = function (data, callback) {
     const newProject = new Project(newProjectData);
   
     newProject.save((err, project) => {
+      if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
       if (err) return callback('database_error');
 
       Image.findImageByUrlAndSetAsUsed(project.image, err => {
@@ -190,6 +200,26 @@ ProjectSchema.statics.findProjectByIdAndFormat = function (id, callback) {
 
   Project.findProjectById(id, (err, project) => {
     if (err) return callback(err);
+
+    getProject(project, (err, project) => {
+      if (err) return callback(err);
+
+      return callback(null, project);
+    });
+  });
+};
+
+ProjectSchema.statics.findProjectByIdentifier = function (identifier, callback) {
+  const Project = this;
+
+  if (!identifier || typeof identifier != 'string')
+    return callback('bad_request');
+
+  Project.findOne({
+    identifier: identifier.trim()
+  }, (err, project) => {
+    if (err) return callback('database_error');
+    if (!project) return callback('document_not_found');
 
     getProject(project, (err, project) => {
       if (err) return callback(err);

@@ -4,6 +4,7 @@ module.exports = (project, callback) => {
 
   return callback(null, {
     _id: project._id.toString(),
+    identifier: project.identifier,
     is_active: project.is_active,
     language: project.language,
     name: project.name,
