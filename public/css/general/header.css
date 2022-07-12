@@ -52,6 +52,7 @@
 }
 .all-header-logo svg {
   width: 130px;
+  height: 50px;
 }
 
 .all-header-search-wrapper {
@@ -221,6 +222,9 @@
     height: 110px;
     min-height: 110px;
   }
+  .all-content-wrapper {
+    margin-top: 110px;
+  }
   .all-header-logo, .all-header-buttons-wrapper, .all-header-stake-with-us-button, .all-header-language-wrapper {
     display: none;
     height: 50px;
@@ -300,6 +304,9 @@
     width: 120px;
     font-size: 15px;
   }
+  .all-content-wrapper {
+    margin-top: 90px;
+  }
 }
 @media only screen and (max-width: 650px) {
   .all-header-logo-responsive {
@@ -330,6 +337,9 @@
   .all-header-wrapper {
     height: 100px;
     min-height: 110px;
+  }
+  .all-content-wrapper {
+    margin-top: 100px;
   }
   .all-header-wrapper-responsive-line {
     justify-content: space-between;

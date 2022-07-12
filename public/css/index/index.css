@@ -10,7 +10,7 @@
 
 
 .start-page-left-wrapper {
-  width: 750px;
+  width: 650px;
   display: flex;
   flex-direction: column;
 }
@@ -45,6 +45,7 @@
   font-size: 75px;
   color: rgb(10, 10, 20);
   line-height: 70px;
+  text-align: right;
 }
 .start-page-motto-wrapper {
   display: flex;

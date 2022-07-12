@@ -22,11 +22,13 @@ function createProject(project) {
 
   const projectInfo1 = document.createElement('div');
   projectInfo1.classList.add('each-project-info');
+  projectInfo1.classList.add('each-project-info-dates');
   projectInfo1.innerHTML = project.dates;
   projectInfoWrapper.appendChild(projectInfo1);
 
   const projectInfoSeperator1 = document.createElement('div');
   projectInfoSeperator1.classList.add('each-project-info-seperator');
+  projectInfoSeperator1.classList.add('each-project-info-seperator-dates');
   projectInfoWrapper.appendChild(projectInfoSeperator1);
 
   const projectInfo2 = document.createElement('div');
