@@ -67,9 +67,11 @@ function uploadProjects() {
       projects.push(res.projects[i]);
       projectIds.push(res.projects[i]._id.toString());
 
-      if (typeof createProject == 'function')
+      if (typeof createProject == 'function'){
         createProject(res.projects[i]);
-      if (typeof createSearchProject == 'function')
+        createProject(res.projects[i]);
+        createProject(res.projects[i]);
+      }if (typeof createSearchProject == 'function')
         createSearchProject(res.projects[i]);
     }
 

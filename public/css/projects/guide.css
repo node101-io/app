@@ -124,6 +124,7 @@
   font-weight: 800;
   font-size: 14px;
   margin-left: auto;
+  padding-left: 2px;
   display: flex;
   align-items: center;
   height: 100%;
@@ -134,10 +135,10 @@
   font-weight: 800;
   font-size: 14px;
   margin-left: auto;
+  padding-left: 2px;
   display: flex;
   align-items: center;
   height: 100%;
-  margin-left: 2px;
 }
 .guide-info {
   color: rgb(130, 170, 235);
