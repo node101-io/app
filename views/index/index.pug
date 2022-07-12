@@ -1,5 +1,8 @@
 extends ../partials/header
 block main
+  .display-none#start-page-animation-text-1= __('code')
+  .display-none#start-page-animation-text-2= __('know')
+  .display-none#start-page-animation-text-3= __('worry')
   .start-page-wrapper
     .start-page-left-wrapper
       .start-page-title node101
@@ -16,11 +19,11 @@ block main
       .start-page-text.bold.blue= __('We will be with you all the time.')
     .start-page-right-wrapper
       .start-page-motto.blue= __('no need to')
-      .start-page-motto= __('code')
-      .start-page-motto= __('know')
-      .start-page-motto-wrapper
-        .start-page-motto-cursor
-        .start-page-motto= __('worry')
+      //- .start-page-motto= __('code')
+      //- .start-page-motto= __('know')
+      //- .start-page-motto-wrapper
+      //-   .start-page-motto-cursor
+      //-   .start-page-motto= __('worry')
   .learn-more-button
     span Learn more
     i.fas.fa-chevron-down

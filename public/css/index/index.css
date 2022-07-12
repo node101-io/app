@@ -49,6 +49,7 @@
 .start-page-motto-wrapper {
   display: flex;
   align-items: flex-end;
+  height: 70px;
 }
 .start-page-motto-cursor {
   width: 40px;
@@ -56,6 +57,18 @@
   border-radius: 4px;
   background-color: rgb(10, 10, 20);
   margin-bottom: 8px;
+  animation: blink-animation 0.7s steps(4, start) infinite;
+  -webkit-animation: blink-animation 0.7s steps(4, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
+}
+@-webkit-keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
 }
 
 .learn-more-button {

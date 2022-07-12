@@ -94,7 +94,51 @@ function createProject(project) {
   document.querySelector('.projects-wrapper').appendChild(projectWrapper);
 }
 
+function writeAnimation(element, text, callback) {
+  if (!text || !text.length)
+    return callback();
+
+  element.innerHTML = element.innerHTML + text[0];
+
+  setTimeout(() => {
+    writeAnimation(element, text.substring(1, text.length), () => {
+      callback();
+    });
+  }, 200);
+}
+
+function textAnimation(textCount) {
+  if (textCount > 3)
+    return;
+
+  const text = document.getElementById('start-page-animation-text-' + textCount).innerHTML;
+  const wrapper = document.querySelector('.start-page-right-wrapper');
+
+  const newTextWrapper = document.createElement('div');;
+  newTextWrapper.classList.add('start-page-motto-wrapper');
+
+  const newCursor = document.createElement('div');
+  newCursor.classList.add('start-page-motto-cursor');
+  newTextWrapper.appendChild(newCursor);
+
+  const newText = document.createElement('div');
+  newText.classList.add('start-page-motto');
+  newTextWrapper.appendChild(newText);
+
+  wrapper.appendChild(newTextWrapper);
+
+  writeAnimation(newText, text, () => {
+    if (textCount < 3)
+      newCursor.remove();
+    textAnimation(textCount+1);
+  });
+}
+
 window.addEventListener('load', () => {
+  setTimeout(() => {
+    textAnimation(1);
+  }, 200);
+
   document.querySelector('.all-wrapper').addEventListener('scroll', event => {
     document.querySelector('.learn-more-button').style.opacity = 1 - Math.min(event.target.scrollTop, 80) / 80;
     if (event.target.scrollTop >= 80)
