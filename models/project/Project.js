@@ -163,7 +163,7 @@ ProjectSchema.statics.createProject = function (data, callback) {
     if (err) return callback(err);
 
     const newProjectData = {
-      identifier: data.name.toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+      identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
       is_active: data.is_active ? true : false,
       language: data.language,
       name: data.name.trim(),
@@ -308,10 +308,16 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
       get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
       popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
       links: getLinks(data.links)
-    }}, err => {
+    }}, { new: true }, (err, project) => {
       if (err) return callback('database_error');
 
-      return callback(null);
+      Project.findByIdAndUpdate(project._id, {$set: {
+        identifier: project.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : ''),
+      }}, err => {
+        if (err) return callback('database_error');
+
+        return callback(null);
+      });
     });
   });
 };

@@ -19,8 +19,15 @@ block main
       each item in project.guide
         if item.type == 'image'
           .guide-image(style=`background-image: url(${item.content})`)
-        else
+        else if item.type == 'code'
           div(class='guide-' + item.type)= item.content
+        else
+          div(class='guide-' + item.type)
+            each text in item.content.split(' ')
+              if text.includes('https://')
+                a(href=text)= text + ' '
+              else
+                span= text + ' '
   if (!project.requirements || !project.requirements.length) && (!project.guide || !project.guide.length)
     .no-info-text= __('Nothing found for this project')
   .footer-wrapper Copyright 2022 - node101.io
