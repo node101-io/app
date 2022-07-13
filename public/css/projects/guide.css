@@ -97,8 +97,12 @@
   flex-direction: column;
   align-items: flex-start;
 }
-.guide-title a, .guide-text a, .guide-info a {
+.guide-title a, .guide-text a {
   color: rgb(130, 170, 235);
+  cursor: pointer;
+}
+.guide-info a {
+  color: rgb(10, 10, 20);
   cursor: pointer;
 }
 .guide-title {
@@ -170,6 +174,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.guide-info * {
+  margin-right: 5px;
 }
 .guide-image {
   width: 200px;
