@@ -9,7 +9,7 @@ module.exports = (req, res) => {
 
     return res.render('projects/guide', {
       page: 'projects/guide',
-      title: project.name + '-' + project.description,
+      title: project.name + ' - ' + project.description,
       includes: {
         external: {
           css: ['confirm', 'fontawesome', 'general', 'header', 'page'],
