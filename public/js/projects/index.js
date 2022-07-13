@@ -54,6 +54,25 @@ function createProject(project) {
   const projectContentWrapper = document.createElement('div');
   projectContentWrapper.classList.add('each-project-content-wrapper');
 
+  const projectLinksWrapper = document.createElement('div');
+  projectLinksWrapper.classList.add('each-project-links-wrapper');
+
+  Object.keys(project.links).forEach(key => {
+    if (project.links[key] && project.links[key].length) {
+      const eachProjectLink = document.createElement('a');
+      eachProjectLink.classList.add('each-project-link');
+      eachProjectLink.href = project.links[key];
+      eachProjectLink.target = '_blank';
+
+      const icon = getProjectLinkIconDOM(key);
+      eachProjectLink.appendChild(icon);
+
+      projectLinksWrapper.appendChild(eachProjectLink);
+    }
+  });
+
+  projectContentWrapper.appendChild(projectLinksWrapper);
+
   const projectDescription = document.createElement('div');
   projectDescription.classList.add('each-project-description');
   projectDescription.innerHTML = project.description;

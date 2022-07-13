@@ -39,6 +39,35 @@ block main
       .each-project-input-wrapper
         .new-project-form-input-title Get Involved URL
         input.new-project-form-input#get-involved-url-input(type='text' value=project.get_involved_url placeholder='Optional. Project web-site, discord link, or such')
+    .new-project-form-title Project Links
+    .project-inputs-outer-wrapper
+      .each-project-input-wrapper
+        .new-project-form-input-title Web
+        input.new-project-form-input#links-web-input(type='text' value=project.links.web placeholder='Project website url')
+      .each-project-input-wrapper
+        .new-project-form-input-title GitHub
+        input.new-project-form-input#links-github-input(type='text' value=project.links.github placeholder='Project GitHub url')
+      .each-project-input-wrapper
+        .new-project-form-input-title Telegram
+        input.new-project-form-input#links-telegram-input(type='text' value=project.links.telegram placeholder='Project Telegram url')
+      .each-project-input-wrapper
+        .new-project-form-input-title Medium
+        input.new-project-form-input#links-medium-input(type='text' value=project.links.medium placeholder='Project Medium url')
+      .each-project-input-wrapper
+        .new-project-form-input-title Twitter
+        input.new-project-form-input#links-twitter-input(type='text' value=project.links.twitter placeholder='Project Twitter url')
+      .each-project-input-wrapper
+        .new-project-form-input-title Instagram
+        input.new-project-form-input#links-instagram-input(type='text' value=project.links.instagram placeholder='Project Instagram url')
+      .each-project-input-wrapper
+        .new-project-form-input-title GitBook
+        input.new-project-form-input#links-gitbook-input(type='text' value=project.links.gitbook placeholder='Project GitBook url')
+      .each-project-input-wrapper
+        .new-project-form-input-title Google Docs
+        input.new-project-form-input#links-docs-input(type='text' value=project.links.docs placeholder='Project Google Docs url')
+      .each-project-input-wrapper
+        .new-project-form-input-title Explorer
+        input.new-project-form-input#links-explorer-input(type='text' value=project.links.explorer placeholder='Project explorer url')
     .new-project-form-title Project Guide
     .new-project-form-subtitle Items you add below will be created in the order shown. Click enter to add a new one.
     .project-guide-items-wrapper.drag-and-drop-wrapper

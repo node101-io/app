@@ -179,6 +179,22 @@
   padding: 10px 0px;
   margin-top: 10px;
 }
+.each-project-links-wrapper {
+  height: fit-content;
+  min-height: fit-content;
+  width: 100%;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.each-project-link {
+  margin-right: 15px;
+  width: 22px;
+  text-decoration: none;
+  color: rgba(10, 10, 20, 0.6);
+  color: pink !important;
+}
 .each-project-description {
   color: rgba(10, 10, 20, 0.4);
   font-weight: 700;
@@ -276,7 +292,7 @@
     padding: 10px 10px;
     padding-right: 0px;
   }
-  .each-project-description, .each-project-buttons-wrapper {
+  .each-project-description, .each-project-links-wrapper, .each-project-buttons-wrapper {
     padding: 0 10px;
   }
   .each-project-info-title, .each-project-info {

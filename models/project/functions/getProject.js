@@ -19,5 +19,6 @@ module.exports = (project, callback) => {
     reward: project.reward,
     get_involved_url: project.get_involved_url,
     popularity: project.popularity,
+    links: project.links
   });
 }

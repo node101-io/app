@@ -5,6 +5,7 @@ const validator = require('validator');
 const Image = require('../image/Image');
 
 const getGuide = require('./functions/getGuide');
+const getLinks = require('./functions/getLinks');
 const getProject = require('./functions/getProject');
 const getRequirements = require('./functions/getRequirements');
 
@@ -114,6 +115,20 @@ const ProjectSchema = new Schema({
     type: String,
     required: true,
     maxlenght: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
+  links: {
+    type: Object,
+    default: {
+      web: null,
+      github: null,
+      telegram: null,
+      medium: null,
+      twitter: null,
+      instagram: null,
+      gitbook: null,
+      docs: null,
+      explorer: null
+    }
   }
 });
 
@@ -148,7 +163,7 @@ ProjectSchema.statics.createProject = function (data, callback) {
     if (err) return callback(err);
 
     const newProjectData = {
-      identifier: data.name.toLowerCase().trim() + (data.language == 'en' ? '_' + data.language : ''),
+      identifier: data.name.toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
       is_active: data.is_active ? true : false,
       language: data.language,
       name: data.name.trim(),
@@ -163,12 +178,14 @@ ProjectSchema.statics.createProject = function (data, callback) {
       stake_url: data.stake_url && validator.isURL(data.stake_url.toString()) ? data.stake_url.toString() : null,
       reward: data.reward.trim(),
       get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
-      popularity: data.popularity
+      popularity: data.popularity,
+      links: getLinks(data.links)
     };
   
     const newProject = new Project(newProjectData);
   
     newProject.save((err, project) => {
+      console.log(err);
       if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
       if (err) return callback('database_error');
 

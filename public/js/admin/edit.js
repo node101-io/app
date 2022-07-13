@@ -239,7 +239,18 @@ window.addEventListener('load', () => {
         stake_url: document.getElementById('stake-url-input').value,
         get_involved_url: document.getElementById('get-involved-url-input').value,
         guide: [],
-        requirements: []
+        requirements: [],
+        links: {
+          web: document.getElementById('links-web-input').value,
+          github: document.getElementById('links-github-input').value,
+          telegram: document.getElementById('links-telegram-input').value,
+          medium: document.getElementById('links-medium-input').value,
+          twitter: document.getElementById('links-twitter-input').value,
+          instagram: document.getElementById('links-instagram-input').value,
+          gitbook: document.getElementById('links-gitbook-input').value,
+          docs: document.getElementById('links-docs-input').value,
+          explorer: document.getElementById('links-explorer-input').value
+        }
       };
 
       if (!data.language || !language_values.includes(data.language))
