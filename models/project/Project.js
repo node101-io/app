@@ -306,7 +306,8 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
       stake_url: data.stake_url && validator.isURL(data.stake_url.toString()) ? data.stake_url.toString() : project.stake_url,
       reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.trim() : project.reward,
       get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
-      popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity
+      popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
+      links: getLinks(data.links)
     }}, err => {
       if (err) return callback('database_error');
 
