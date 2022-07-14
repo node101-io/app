@@ -1,4 +1,25 @@
-window.addEventListener('load', event => {
+let project;
+
+function uploadIcons() {
+  Object.keys(project.links).forEach(key => {
+    if (project.links[key] && project.links[key].length) {
+      const projectLink = document.createElement('a');
+      projectLink.classList.add('each-project-link');
+      projectLink.href = project.links[key];
+      projectLink.target = '_blank';
+
+      const icon = getProjectLinkIconDOM(key);
+      projectLink.appendChild(icon);
+
+      document.querySelector('.project-links-wrapper').appendChild(projectLink);
+    }
+  });
+}
+
+window.addEventListener('load', () => {
+  project = JSON.parse(document.getElementById('project-json').value);
+  uploadIcons();
+
   document.addEventListener('click', event => {
     if (event.target.classList.contains('guide-image')) {
       const url = event.target.style.backgroundImage.replace('url(', '').replace(')', '').replaceAll('"', '');

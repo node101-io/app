@@ -1,8 +1,13 @@
 extends ../partials/header
 block main
-  .project-name= project.name
+  input.display-none#project-json(type='text' value=JSON.stringify(project))
+  .project-info-wrapper
+    .project-logo(style=`background-image: url(${project.image})`)
+    .project-name= project.name
+    .project-links-wrapper
+  .project-description= project.description
   if project.requirements && project.requirements.length
-    .projects-title-wrapper
+    .project-title-wrapper
       .project-title= __('Requirements')
       .project-title-info= __('Contact our team if you are not sure if your device meet the requirements.')
     .project-requirements-wrapper
@@ -12,20 +17,29 @@ block main
           .each-project-requirement-seperator :
           .each-project-requirement-value= requirement.content
   if project.guide && project.guide.length
-    .projects-title-wrapper
+    .project-title-wrapper
       .project-title= __('Guide')
-      .project-title-info= __('Follow these steps to be a tester in this project.')
+      .project-title-info= __('Follow these steps in order. Feel free to contact our team whenever you need.')
     .project-guide-wrapper
       each item in project.guide
         if item.type == 'image'
           .guide-image(style=`background-image: url(${item.content})`)
         else if item.type == 'code'
           div(class='guide-' + item.type)= item.content
+        else if item.type == 'info'
+          .guide-info-wrapper
+            .guide-info-sign !
+            div(class='guide-' + item.type)
+              each text in item.content.split(' ')
+                if text.includes('https://')
+                  a(href=text target='_blank')= text + ' '
+                else
+                  span= text + ' '
         else
           div(class='guide-' + item.type)
             each text in item.content.split(' ')
               if text.includes('https://')
-                a(href=text)= text + ' '
+                a(href=text target='_blank')= text + ' '
               else
                 span= text + ' '
   if (!project.requirements || !project.requirements.length) && (!project.guide || !project.guide.length)
