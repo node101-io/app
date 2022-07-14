@@ -76,11 +76,10 @@
   z-index: 3;
   background-color: rgb(254, 254, 254);
 }
-.all-header-search-input-wrapper i {
-  color: rgba(10, 10, 20, 0.4);
-  font-size: 17px;
+.all-header-search-input-wrapper svg {
   width: 20px;
   min-width: 20px;
+  margin-right: 5px;
 }
 .all-header-search-input {
   border: none;

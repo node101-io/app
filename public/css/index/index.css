@@ -76,7 +76,7 @@
   left: 50vw;
   transform: translateX(-50%);
   bottom: 30px;
-  color: rgba(130, 170, 235, 0.8);
+  opacity: 0.8;
   font-size: 18px;
   cursor: pointer;
   display: flex;
@@ -84,11 +84,14 @@
   align-items: center;
 }
 .learn-more-button:hover {
-  color: rgb(130, 170, 235);
+  opacity: 1;
 }
 .learn-more-button span {
   font-weight: 700;
-  margin-bottom: 2px;
+  color: rgb(130, 170, 235);
+}
+.learn-more-button svg {
+  width: 17px;
 }
 
 .how-it-works-title {

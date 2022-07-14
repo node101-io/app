@@ -6,7 +6,7 @@ module.exports = (req, res) => {
     title: res.__('Search & Find the Best Crypto Projects for You!'),
     includes: {
       external: {
-        css: ['confirm', 'fontawesome', 'general', 'header', 'page'],
+        css: ['confirm', 'general', 'header', 'page'],
         js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
       }
     },
