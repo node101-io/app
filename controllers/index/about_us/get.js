@@ -1,13 +1,13 @@
 module.exports = (req, res) => {
-  return res.render('index/index', {
-    page: 'index/index',
-    title: res.__('Everything you need to know to start earning with krypto'),
+  return res.render('index/about_us', {
+    page: 'index/about_us',
+    title: res.__('Who are we?'),
     includes: {
       external: {
         css: ['confirm', 'fontawesome', 'general', 'header', 'page'],
         js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
       }
     },
-    url: '/'
+    url: '/about_us'
   });
 }

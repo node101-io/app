@@ -7,6 +7,13 @@ let searchFunctionCallCount = 0;
 let highlightedSearchResult = null;
 let highlightedSearchResultArrowLocation = -1;
 
+function isInputKey(key) {
+  if (alphaNumeric.includes(key) || key == 'Delete' || key == 'Backspace')
+    return true;
+
+  return false;
+}
+
 function isSimilarStrings(str1, str2) {
   str1 = str1.trim().toLowerCase().split(' ').join('').split('\t').join('').split('\n').join('').split('-').join('');
   str2 = str2.trim().toLowerCase().split(' ').join('').split('\t').join('').split('\n').join('').split('-').join('');
@@ -78,24 +85,27 @@ window.addEventListener('load', () => {
   const searchInput = document.getElementById('all-header-search-input');
 
   document.addEventListener('keyup', event => {
-    if (document.activeElement.id != 'all-header-search-input') {
+    if (!isSearchMenuOpen && isInputKey(event.key)) {
       isSearchMenuOpen = true;
       searchInput.focus();
       document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
+
       if (alphaNumeric.includes(event.key))
         searchInput.value += event.key;
+
       if ((event.key == 'Backspace' || event.key == 'Delete') && searchInput.value && searchInput.value.length)
         searchInput.value = searchInput.value.substring(0, searchInput.value.length-1);
+
       searchFunctionCallCount += 1;
       loadSearchProjects(searchInput.value, searchFunctionCallCount);
     }
     
-    if (event.target.id == 'all-header-search-input' && event.key == 'Enter' && highlightedSearchResult) {
+    if (isSearchMenuOpen && event.key == 'Enter' && highlightedSearchResult) {
       const identifier = highlightedSearchResult.id.replace('search-project-', '');
       window.location = '/projects/guide/' + identifier; 
     }
 
-    if (event.target.id == 'all-header-search-input' && event.key == 'ArrowUp') {
+    if (isSearchMenuOpen && event.key == 'ArrowUp') {
       event.preventDefault();
 
       if (highlightedSearchResultArrowLocation > 0 && highlightedSearchResult && highlightedSearchResult.previousElementSibling) {
@@ -119,7 +129,7 @@ window.addEventListener('load', () => {
       }
     }
 
-    if (event.target.id == 'all-header-search-input' && event.key == 'ArrowDown') {
+    if (isSearchMenuOpen && event.key == 'ArrowDown') {
       event.preventDefault();
 
       if (highlightedSearchResult && highlightedSearchResult.nextElementSibling) {
@@ -141,6 +151,11 @@ window.addEventListener('load', () => {
           }
         }
       }
+    }
+
+    if (isSearchMenuOpen && event.key == 'Escape') {
+      isSearchMenuOpen = false;
+      document.querySelector('.all-header-search-wrapper').style.overflow = 'hidden';
     }
   });
 

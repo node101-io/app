@@ -7,7 +7,7 @@ module.exports = (req, res) => {
     includes: {
       external: {
         css: ['confirm', 'fontawesome', 'general', 'header', 'page'],
-        js: ['confirm', 'header', 'page', 'projects', 'serverRequest']
+        js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
       }
     },
     url: '/projects',

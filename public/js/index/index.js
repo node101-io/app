@@ -169,8 +169,8 @@ window.addEventListener('load', () => {
   });
 
   document.addEventListener('click', event => {
-    if (event.target.classList.contains('each-project-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('each-project-wrapper'))))))) {
-      const target = event.target.classList.contains('each-project-wrapper') ? event.target : (event.target.parentNode.classList.contains('each-project-wrapper') ? event.target.parentNode : (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') ? event.target.parentNode.parentNode : event.target.parentNode.parentNode.parentNode));
+    if (ancestorWithClassName(event.target, 'each-project-wrapper')) {
+      const target = ancestorWithClassName(event.target, 'each-project-wrapper');
 
       if (target.classList.contains('each-project-wrapper-opened'))
         return;
