@@ -125,7 +125,7 @@ function writeAnimation(element, text, callback) {
     writeAnimation(element, text.substring(1, text.length), () => {
       callback();
     });
-  }, 200);
+  }, 170);
 }
 
 function textAnimation(textCount) {
@@ -133,7 +133,7 @@ function textAnimation(textCount) {
     return;
 
   const text = document.getElementById('start-page-animation-text-' + textCount).innerHTML;
-  const wrapper = document.querySelector('.start-page-right-wrapper');
+  const wrapper = document.querySelector('.start-page-animation-wrapper');
 
   const newTextWrapper = document.createElement('div');;
   newTextWrapper.classList.add('start-page-motto-wrapper');
@@ -155,9 +155,31 @@ function textAnimation(textCount) {
   });
 }
 
+function repeatTextAnimation() {
+  const wrapper = document.querySelector('.start-page-animation-wrapper');
+  wrapper.innerHTML = '';
+
+  textAnimation(1);
+
+  setTimeout(() => {
+    repeatTextAnimation();
+  }, 7000);
+}
+
+function smoothScroll(element, amount) {
+  if (amount < 10)
+    return;
+
+  element.scrollBy(0, 10);
+
+  setTimeout(() => {
+    smoothScroll(element, amount - 10);
+  }, 5);
+}
+
 window.addEventListener('load', () => {
   setTimeout(() => {
-    textAnimation(1);
+    repeatTextAnimation();
   }, 200);
 
   document.querySelector('.all-wrapper').addEventListener('scroll', event => {
@@ -203,6 +225,10 @@ window.addEventListener('load', () => {
           else
             projects[i].style.display = 'flex';
       }
+    }
+
+    if (ancestorWithClassName(event.target, 'learn-more-button')) {
+      smoothScroll(document.querySelector('.all-wrapper'), window.innerHeight - 80);
     }
   });
 });
