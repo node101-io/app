@@ -1,7 +1,7 @@
 const Project = require('../../../models/project/Project');
 
 module.exports = (req, res) => {
-  Project.findProjectByIdAndFormat(req.query.id, (err, project) => {
+  Project.findProjectById(req.query.id, (err, project) => {
     if (err)
       return res.redirect('/error?message=' + err);
 

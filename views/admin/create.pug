@@ -33,11 +33,17 @@ block main
         .new-project-form-input-title.required-input Popularity
         input.new-project-form-input#popularity-input(type='text' placeholder='Allowed Values: low, medium, high')
       .each-project-input-wrapper
+        .new-project-form-input-title Get Involved URL
+        input.new-project-form-input#get-involved-url-input(type='text' placeholder='Optional. Project web-site, discord link, or such')
+    .new-project-form-title Stakable Projects
+    .new-project-form-subtitle Fill only if the project is stakable. All the fields should be completed for the project to be stakable.
+    .project-inputs-outer-wrapper
+      .each-project-input-wrapper
         .new-project-form-input-title Stake URL
         input.new-project-form-input#stake-url-input(type='text' placeholder='Enter only if the project is stakable')
       .each-project-input-wrapper
-        .new-project-form-input-title Get Involved URL
-        input.new-project-form-input#get-involved-url-input(type='text' placeholder='Optional. Project web-site, discord link, or such')
+        .new-project-form-input-title Stake Rate API Title
+        input.new-project-form-input#stake-api-title-input(type='text' placeholder='This string should match the title of project in the stake rate api')
     .new-project-form-title Project Links
     .project-inputs-outer-wrapper
       .each-project-input-wrapper

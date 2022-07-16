@@ -53,7 +53,7 @@ block content
         a.each-all-header-button(href='/projects')= __('Projects')
         a.each-all-header-button(href='/about_us')= __('Who are we?')
         a.each-all-header-button(href='https://usersmagic.com' target='_blank')= __('Blog')
-      .all-header-stake-with-us-button= __('Stake with us')
+      a.all-header-stake-with-us-button(href='/stake')= __('Stake with us')
       .all-header-language-wrapper
         a.each-all-header-language-button(href=`${url}${url.includes('?') ? '&' : '?'}lang=${__('language_one').toLowerCase()}`)= __('language_one')
         .all-header-language-seperator

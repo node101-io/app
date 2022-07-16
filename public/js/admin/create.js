@@ -240,7 +240,6 @@ window.addEventListener('load', () => {
         reward: document.getElementById('reward-input').value,
         status: document.getElementById('status-input').value,
         popularity: document.getElementById('popularity-input').value,
-        stake_url: document.getElementById('stake-url-input').value,
         get_involved_url: document.getElementById('get-involved-url-input').value,
         guide: [],
         requirements: [],
@@ -254,7 +253,9 @@ window.addEventListener('load', () => {
           gitbook: document.getElementById('links-gitbook-input').value,
           docs: document.getElementById('links-docs-input').value,
           explorer: document.getElementById('links-explorer-input').value
-        }
+        },
+        stake_url: document.getElementById('stake-url-input').value,
+        stake_api_title: document.getElementById('stake-api-title-input').value
       };
 
       if (!project.language || !language_values.includes(project.language))

@@ -1,0 +1,184 @@
+.all-content-wrapper {
+  height: calc(100vh - 80px);
+  padding: 60px 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stake-title {
+  color: rgb(10, 10, 20);
+  font-size: 30px;
+  font-weight: 800;
+  width: 600px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stake-text {
+  color: rgb(10, 10, 20, 0.6);
+  font-size: 16px;
+  font-weight: 600;
+  width: 600px;
+  text-align: center;
+  margin-bottom: 15px;
+  line-height: 25px;
+}
+
+.stake-link-wrapper {
+  width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+  margin-bottom: 60px;
+}
+.each-stake-link {
+  width: 25px;
+  text-decoration: none;
+  margin: 0px 15px;
+  cursor: pointer;
+}
+
+.stake-projects-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 60px;
+}
+
+.each-stake-project {
+  width: 260px;
+  height: 320px;
+  border: 2px solid rgb(236, 236, 236);
+  box-shadow: 0 0 10px rgb(236, 236, 236);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 15px;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.each-stake-project:hover {
+  margin-top: -5px;
+  box-shadow: 0 0 15px rgb(236, 236, 236);
+}
+.each-stake-project-image {
+  width: 100px;
+  height: 100px;
+  border-radius: 100%;
+  background-size: cover;
+  margin-bottom: 15px;
+}
+.each-stake-project-name {
+  margin-bottom: 15px;
+  color: rgb(10, 10, 20);
+  font-weight: 800;
+  font-size: 24px;
+}
+.each-stake-project-rate-text {
+  color: rgba(10, 10, 20, 0.3);
+  font-weight: 600;
+  font-size: 14px;
+}
+.each-stake-project-rate {
+  margin-bottom: auto;
+  color: rgb(130, 170, 235);
+  font-weight: 800;
+  font-size: 27px;
+}
+.each-stake-project-stake-button {
+  color: rgb(10, 10, 20);
+  font-weight: 800;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+}
+.each-stake-project-stake-button svg {
+  margin-left: 8px;
+  height: 17px;
+}
+
+.footer-wrapper {
+  height: fit-content;
+  min-height: fit-content;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+  color: rgba(10, 10, 20, 0.3);
+  font-weight: 800;
+  font-size: 16px;
+  padding: 0px 60px;
+  padding-bottom: 60px;
+}
+
+@media only screen and (max-width: 1150px) {
+  .all-content-wrapper {
+    height: calc(100vh - 110px);
+  }
+}
+@media only screen and (max-width: 850px) {
+  .footer-wrapper {
+    padding: 0 30px;
+    padding-bottom: 30px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .all-content-wrapper {
+    height: calc(100vh - 90px);
+  }
+}
+@media only screen and (max-width: 500px) {
+  .all-content-wrapper {
+    height: calc(100vh - 100px);
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .stake-title, .stake-text, .stake-link-wrapper {
+    width: 500px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .stake-title, .stake-text, .stake-link-wrapper {
+    width: 450px;
+  }
+  .stake-title {
+    font-size: 26px;
+  }
+  .stake-text {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .stake-title, .stake-text, .stake-link-wrapper {
+    width: 350px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .stake-projects-wrapper {
+    flex-direction: column;
+    margin-top: 0px;
+  }
+  .each-stake-project {
+    margin: 0px;
+    margin-top: 20px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .stake-title, .stake-text, .stake-link-wrapper {
+    width: 260px;
+  }
+  .stake-title {
+    font-size: 23px;
+  }
+  .stake-text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

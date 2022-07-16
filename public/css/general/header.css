@@ -156,6 +156,7 @@
 }
 
 .all-header-stake-with-us-button {
+  text-decoration: none;
   width: 150px;
   height: 50px;
   display: flex;
@@ -168,10 +169,10 @@
   margin-right: 30px;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 0 8px rgba(130, 170, 235, 0.5);
+  box-shadow: 0 0 6px rgba(130, 170, 235, 0.8);
 }
 .all-header-stake-with-us-button:hover {
-  box-shadow: 0 0 8px rgba(130, 170, 235, 0.7);
+  box-shadow: 0 0 6px rgba(130, 170, 235, 1);
 }
 
 .all-header-language-wrapper {

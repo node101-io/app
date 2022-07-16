@@ -1,8 +1,3 @@
-.all-header-wrapper {
-  border-bottom: 1px solid rgb(236, 236, 236);
-  box-shadow: 0 0 10px rgb(236, 236, 236);
-}
-
 .all-content-wrapper {
   height: calc(100vh - 80px);
   padding: 60px 0px;

@@ -4,6 +4,7 @@ const validator = require('validator');
 
 const Image = require('../image/Image');
 
+const fetchStakeRate = require('./functions/fetchStakeRate');
 const getGuide = require('./functions/getGuide');
 const getLinks = require('./functions/getLinks');
 const getProject = require('./functions/getProject');
@@ -13,6 +14,7 @@ const language_values = ['en', 'tr', 'ru'];
 const status_values = ['active', 'upcoming', 'ended'];
 const popularity_values = ['low', 'medium', 'high'];
 
+const DEFAULT_STAKE_RATE_UPDATE_TIME_IN_MS = 5 * 60 * 1000;
 const DUPLICATED_UNIQUE_FIELD_ERROR_CODE = 11000;
 const DOCUMENT_LIMIT_FOR_FIND_QUERY = 20;
 const MAX_DATABASE_ARRAY_FIELD_LENGTH = 1e4;
@@ -92,15 +94,6 @@ const ProjectSchema = new Schema({
     required: true,
     maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
   },
-  is_stakable: {
-    type: Boolean,
-    default: false
-  },
-  stake_url: {
-    type: String,
-    default: null,
-    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
-  },
   reward: {
     type: String,
     default: null,
@@ -129,6 +122,28 @@ const ProjectSchema = new Schema({
       docs: null,
       explorer: null
     }
+  },
+  is_stakable: {
+    type: Boolean,
+    default: false
+  },
+  stake_url: {
+    type: String,
+    default: null,
+    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
+  stake_api_title: {
+    type: String,
+    default: null,
+    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
+  stake_rate: {
+    type: Number,
+    default: null
+  },
+  last_stake_rate_update_time_in_ms: {
+    type: Number,
+    default: null
   }
 });
 
@@ -162,39 +177,83 @@ ProjectSchema.statics.createProject = function (data, callback) {
   Image.findImageByUrl(data.image, (err, image) => {
     if (err) return callback(err);
 
-    const newProjectData = {
-      identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
-      is_active: data.is_active ? true : false,
-      language: data.language,
-      name: data.name.trim(),
-      image: image.url,
-      created_at: parseInt((new Date()).getTime()),
-      description: data.description.trim(),
-      guide: getGuide(data.guide),
-      requirements: getRequirements(data.requirements),
-      status: data.status,
-      dates: data.dates.trim(),
-      is_stakable: data.stake_url && validator.isURL(data.stake_url.toString()) ? true : false,
-      stake_url: data.stake_url && validator.isURL(data.stake_url.toString()) ? data.stake_url.toString() : null,
-      reward: data.reward.trim(),
-      get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
-      popularity: data.popularity,
-      links: getLinks(data.links)
-    };
-  
-    const newProject = new Project(newProjectData);
-  
-    newProject.save((err, project) => {
-      console.log(err);
-      if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
-      if (err) return callback('database_error');
+    const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
 
-      Image.findImageByUrlAndSetAsUsed(project.image, err => {
+    if (is_stakable) {
+      fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
         if (err) return callback(err);
 
-        return callback(null, project._id.toString());
-      });  
-    });
+        const newProjectData = {
+          identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+          is_active: data.is_active ? true : false,
+          language: data.language,
+          name: data.name.trim(),
+          image: image.url,
+          created_at: parseInt((new Date()).getTime()),
+          description: data.description.trim(),
+          guide: getGuide(data.guide),
+          requirements: getRequirements(data.requirements),
+          status: data.status,
+          dates: data.dates.trim(),
+          reward: data.reward.trim(),
+          get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
+          popularity: data.popularity,
+          links: getLinks(data.links),
+          is_stakable,
+          stake_url: data.stake_url.toString(),
+          stake_api_title: data.stake_api_title.toString(),
+          stake_rate,
+          last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+        };
+      
+        const newProject = new Project(newProjectData);
+      
+        newProject.save((err, project) => {
+          console.log(err);
+          if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+          if (err) return callback('database_error');
+    
+          Image.findImageByUrlAndSetAsUsed(project.image, err => {
+            if (err) return callback(err);
+    
+            return callback(null, project._id.toString());
+          });  
+        });
+      });
+    } else {
+      const newProjectData = {
+        identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+        is_active: data.is_active ? true : false,
+        language: data.language,
+        name: data.name.trim(),
+        image: image.url,
+        created_at: parseInt((new Date()).getTime()),
+        description: data.description.trim(),
+        guide: getGuide(data.guide),
+        requirements: getRequirements(data.requirements),
+        status: data.status,
+        dates: data.dates.trim(),
+        reward: data.reward.trim(),
+        get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
+        popularity: data.popularity,
+        links: getLinks(data.links),
+        is_stakable: false
+      };
+    
+      const newProject = new Project(newProjectData);
+    
+      newProject.save((err, project) => {
+        console.log(err);
+        if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+        if (err) return callback('database_error');
+  
+        Image.findImageByUrlAndSetAsUsed(project.image, err => {
+          if (err) return callback(err);
+  
+          return callback(null, project._id.toString());
+        });  
+      });
+    }
   });
 };
 
@@ -294,31 +353,69 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
   Project.findProjectById(id, (err, project) => {
     if (err) return callback(err);
 
-    Project.findByIdAndUpdate(project._id, {$set: {
-      language: data.language && language_values.includes(data.language) ? data.language : project.language,
-      name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
-      description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
-      guide: getGuide(data.guide),
-      requirements: getRequirements(data.requirements),
-      status: data.status && status_values.includes(data.status) ? data.status : project.status,
-      dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.trim() : project.dates,
-      is_stakable: data.stake_url && validator.isURL(data.stake_url.toString()) ? true : project.is_stakable,
-      stake_url: data.stake_url && validator.isURL(data.stake_url.toString()) ? data.stake_url.toString() : project.stake_url,
-      reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.trim() : project.reward,
-      get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
-      popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
-      links: getLinks(data.links)
-    }}, { new: true }, (err, project) => {
-      if (err) return callback('database_error');
+    const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
 
-      Project.findByIdAndUpdate(project._id, {$set: {
-        identifier: project.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : ''),
-      }}, err => {
-        if (err) return callback('database_error');
+    if (is_stakable) {
+      fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
+        if (err) return callback(err);
 
-        return callback(null);
+        Project.findByIdAndUpdate(project._id, {$set: {
+          language: data.language && language_values.includes(data.language) ? data.language : project.language,
+          name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
+          description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
+          guide: getGuide(data.guide),
+          requirements: getRequirements(data.requirements),
+          status: data.status && status_values.includes(data.status) ? data.status : project.status,
+          dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.trim() : project.dates,
+          reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.trim() : project.reward,
+          get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
+          popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
+          links: getLinks(data.links),
+          is_stakable: true,
+          stake_url: data.stake_url.toString(),
+          stake_api_title: data.stake_api_title.toString(),
+          stake_rate,
+          last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+        }}, { new: true }, (err, project) => {
+          if (err) return callback('database_error');
+    
+          Project.findByIdAndUpdate(project._id, {$set: {
+            identifier: project.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : ''),
+          }}, err => {
+            if (err) return callback('database_error');
+    
+            return callback(null);
+          });
+        });
       });
-    });
+    } else {
+      Project.findByIdAndUpdate(project._id, {$set: {
+        language: data.language && language_values.includes(data.language) ? data.language : project.language,
+        name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
+        description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
+        guide: getGuide(data.guide),
+        requirements: getRequirements(data.requirements),
+        status: data.status && status_values.includes(data.status) ? data.status : project.status,
+        dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.trim() : project.dates,
+        reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.trim() : project.reward,
+        get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
+        popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
+        links: getLinks(data.links),
+        is_stakable: false,
+        stake_url: null,
+        stake_api_title: null
+      }}, { new: true }, (err, project) => {
+        if (err) return callback('database_error');
+  
+        Project.findByIdAndUpdate(project._id, {$set: {
+          identifier: project.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : ''),
+        }}, err => {
+          if (err) return callback('database_error');
+  
+          return callback(null);
+        });
+      });
+    }
   });
 };
 
@@ -362,6 +459,71 @@ ProjectSchema.statics.findProjectByIdAndReverseStatus = function (id, callback) 
       if (err) return callback('database_error');
 
       return callback(null);
+    });
+  });
+};
+
+ProjectSchema.statics.findStakableProjects = function (data, callback) {
+  const Project = this;
+
+  if (!data || !data.language || !language_values.includes(data.language))
+    return callback('bad_request')
+
+  Project
+    .find({
+      is_active: true,
+      language: data.language,
+      is_stakable: true
+    })
+    .sort({ _id: -1 })
+    .then(projects => async.timesSeries(
+      projects.length,
+      (time, next) => {
+        Project.findProjectByIdAndUpdateStakeRate(projects[time]._id, (err, stake_rate) => {
+          if (err)
+            console.log(err);
+          else
+            projects[time].stake_rate = stake_rate;
+
+          getProject(projects[time], (err, project) => {
+            if (err) return next(err);
+
+            return next(null, project);
+          });
+        });
+      },
+      (err, projects) => {
+        if (err) return callback(err);
+
+        return callback(null, projects);
+      }
+    ))
+    .catch(err => callback('database_error'));
+};
+
+ProjectSchema.statics.findProjectByIdAndUpdateStakeRate = function (id, callback) {
+  const Project = this;
+
+  Project.findProjectById(id, (err, project) => {
+    if (err) return callback(err);
+
+    if (!project.is_stakable)
+      return callback('bad_request');
+
+    if (project.last_stake_rate_update_time_in_ms && project.last_stake_rate_update_time_in_ms + DEFAULT_STAKE_RATE_UPDATE_TIME_IN_MS >= (new Date()).getTime())
+      return callback(null, project.stake_rate);
+
+    fetchStakeRate(project.stake_api_title, (err, stake_rate) => {
+      if (err) return callback(err);
+
+      Project.findByIdAndUpdate(project._id, {$set: {
+        stake_rate,
+        last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+      }}, { new: true }, (err, project) => {
+        if (err) return callback('database_error');
+
+        return callback(null, project.stake_rate);
+      });
     });
   });
 };
