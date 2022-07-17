@@ -173,9 +173,6 @@ function uploadProjects() {
 
       if (typeof createProject == 'function'){
         createProject(res.projects[i]);
-        createProject(res.projects[i]);
-        createProject(res.projects[i]);
-        createProject(res.projects[i]);
       }if (typeof createSearchProject == 'function')
         createSearchProject(res.projects[i]);
     }
