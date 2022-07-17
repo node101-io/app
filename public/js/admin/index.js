@@ -6,7 +6,7 @@ function createProject(project) {
 
   const projectHeaderWrapper = document.createElement('div');
   projectHeaderWrapper.classList.add('each-project-header-wrapper');
-  
+
   const projectStatusButton = document.createElement('i');
   projectStatusButton.classList.add('each-project-edit-button');
   projectStatusButton.classList.add('each-project-status-button');
@@ -24,6 +24,13 @@ function createProject(project) {
   projectEditButton.classList.add('fa-cog');
   projectHeaderWrapper.appendChild(projectEditButton);
 
+  const projectOrderButton = document.createElement('div');
+  projectOrderButton.classList.add('each-project-edit-button');
+  projectOrderButton.classList.add('each-project-order-button');
+  projectOrderButton.classList.add('fas');
+  projectOrderButton.classList.add('fa-chevron-up');
+  projectHeaderWrapper.appendChild(projectOrderButton);
+
   const projectLogo = document.createElement('div');
   projectLogo.classList.add('each-project-logo');
   projectLogo.style.backgroundImage = `url(${project.image})`;
@@ -40,11 +47,13 @@ function createProject(project) {
 
   const projectInfo1 = document.createElement('div');
   projectInfo1.classList.add('each-project-info');
+  projectInfo1.classList.add('each-project-info-dates');
   projectInfo1.innerHTML = project.dates;
   projectInfoWrapper.appendChild(projectInfo1);
 
   const projectInfoSeperator1 = document.createElement('div');
   projectInfoSeperator1.classList.add('each-project-info-seperator');
+  projectInfoSeperator1.classList.add('each-project-info-seperator-dates');
   projectInfoWrapper.appendChild(projectInfoSeperator1);
 
   const projectInfo2 = document.createElement('div');
@@ -91,7 +100,21 @@ function createProject(project) {
 
   const projectDescription = document.createElement('div');
   projectDescription.classList.add('each-project-description');
-  projectDescription.innerHTML = project.description;
+  console.log(project.description)
+  const descriptionParts = project.description.split('\n').join('<br/>').split(' ');
+  for (let i = 0; i < descriptionParts.length; i++) {
+    if (descriptionParts[i].includes('{')) {
+      const a = document.createElement('a');
+      a.innerHTML = descriptionParts[i].substring(0, descriptionParts[i].indexOf('{'));
+      a.target = '_blank';
+      a.href = descriptionParts[i].substring(descriptionParts[i].indexOf('{')+1, descriptionParts[i].indexOf('}'));
+      projectDescription.appendChild(a);
+    } else {
+      const span = document.createElement('span');
+      span.innerHTML = (i > 0 && descriptionParts[i-1].includes('{') ? ' ' : '') + descriptionParts[i] + ' ';
+      projectDescription.appendChild(span);
+    }
+  }
   projectContentWrapper.appendChild(projectDescription);
 
   const projectButtonsWrapper = document.createElement('div');
@@ -117,14 +140,12 @@ function createProject(project) {
     projectButtonsWrapper.appendChild(getInvolvedButton);
   }
 
-  if (project.guide && project.guide.length) {
-    const setUpButton = document.createElement('a');
-    setUpButton.classList.add('each-project-button');
-    setUpButton.classList.add('each-project-guide-button');
-    setUpButton.href = '/projects/guide/' + project.identifier;
-    setUpButton.innerHTML = 'Set-Up Guide';
-    projectButtonsWrapper.appendChild(setUpButton);
-  }
+  const setUpButton = document.createElement('a');
+  setUpButton.classList.add('each-project-button');
+  setUpButton.classList.add('each-project-guide-button');
+  setUpButton.href = '/projects/guide/' + project.identifier;
+  setUpButton.innerHTML = 'Set-Up Guide';
+  projectButtonsWrapper.appendChild(setUpButton);
 
   projectContentWrapper.appendChild(projectButtonsWrapper);
 
@@ -135,8 +156,8 @@ function createProject(project) {
 
 window.addEventListener('load', () => {
   document.addEventListener('click', event => {
-    if (!event.target.classList.contains('each-project-edit-button') && (event.target.classList.contains('each-project-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('each-project-wrapper')))))))) {
-      const target = event.target.classList.contains('each-project-wrapper') ? event.target : (event.target.parentNode.classList.contains('each-project-wrapper') ? event.target.parentNode : (event.target.parentNode.parentNode.classList.contains('each-project-wrapper') ? event.target.parentNode.parentNode : event.target.parentNode.parentNode.parentNode));
+    if (!event.target.classList.contains('each-project-edit-button') &&  ancestorWithClassName(event.target, 'each-project-wrapper')) {
+      const target = ancestorWithClassName(event.target, 'each-project-wrapper');
 
       if (target.classList.contains('each-project-wrapper-opened'))
         return;
@@ -189,6 +210,87 @@ window.addEventListener('load', () => {
           event.target.classList.add('fa-play');
         }
       })
+    }
+
+    if (event.target.classList.contains('each-project-order-button')) {
+      const id = event.target.parentNode.parentNode.id;
+
+      serverRequest('/admin/order?id=' + id, 'POST', {}, res => {
+        if (!res.success) return createConfirm({
+          title: 'An Error Occured',
+          text: 'An unknown error occured while updating the status of the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
+          reject: 'Close'
+        }, res => { return; });
+
+        document.querySelector('.projects-wrapper').insertBefore(event.target.parentNode.parentNode, event.target.parentNode.parentNode.previousElementSibling);
+      });
+    }
+  });
+
+  const scrollDistance = document.querySelector('.projects-title-wrapper').getBoundingClientRect().top;
+
+  document.querySelector('.all-wrapper').addEventListener('scroll', event => {
+    const projectsTitle = document.querySelector('.projects-title');
+    const projectsHeaderWrapper = document.querySelector('.projects-header-wrapper');
+    const projectsWrapper = document.querySelector('.projects-wrapper');
+
+    const scrollHeight = event.target.scrollTop;
+
+    // Animations for responsive design to header
+    if (scrollDistance == 140 || scrollDistance == 170) {
+      if (scrollHeight >= 120) {
+        projectsTitle.style.fontSize = '0px';
+        projectsHeaderWrapper.style.position = 'fixed';
+        projectsHeaderWrapper.style.marginTop = '-60px';
+        projectsHeaderWrapper.style.backgroundColor = `rgba(248, 248, 248, ${(scrollHeight-120) / 60})`;
+        projectsWrapper.style.marginTop = '90px';
+      } else {
+        projectsHeaderWrapper.style.position = 'initial';
+        projectsHeaderWrapper.style.marginTop = '0px';
+        projectsHeaderWrapper.style.backgroundColor = 'rgb(254, 254, 254)';
+        projectsWrapper.style.marginTop = '30px';
+
+        if (scrollHeight >= 50)
+          projectsTitle.style.fontSize = ((1 - ( (scrollHeight-50) / 80 )) * 60) + 'px';
+        else
+          projectsTitle.style.fontSize = '60px';
+      }
+    } else if (scrollDistance == 150) {
+      if (scrollHeight >= 115) {
+        projectsTitle.style.fontSize = '0px';
+        projectsHeaderWrapper.style.position = 'fixed';
+        projectsHeaderWrapper.style.marginTop = '-60px';
+        projectsHeaderWrapper.style.backgroundColor = `rgba(248, 248, 248, ${(scrollHeight-115) / 60})`;
+        projectsWrapper.style.marginTop = '125px';
+      } else {
+        projectsHeaderWrapper.style.position = 'initial';
+        projectsHeaderWrapper.style.marginTop = '0px';
+        projectsHeaderWrapper.style.backgroundColor = 'rgb(254, 254, 254)';
+        projectsWrapper.style.marginTop = '30px';
+
+        if (scrollHeight >= 45)
+          projectsTitle.style.fontSize = ((1 - ( (scrollHeight-45) / 70 )) * 60) + 'px';
+        else
+          projectsTitle.style.fontSize = '60px';
+      }
+    } else if (scrollDistance == 160) {
+      if (scrollHeight >= 80) {
+        projectsTitle.style.fontSize = '0px';
+        projectsHeaderWrapper.style.position = 'fixed';
+        projectsHeaderWrapper.style.marginTop = '-50px';
+        projectsHeaderWrapper.style.backgroundColor = `rgba(248, 248, 248, ${(scrollHeight-115) / 50})`;
+        projectsWrapper.style.marginTop = '125px';
+      } else {
+        projectsHeaderWrapper.style.position = 'initial';
+        projectsHeaderWrapper.style.marginTop = '0px';
+        projectsHeaderWrapper.style.backgroundColor = 'rgb(254, 254, 254)';
+        projectsWrapper.style.marginTop = '30px';
+
+        if (scrollHeight >= 20)
+          projectsTitle.style.fontSize = ((1 - ( (scrollHeight-20) / 60 )) * 50) + 'px';
+        else
+          projectsTitle.style.fontSize = '50px';
+      }
     }
   });
 });

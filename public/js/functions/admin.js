@@ -2,16 +2,23 @@ const alphaNumeric = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 ];
 
+let isSearchMenuOpen = false;
 let searchFunctionCallCount = 0;
+let highlightedSearchResult = null;
+let highlightedSearchResultArrowLocation = -1;
 
-function isSimilarStrings(str1, str2) {
-  const str1Parts = str1.split(' ').map(each => each.trim().toLowerCase()).filter(each => each.length);
-  const str2Parts = str2.split(' ').map(each => each.trim().toLowerCase()).filter(each => each.length);
-
-  if (str1Parts.find(each => str2.trim().toLowerCase().includes(each)))
+function isInputKey(key) {
+  if (alphaNumeric.includes(key) || key == 'Delete' || key == 'Backspace')
     return true;
 
-  if (str2Parts.find(each => str1.trim().toLowerCase().includes(each)))
+  return false;
+}
+
+function isSimilarStrings(str1, str2) {
+  str1 = str1.trim().toLowerCase().split(' ').join('').split('\t').join('').split('\n').join('').split('-').join('');
+  str2 = str2.trim().toLowerCase().split(' ').join('').split('\t').join('').split('\n').join('').split('-').join('');
+
+  if (str1.includes(str2) || str2.includes(str1))
     return true;
 
   return false;
@@ -20,6 +27,7 @@ function isSimilarStrings(str1, str2) {
 function createSearchProject(project) {
   const searchProject = document.createElement('div');
   searchProject.classList.add('each-all-header-search-result');
+  searchProject.id = 'search-project-' + project.identifier;
 
   const searchProjectImage = document.createElement('div');
   searchProjectImage.style.backgroundImage = `url(${project.image})`;
@@ -44,12 +52,28 @@ function loadSearchProjects(query, count) {
     }, 2000);
 
   const searchProjects = document.querySelectorAll('.each-all-header-search-result');
+  let isFirstToShow = true;
 
   for (let i = 0; i < searchProjects.length; i++)
-    if (!query.length || isSimilarStrings(query, searchProjects[i].childNodes[1].innerHTML))
+    if (!query.length || isSimilarStrings(query, searchProjects[i].childNodes[1].innerHTML)) {
       searchProjects[i].style.display = 'flex';
-    else
+      if (!query.length) {
+        if (highlightedSearchResult) {
+          highlightedSearchResult.classList.remove('each-all-header-search-result-highlighted');
+          highlightedSearchResult = null;
+          highlightedSearchResultArrowLocation = -1;
+        }
+      } else if (isFirstToShow) {
+        isFirstToShow = false;
+        if (highlightedSearchResult)
+          highlightedSearchResult.classList.remove('each-all-header-search-result-highlighted');
+        highlightedSearchResult = searchProjects[i];
+        highlightedSearchResult.classList.add('each-all-header-search-result-highlighted');
+        highlightedSearchResultArrowLocation = 0;
+      }
+    } else {
       searchProjects[i].style.display = 'none';
+    }
 }
 
 window.addEventListener('load', () => {
@@ -60,16 +84,102 @@ window.addEventListener('load', () => {
 
   const searchInput = document.getElementById('all-header-search-input');
 
-  searchInput.addEventListener('input', event => {
-    document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
+  document.addEventListener('keyup', event => {
+    if (!isSearchMenuOpen && isInputKey(event.key)) {
+      isSearchMenuOpen = true;
+      searchInput.focus();
+      document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
 
-    searchFunctionCallCount += 1;
-    loadSearchProjects(event.target.value, searchFunctionCallCount);
-  });
+      if (alphaNumeric.includes(event.key))
+        searchInput.value += event.key;
 
-  document.addEventListener('focusout', event => {
-    if (event.target.id == 'all-header-search-input') {
+      if ((event.key == 'Backspace' || event.key == 'Delete') && searchInput.value && searchInput.value.length)
+        searchInput.value = searchInput.value.substring(0, searchInput.value.length-1);
+
+      searchFunctionCallCount += 1;
+      loadSearchProjects(searchInput.value, searchFunctionCallCount);
+    }
+    
+    if (isSearchMenuOpen && event.key == 'Enter' && highlightedSearchResult) {
+      const identifier = highlightedSearchResult.id.replace('search-project-', '');
+      window.location = '/projects/guide/' + identifier; 
+    }
+
+    if (isSearchMenuOpen && event.key == 'ArrowUp') {
+      event.preventDefault();
+
+      if (highlightedSearchResultArrowLocation > 0 && highlightedSearchResult && highlightedSearchResult.previousElementSibling) {
+        let currentElement = highlightedSearchResult.previousElementSibling;
+
+        while (currentElement) {
+          if (currentElement.style.display == 'flex') {
+            highlightedSearchResult.classList.remove('each-all-header-search-result-highlighted');
+            highlightedSearchResultArrowLocation--;
+            highlightedSearchResult = currentElement;
+            highlightedSearchResult.classList.add('each-all-header-search-result-highlighted');
+            break;
+          }
+  
+          if (currentElement.previousElementSibling) {
+            currentElement = currentElement.previousElementSibling;
+          } else {
+            currentElement = null;
+          }
+        } 
+      }
+    }
+
+    if (isSearchMenuOpen && event.key == 'ArrowDown') {
+      event.preventDefault();
+
+      if (highlightedSearchResult && highlightedSearchResult.nextElementSibling) {
+        let currentElement = highlightedSearchResult.nextElementSibling;
+
+        while (currentElement) {
+          if (currentElement.style.display == 'flex') {
+            highlightedSearchResult.classList.remove('each-all-header-search-result-highlighted');
+            highlightedSearchResultArrowLocation++;
+            highlightedSearchResult = currentElement;
+            highlightedSearchResult.classList.add('each-all-header-search-result-highlighted');
+            break;
+          }
+  
+          if (currentElement.nextElementSibling) {
+            currentElement = currentElement.nextElementSibling;
+          } else {
+            currentElement = null;
+          }
+        }
+      }
+    }
+
+    if (isSearchMenuOpen && event.key == 'Escape') {
+      isSearchMenuOpen = false;
       document.querySelector('.all-header-search-wrapper').style.overflow = 'hidden';
     }
-  })
+  });
+
+  searchInput.addEventListener('input', event => {
+    if (event.target.id == 'all-header-search-input') {
+      document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
+
+      searchFunctionCallCount += 1;
+      loadSearchProjects(event.target.value, searchFunctionCallCount);
+    }
+  });
+
+  document.addEventListener('click', event => {
+    if (event.target.classList.contains('each-all-header-search-result') || (event.target.parentNode && event.target.parentNode.classList.contains('each-all-header-search-result'))) {
+      const target = event.target.classList.contains('each-all-header-search-result') ? event.target : event.target.parentNode;
+      const identifier = target.id.replace('search-project-', '');
+      window.location = '/projects/guide/' + identifier; 
+    } else if (event.target.classList.contains('all-header-search-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('all-header-search-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('all-header-search-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('all-header-search-wrapper'))))))) {
+      searchInput.focus();
+      isSearchMenuOpen = true;
+      document.querySelector('.all-header-search-wrapper').style.overflow = 'visible';
+    } else {
+      isSearchMenuOpen = false;
+      document.querySelector('.all-header-search-wrapper').style.overflow = 'hidden';
+    }
+  });
 });

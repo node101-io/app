@@ -9,7 +9,7 @@ block main
     .project-inputs-outer-wrapper
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Language
-        input.new-project-form-input#language-input(type='text' value=project.language placeholder='Allowed Values: en, tr, ru' autofocus)
+        .new-project-form-input-not-allowed(type='text')= project.language 
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Name
         input.new-project-form-input#name-input(type='text' value=project.name placeholder='Project name')

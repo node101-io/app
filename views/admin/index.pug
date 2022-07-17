@@ -1,8 +1,7 @@
 extends ../partials/admin
 block main
   .projects-title-wrapper
-    .project-title Projects
-    .project-title-info click to see details
+    .projects-title Projects
   .projects-header-wrapper
     .status-colors-wrapper
       .each-status-color-wrapper#language-en
@@ -21,4 +20,3 @@ block main
       .each-project-info-title-seperator
       .each-project-info-title= __('Popularity')
   .projects-wrapper= __('loading...')
-  .footer-wrapper Copyright 2022 - node101.io

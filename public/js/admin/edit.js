@@ -9,7 +9,6 @@ const guide_item_type_placeholders = {
   image: 'Enter the image url',
   video: 'Enter the video url'
 }
-const language_values = ['en', 'tr', 'ru'];
 const status_values = ['active', 'upcoming', 'ended'];
 const popularity_values = ['low', 'medium', 'high'];
 
@@ -231,7 +230,6 @@ window.addEventListener('load', () => {
       error.innerHTML = '';
 
       const data = {
-        language: document.getElementById('language-input').value,
         name: document.getElementById('name-input').value,
         description: document.getElementById('description-input').value,
         dates: document.getElementById('dates-input').value,
@@ -255,9 +253,6 @@ window.addEventListener('load', () => {
         stake_url: document.getElementById('stake-url-input').value,
         stake_api_title: document.getElementById('stake-api-title-input').value
       };
-
-      if (!data.language || !language_values.includes(data.language))
-        return error.innerHTML = 'Please enter a valid language.';
 
       if (!data.name || !data.name.length)
         return error.innerHTML = 'Please enter a name.';

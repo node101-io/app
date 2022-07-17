@@ -31,6 +31,10 @@ const ProjectSchema = new Schema({
     index: true,
     maxlenght: MAX_DATABASE_TEXT_FIELD_LENGTH
   },
+  order: {
+    type: Number,
+    required: true
+  },
   is_active: {
     type: Boolean,
     default: false
@@ -177,14 +181,57 @@ ProjectSchema.statics.createProject = function (data, callback) {
   Image.findImageByUrl(data.image, (err, image) => {
     if (err) return callback(err);
 
-    const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
+    Project.findProjectCountByLanguage(data.language, (err, order) => {
+      if (err) return callback(err);
 
-    if (is_stakable) {
-      fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
-        if (err) return callback(err);
+      const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
 
+      if (is_stakable) {
+        fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
+          if (err) return callback(err);
+  
+          const newProjectData = {
+            identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+            order,
+            is_active: data.is_active ? true : false,
+            language: data.language,
+            name: data.name.trim(),
+            image: image.url,
+            created_at: parseInt((new Date()).getTime()),
+            description: data.description.trim(),
+            guide: getGuide(data.guide),
+            requirements: getRequirements(data.requirements),
+            status: data.status,
+            dates: data.dates.trim(),
+            reward: data.reward.trim(),
+            get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
+            popularity: data.popularity,
+            links: getLinks(data.links),
+            is_stakable,
+            stake_url: data.stake_url.toString(),
+            stake_api_title: data.stake_api_title.toString(),
+            stake_rate,
+            last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+          };
+        
+          const newProject = new Project(newProjectData);
+        
+          newProject.save((err, project) => {
+            console.log(err);
+            if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+            if (err) return callback('database_error');
+      
+            Image.findImageByUrlAndSetAsUsed(project.image, err => {
+              if (err) return callback(err);
+      
+              return callback(null, project._id.toString());
+            });  
+          });
+        });
+      } else {
         const newProjectData = {
           identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+          order,
           is_active: data.is_active ? true : false,
           language: data.language,
           name: data.name.trim(),
@@ -199,11 +246,7 @@ ProjectSchema.statics.createProject = function (data, callback) {
           get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
           popularity: data.popularity,
           links: getLinks(data.links),
-          is_stakable,
-          stake_url: data.stake_url.toString(),
-          stake_api_title: data.stake_api_title.toString(),
-          stake_rate,
-          last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+          is_stakable: false
         };
       
         const newProject = new Project(newProjectData);
@@ -219,41 +262,8 @@ ProjectSchema.statics.createProject = function (data, callback) {
             return callback(null, project._id.toString());
           });  
         });
-      });
-    } else {
-      const newProjectData = {
-        identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
-        is_active: data.is_active ? true : false,
-        language: data.language,
-        name: data.name.trim(),
-        image: image.url,
-        created_at: parseInt((new Date()).getTime()),
-        description: data.description.trim(),
-        guide: getGuide(data.guide),
-        requirements: getRequirements(data.requirements),
-        status: data.status,
-        dates: data.dates.trim(),
-        reward: data.reward.trim(),
-        get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
-        popularity: data.popularity,
-        links: getLinks(data.links),
-        is_stakable: false
-      };
-    
-      const newProject = new Project(newProjectData);
-    
-      newProject.save((err, project) => {
-        console.log(err);
-        if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
-        if (err) return callback('database_error');
-  
-        Image.findImageByUrlAndSetAsUsed(project.image, err => {
-          if (err) return callback(err);
-  
-          return callback(null, project._id.toString());
-        });  
-      });
-    }
+      }
+    });
   });
 };
 
@@ -305,6 +315,19 @@ ProjectSchema.statics.findProjectByIdentifier = function (identifier, callback) 
   });
 };
 
+ProjectSchema.statics.findProjectCountByLanguage = function (language, callback) {
+  const Project = this;
+
+  if (!language || !language_values.includes(language))
+    return callback('bad_request');
+
+  Project
+    .find({ language })
+    .countDocuments()
+    .then(number => callback(null, number))
+    .catch(err => callback('database_error'));
+};
+
 ProjectSchema.statics.findProjectsByFilters = function (data, callback) {
   const Project = this;
 
@@ -337,7 +360,10 @@ ProjectSchema.statics.findProjectsByFilters = function (data, callback) {
 
   Project
     .find(filters)
-    .sort({ _id: -1 })
+    .sort({
+      order: 1,
+      language: 1
+    })
     .limit(limit)
     .then(projects => async.timesSeries(
       projects.length,
@@ -360,7 +386,6 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
         if (err) return callback(err);
 
         Project.findByIdAndUpdate(project._id, {$set: {
-          language: data.language && language_values.includes(data.language) ? data.language : project.language,
           name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
           description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
           guide: getGuide(data.guide),
@@ -459,6 +484,37 @@ ProjectSchema.statics.findProjectByIdAndReverseStatus = function (id, callback) 
       if (err) return callback('database_error');
 
       return callback(null);
+    });
+  });
+};
+
+ProjectSchema.statics.findProjectByIdAndIncreaseOrder = function (id, callback) {
+  const Project = this;
+
+  Project.findProjectById(id, (err, project) => {
+    if (err) return callback(err);
+    if (!project.order)
+      return callback('bad_request');
+
+    Project.findOne({
+      language: project.language,
+      order: project.order-1
+    }, (err, previous_project) => {
+      if (err) return callback('bad_request');
+
+      Project.findByIdAndUpdate(previous_project._id, {$inc: {
+        order: 1
+      }}, err => {
+        if (err) return callback('database_error');
+
+        Project.findByIdAndUpdate(project.id, {$inc: {
+          order: -1
+        }}, err => {
+          if (err) return callback('database_error');
+
+          return callback(null);
+        });
+      });
     });
   });
 };
