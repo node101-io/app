@@ -1,10 +1,10 @@
 const Project = require('../../../models/project/Project');
 
 module.exports = (req, res) => {
-  const lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : null);
+  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : null);
 
   Project.findStakableProjects({
-    language: lang
+    language: page_lang
   }, (err, projects) => {
     if (err)
       return res.redirect('/error?message=' + err);
@@ -19,6 +19,7 @@ module.exports = (req, res) => {
         }
       },
       url: '/stake',
+      lang: req.query.lang,
       projects
     });
   });
