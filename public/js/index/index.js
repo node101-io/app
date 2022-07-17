@@ -104,14 +104,12 @@ function createProject(project) {
     projectButtonsWrapper.appendChild(getInvolvedButton);
   }
 
-  if (project.guide && project.guide.length) {
-    const setUpButton = document.createElement('a');
-    setUpButton.classList.add('each-project-button');
-    setUpButton.classList.add('each-project-guide-button');
-    setUpButton.href = '/projects/guide/' + project.identifier;
-    setUpButton.innerHTML = 'Set-Up Guide';
-    projectButtonsWrapper.appendChild(setUpButton);
-  }
+  const setUpButton = document.createElement('a');
+  setUpButton.classList.add('each-project-button');
+  setUpButton.classList.add('each-project-guide-button');
+  setUpButton.href = '/projects/guide/' + project.identifier;
+  setUpButton.innerHTML = 'Set-Up Guide';
+  projectButtonsWrapper.appendChild(setUpButton);
 
   projectContentWrapper.appendChild(projectButtonsWrapper);
 
