@@ -1,3 +1,5 @@
+let isDeleteOnAction = false;
+
 function createProject(project) {
   const projectWrapper = document.createElement('div');
   projectWrapper.id = project._id;
@@ -6,6 +8,13 @@ function createProject(project) {
 
   const projectHeaderWrapper = document.createElement('div');
   projectHeaderWrapper.classList.add('each-project-header-wrapper');
+
+  const projectDeleteButton = document.createElement('div');
+  projectDeleteButton.classList.add('each-project-edit-button');
+  projectDeleteButton.classList.add('each-project-delete-button');
+  projectDeleteButton.classList.add('fas');
+  projectDeleteButton.classList.add('fa-trash-alt');
+  projectHeaderWrapper.appendChild(projectDeleteButton);
 
   const projectStatusButton = document.createElement('i');
   projectStatusButton.classList.add('each-project-edit-button');
@@ -192,6 +201,35 @@ window.addEventListener('load', () => {
       }
     }
 
+    if (event.target.classList.contains('each-project-delete-button')) {
+      if (isDeleteOnAction)
+        return alert('Deleting something right now, please be patient!');
+        
+      createConfirm({
+        title: 'Are you sure you want to delete this project?',
+        text: 'Any deleted project may be restored from the Deleted Projects menu. All the visitors will loose access to this project. Warning: This process may take some time, please be patient.',
+        reject: 'Cancel',
+        accept: 'Delete'
+      }, res => {
+        if (!res) return;
+
+        isDeleteOnAction = true;
+        const id = event.target.parentNode.parentNode.id;
+
+        serverRequest('/admin/delete?id=' + id, 'POST', {}, res => {
+          isDeleteOnAction = false;
+
+          if (!res.success) return createConfirm({
+            title: 'An Error Occured',
+            text: 'An unknown error occured while deleting the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
+            reject: 'Close'
+          }, res => { return; });
+  
+          event.target.parentNode.parentNode.remove();
+        });
+      });
+    }
+
     if (event.target.classList.contains('each-project-status-button')) {
       const id = event.target.parentNode.parentNode.id;
 
@@ -218,7 +256,7 @@ window.addEventListener('load', () => {
       serverRequest('/admin/order?id=' + id, 'POST', {}, res => {
         if (!res.success) return createConfirm({
           title: 'An Error Occured',
-          text: 'An unknown error occured while updating the status of the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
+          text: 'An unknown error occured while increasing the order of the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
           reject: 'Close'
         }, res => { return; });
 

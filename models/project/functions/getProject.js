@@ -2,6 +2,9 @@ module.exports = (project, callback) => {
   if (!project || !project._id)
     return callback('bad_request');
 
+  if (project.is_deleted)
+    return callback('not_authenticated_request');
+
   return callback(null, {
     _id: project._id.toString(),
     identifier: project.identifier,

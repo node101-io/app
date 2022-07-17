@@ -39,6 +39,10 @@ const ProjectSchema = new Schema({
     type: Boolean,
     default: false
   },
+  is_deleted: {
+    type: Boolean,
+    default: false
+  },
   language: {
     type: String,
     length: LANGUAGE_LENGTH,
@@ -306,6 +310,8 @@ ProjectSchema.statics.findProjectByIdentifier = function (identifier, callback) 
   }, (err, project) => {
     if (err) return callback('database_error');
     if (!project) return callback('document_not_found');
+    if (project.is_deleted)
+      return callback('not_authenticated_request');
 
     getProject(project, (err, project) => {
       if (err) return callback(err);
@@ -322,7 +328,10 @@ ProjectSchema.statics.findProjectCountByLanguage = function (language, callback)
     return callback('bad_request');
 
   Project
-    .find({ language })
+    .find({
+      language,
+      is_deleted: { $ne: true } 
+    })
     .countDocuments()
     .then(number => callback(null, number))
     .catch(err => callback('database_error'));
@@ -331,7 +340,7 @@ ProjectSchema.statics.findProjectCountByLanguage = function (language, callback)
 ProjectSchema.statics.findProjectsByFilters = function (data, callback) {
   const Project = this;
 
-  const filters = {};
+  const filters = { is_deleted: { $ne: true } };
   const limit = data.limit && Number.isInteger(data.limit) && data.limit > 0 && data.limit <= DOCUMENT_LIMIT_FOR_FIND_QUERY ? data.limit : DOCUMENT_LIMIT_FOR_FIND_QUERY;
 
   if (data.nin_id_list && !data.nin_id_list.find(each => !validator.isMongoId(each.toString())))
@@ -368,7 +377,11 @@ ProjectSchema.statics.findProjectsByFilters = function (data, callback) {
     .then(projects => async.timesSeries(
       projects.length,
       (time, next) => getProject(projects[time], (err, project) => next(err, project)),
-      (err, projects) => callback(err, projects)
+      (err, projects) => {
+        if (err) return callback('database_error');
+
+        return callback(null, projects);
+      }
     ))
     .catch(err => callback('database_error'));
 };
@@ -527,6 +540,7 @@ ProjectSchema.statics.findStakableProjects = function (data, callback) {
 
   Project
     .find({
+      is_deleted: { $ne: true },
       is_active: true,
       language: data.language,
       is_stakable: true
@@ -582,6 +596,81 @@ ProjectSchema.statics.findProjectByIdAndUpdateStakeRate = function (id, callback
       });
     });
   });
+};
+
+ProjectSchema.statics.findDeletedProjects = function (callback) {
+  const Project = this;
+
+  Project.find({
+    is_deleted: true
+  }, (err, projects) => {
+    if (err) return callback('database_error');
+
+    return callback(null, projects);
+  });
+};
+
+ProjectSchema.statics.findProjectByIdAndDelete = function (id, callback) {
+  const Project = this;
+
+  Project.findProjectById(id, (err, project) => {
+    if (err) return callback(err);
+    if (project.is_deleted)
+      return callback(null);
+
+    Project.findByIdAndUpdate(project._id, {$set: {
+      identifier: project.identifier + '_' + project._id.toString(), // Used to prevent identifier duplicates with deleted projects
+      is_deleted: true,
+      order: -1 // Order is destroyed to prevent errors in order update
+    }}, err => {
+      if (err) return callback('database_error');
+
+      Project.find({
+        language: project.language,
+        order: { $gt: project.order },
+        is_deleted: { $ne: true }
+      }, (err, projects) => {
+        if (err) return callback('database_error');
+
+        async.timesSeries(
+          projects.length,
+          (time, next) => Project.findByIdAndUpdate(projects[time]._id, {$inc: {
+            order: -1
+          }}, err => next(err)),
+          err => {
+            if (err) return callback('database_error');
+
+            return callback(null);
+          }
+        );
+      });
+    });
+  });
+};
+
+ProjectSchema.statics.findProjectByIdAndRestore = function (id, callback) {
+  const Project = this;
+
+  Project.findProjectById(id, (err, project) => {
+    if (err) return callback(err);
+    if (!project.is_deleted)
+      return callback('bad_request');
+
+      Project.findProjectCountByLanguage(project.language, (err, order) => {
+        if (err) return callback(err);
+
+        Project.findByIdAndUpdate(project._id, {
+          identifier: project.identifier.replace('_' + project._id.toString(), ''),
+          is_deleted: false,
+          is_active: false, // Restore project inactive by default
+          order
+        }, err => {
+          if (err) return callback('database_error');
+
+          return callback(null);
+        });
+      });
+  })
 };
 
 module.exports = mongoose.model('Project', ProjectSchema);

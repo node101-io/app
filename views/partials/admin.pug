@@ -12,6 +12,8 @@ block content
           i.fas.fa-search
           input.all-header-search-input#all-header-search-input(type='text' placeholder=__('Type to search') autofocus)
         .all-header-search-results-wrapper
+      .all-header-buttons-wrapper
+        a.each-all-header-button(href='/admin/delete') Deleted Projects
       a.all-header-create-project-button(href="/admin/create") Create Project
     .all-content-wrapper
       block main

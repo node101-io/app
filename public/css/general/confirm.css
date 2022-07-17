@@ -62,18 +62,18 @@
   color: rgba(255, 0, 0, 0.9);
 }
 .general-confirm-yes-button {
-  border: 1px solid rgba(46, 197, 206, 0.9);
+  border: 1px solid rgba(130, 170, 235, 0.9);
   border-radius: 7px;
   padding: 10px 15px;
   cursor: pointer;
   margin-left: 15px;
-  color: rgba(46, 197, 206, 0.9);
+  color: rgba(130, 170, 235, 0.9);
   font-weight: 500;
   font-size: 14px;
 }
 .general-confirm-yes-button:hover {
-  border: 1px solid rgba(46, 197, 206, 1);
-  color: rgba(46, 197, 206, 1);
+  border: 1px solid rgba(130, 170, 235, 1);
+  color: rgba(130, 170, 235, 1);
 }
 
 .general-slide-down-animation-class {
