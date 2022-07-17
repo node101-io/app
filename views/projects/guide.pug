@@ -31,8 +31,10 @@ block main
         if item.type == 'image'
           .guide-image(style=`background-image: url(${item.content})`)
         else if item.type == 'code'
-          each par in item.content.split('\n').filter(each => each.trim().length)
-            div(class='guide-' + item.type)= par
+          .guide-code
+            .guide-code-lines-wrapper
+              each par in item.content.split('\n').filter(each => each.trim().length)
+                .guide-code-line= par
         else if item.type == 'info'
           each par in item.content.split('\n').filter(each => each.trim().length)
             .guide-info-wrapper

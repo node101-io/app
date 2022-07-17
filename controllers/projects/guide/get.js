@@ -13,7 +13,7 @@ module.exports = (req, res) => {
         includes: {
           external: {
             css: ['confirm', 'footer', 'general', 'header', 'page'],
-            js: ['confirm', 'header', 'page', 'projects', 'serverRequest']
+            js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
           }
         },
         url: '/projects/guide/' + identifier_prefix + (page_lang != 'en' ? '_' + page_lang : ''),
@@ -32,7 +32,7 @@ module.exports = (req, res) => {
         includes: {
           external: {
             css: ['confirm', 'footer', 'general', 'header', 'page'],
-            js: ['confirm', 'header', 'page', 'projects', 'serverRequest']
+            js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
           }
         },
         url: '/projects/guide/' + identifier,

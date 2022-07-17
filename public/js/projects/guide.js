@@ -26,18 +26,20 @@ window.addEventListener('load', () => {
       window.open(url, '_blank');
     }
 
-    if (event.target.classList.contains('guide-code')) {
+    if (ancestorWithClassName(event.target, 'guide-code')) {
+      const target = ancestorWithClassName(event.target, 'guide-code');
+
       const range = document.createRange();
-      range.selectNodeContents(event.target);
+      range.selectNodeContents(target);
       const selection = window.getSelection();
       selection.removeAllRanges();
       selection.addRange(range);
       document.execCommand('copy');
-      event.target.classList.remove('guide-code');
-      event.target.classList.add('guide-code-copied')
+      target.classList.remove('guide-code');
+      target.classList.add('guide-code-copied')
       setTimeout(() => {
-        event.target.classList.remove('guide-code-copied')
-        event.target.classList.add('guide-code');
+        target.classList.remove('guide-code-copied')
+        target.classList.add('guide-code');
         if (window.getSelection) {
           if (window.getSelection().empty) {
             window.getSelection().empty();

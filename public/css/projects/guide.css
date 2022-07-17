@@ -185,6 +185,16 @@
   align-items: center;
   cursor: pointer;
 }
+.guide-code-lines-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.guide-code-line {
+  display: inline;
+  width: 100%;
+  margin-bottom: 5px;
+}
 .guide-code-copied::after {
   content: "copied!";
   color: rgb(130, 170, 235);
