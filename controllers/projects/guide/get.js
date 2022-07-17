@@ -12,7 +12,7 @@ module.exports = (req, res) => {
       title: project.name + ' - ' + project.description,
       includes: {
         external: {
-          css: ['confirm', 'general', 'header', 'page'],
+          css: ['confirm', 'footer', 'general', 'header', 'page'],
           js: ['confirm', 'header', 'page', 'projects', 'serverRequest']
         }
       },

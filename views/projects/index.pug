@@ -1,8 +1,7 @@
 extends ../partials/header
 block main
   .projects-title-wrapper
-    .project-title= __('Projects')
-    .project-title-info= __('click to see details')
+    .projects-title= __('Projects')
   .projects-header-wrapper
     .status-colors-wrapper
       .each-status-color-wrapper#status-active
@@ -21,4 +20,3 @@ block main
       .each-project-info-title-seperator
       .each-project-info-title= __('Popularity')
   .projects-wrapper= __('loading...')
-  .footer-wrapper Copyright 2022 - node101.io

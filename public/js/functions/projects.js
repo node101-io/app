@@ -49,11 +49,11 @@ function getProjectLinkIconDOM(link) {
     return iconSVG;
   } else if (link == 'medium') {
     const iconSVG = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    iconSVG.setAttributeNS(null, 'viewBox', '0 0 448 512');
+    iconSVG.setAttributeNS(null, 'viewBox', '0 0 660 558');
     iconSVG.setAttributeNS(null, 'fill', 'rgb(10, 10, 20)');
 
     const iconSVGPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    iconSVGPath.setAttributeNS(null, 'd', 'M448 64.01v384c0 17.67-14.31 32-32 32s-32-14.33-32-32V169.7l-133.4 200.1c-11.88 17.81-41.38 17.81-53.25 0L64 169.7v278.3c0 17.67-14.31 32-32 32s-32-14.33-32-32v-384c0-14.09 9.219-26.55 22.72-30.63c13.47-4.156 28.09 1.141 35.91 12.88L224 294.3l165.4-248.1c7.812-11.73 22.47-17.03 35.91-12.88C438.8 37.47 448 49.92 448 64.01z');
+    iconSVGPath.setAttributeNS(null, 'd', 'M658.22 6.53L659.04 6.35001V0H491.56L336.05 365.5L180.54 0H0.0599365V6.35001L0.869995 6.53C31.44 13.43 46.96 23.72 46.96 60.83V495.28C46.96 532.39 31.3799 542.68 0.809937 549.58L0 549.76V556.13H122.45V549.78L121.64 549.6C91.0699 542.7 75.5499 532.41 75.5499 495.3V86.03L275.32 556.13H286.65L492.24 72.92V506.03C489.62 535.34 474.24 544.39 446.56 550.64L445.74 550.83V557.13H659.04V550.83L658.22 550.64C630.51 544.39 614.76 535.34 612.14 506.03L612 60.83H612.14C612.14 23.72 627.66 13.43 658.22 6.53Z');
     iconSVG.appendChild(iconSVGPath);
 
     return iconSVG;
@@ -172,6 +172,9 @@ function uploadProjects() {
       projectIds.push(res.projects[i]._id.toString());
 
       if (typeof createProject == 'function'){
+        createProject(res.projects[i]);
+        createProject(res.projects[i]);
+        createProject(res.projects[i]);
         createProject(res.projects[i]);
       }if (typeof createSearchProject == 'function')
         createSearchProject(res.projects[i]);

@@ -4,7 +4,7 @@ module.exports = (req, res) => {
     title: res.__('Who are we?'),
     includes: {
       external: {
-        css: ['confirm', 'general', 'header', 'page'],
+        css: ['confirm', 'footer', 'general', 'header', 'page'],
         js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
       }
     },

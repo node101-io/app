@@ -155,4 +155,71 @@ window.addEventListener('load', () => {
       }
     }
   });
+
+  const scrollDistance = document.querySelector('.projects-title-wrapper').getBoundingClientRect().top;
+
+  document.querySelector('.all-wrapper').addEventListener('scroll', event => {
+    const projectsTitle = document.querySelector('.projects-title');
+    const projectsHeaderWrapper = document.querySelector('.projects-header-wrapper');
+    const projectsWrapper = document.querySelector('.projects-wrapper');
+
+    const scrollHeight = event.target.scrollTop;
+
+    // Animations for responsive design to header
+    if (scrollDistance == 140 || scrollDistance == 170) {
+      if (scrollHeight >= 120) {
+        projectsTitle.style.fontSize = '0px';
+        projectsHeaderWrapper.style.position = 'fixed';
+        projectsHeaderWrapper.style.marginTop = '-60px';
+        projectsHeaderWrapper.style.backgroundColor = `rgba(248, 248, 248, ${(scrollHeight-120) / 60})`;
+        projectsWrapper.style.marginTop = '90px';
+      } else {
+        projectsHeaderWrapper.style.position = 'initial';
+        projectsHeaderWrapper.style.marginTop = '0px';
+        projectsHeaderWrapper.style.backgroundColor = 'rgb(254, 254, 254)';
+        projectsWrapper.style.marginTop = '30px';
+
+        if (scrollHeight >= 50)
+          projectsTitle.style.fontSize = ((1 - ( (scrollHeight-50) / 80 )) * 60) + 'px';
+        else
+          projectsTitle.style.fontSize = '60px';
+      }
+    } else if (scrollDistance == 150) {
+      if (scrollHeight >= 115) {
+        projectsTitle.style.fontSize = '0px';
+        projectsHeaderWrapper.style.position = 'fixed';
+        projectsHeaderWrapper.style.marginTop = '-60px';
+        projectsHeaderWrapper.style.backgroundColor = `rgba(248, 248, 248, ${(scrollHeight-115) / 60})`;
+        projectsWrapper.style.marginTop = '125px';
+      } else {
+        projectsHeaderWrapper.style.position = 'initial';
+        projectsHeaderWrapper.style.marginTop = '0px';
+        projectsHeaderWrapper.style.backgroundColor = 'rgb(254, 254, 254)';
+        projectsWrapper.style.marginTop = '30px';
+
+        if (scrollHeight >= 45)
+          projectsTitle.style.fontSize = ((1 - ( (scrollHeight-45) / 70 )) * 60) + 'px';
+        else
+          projectsTitle.style.fontSize = '60px';
+      }
+    } else if (scrollDistance == 160) {
+      if (scrollHeight >= 80) {
+        projectsTitle.style.fontSize = '0px';
+        projectsHeaderWrapper.style.position = 'fixed';
+        projectsHeaderWrapper.style.marginTop = '-50px';
+        projectsHeaderWrapper.style.backgroundColor = `rgba(248, 248, 248, ${(scrollHeight-115) / 50})`;
+        projectsWrapper.style.marginTop = '125px';
+      } else {
+        projectsHeaderWrapper.style.position = 'initial';
+        projectsHeaderWrapper.style.marginTop = '0px';
+        projectsHeaderWrapper.style.backgroundColor = 'rgb(254, 254, 254)';
+        projectsWrapper.style.marginTop = '30px';
+
+        if (scrollHeight >= 20)
+          projectsTitle.style.fontSize = ((1 - ( (scrollHeight-20) / 60 )) * 50) + 'px';
+        else
+          projectsTitle.style.fontSize = '50px';
+      }
+    }
+  });
 });

@@ -1,7 +1,13 @@
+let projectCount = 0;
+
 function createProject(project) {
+  if (projectCount >= 5)
+    return;
+
+  projectCount++;
+
   const projectWrapper = document.createElement('div');
   projectWrapper.classList.add('each-project-wrapper');
-  projectWrapper.classList.add('each-project-' + project.status);
 
   const projectHeaderWrapper = document.createElement('div');
   projectHeaderWrapper.classList.add('each-project-header-wrapper');
@@ -14,7 +20,6 @@ function createProject(project) {
   const projectName = document.createElement('div');
   projectName.classList.add('each-project-name')
   projectName.innerHTML = project.name;
-  projectName.style.color = statusColors[project.status];
   projectHeaderWrapper.appendChild(projectName);
 
   const projectInfoWrapper = document.createElement('div');
@@ -201,30 +206,6 @@ window.addEventListener('load', () => {
         document.querySelector('.each-project-wrapper-opened').classList.remove('each-project-wrapper-opened');
 
       target.classList.add('each-project-wrapper-opened');
-    }
-
-    if (event.target.classList.contains('each-status-color-wrapper') || (event.target.parentNode && event.target.parentNode.classList.contains('each-status-color-wrapper'))) {
-      const target = event.target.classList.contains('each-status-color-wrapper') ? event.target : event.target.parentNode;
-      const status = target.id.replace('status-', '');
-      const projects = document.querySelectorAll('.each-project-wrapper');
-
-      if (target.classList.contains('each-status-color-wrapper-selected')) {
-        target.classList.remove('each-status-color-wrapper-selected');
-
-        for (let i = 0; i < projects.length; i++)
-          projects[i].style.display = 'flex';
-      } else {
-        if (document.querySelector('.each-status-color-wrapper-selected'))
-          document.querySelector('.each-status-color-wrapper-selected').classList.remove('each-status-color-wrapper-selected');
-
-        target.classList.add('each-status-color-wrapper-selected');
-
-        for (let i = 0; i < projects.length; i++)
-          if (!projects[i].classList.contains('each-project-' + status))
-            projects[i].style.display = 'none';
-          else
-            projects[i].style.display = 'flex';
-      }
     }
 
     if (ancestorWithClassName(event.target, 'learn-more-button')) {

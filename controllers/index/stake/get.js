@@ -14,7 +14,7 @@ module.exports = (req, res) => {
       title: res.__('Stake with us'),
       includes: {
         external: {
-          css: ['confirm', 'general', 'header', 'page'],
+          css: ['confirm', 'footer', 'general', 'header', 'page'],
           js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
         }
       },
