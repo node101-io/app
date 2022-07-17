@@ -78,17 +78,13 @@ window.addEventListener('load', () => {
   let lastGuideItemExists = false;
 
   guideItemInput.addEventListener('keyup', event => {
-    if (event.key == 'Enter') {
-      guideItemInput.value = '';
-      lastGuideItemExists = false;
-      guideItemInput.focus();
-    } else {
+    if (event.key != 'Enter') {
       if (lastGuideItemExists) {
         if (event.target.value) {
           if (selected_guide_item_type == 'image')
             guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
           else
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value;
+            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');
         } else {
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].remove();
           lastGuideItemExists = false;
@@ -104,7 +100,7 @@ window.addEventListener('load', () => {
         if (selected_guide_item_type == 'image')
           newGuideItem.style.backgroundImage = `url(${event.target.value})`
         else
-          newGuideItem.innerHTML = event.target.value;
+          newGuideItem.innerHTML = event.target.value.split('\n').join('<br/>');
         newGuideItemWrapper.appendChild(newGuideItem);
 
         const newGuideItemDeleteButton = document.createElement('i');
@@ -152,7 +148,7 @@ window.addEventListener('load', () => {
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${guideItemInput.value})`
         } else {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = guideItemInput.value;
+          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = guideItemInput.value.split('\n').join('<br/>');;
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = null;
         }
       } 
@@ -163,6 +159,12 @@ window.addEventListener('load', () => {
       guideItemInput.focus();
 
       document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
+    }
+
+    if (event.target.classList.contains('new-guide-item-create-button')) {
+      guideItemInput.value = '';
+      lastGuideItemExists = false;
+      guideItemInput.focus();
     }
 
     if (event.target.id == 'new-project-back-button') {

@@ -56,7 +56,7 @@
   height: 40px;
   display: flex;
   align-items: center;
-  padding: 0 20px;
+  padding: 8px 20px;
   margin-bottom: 20px;
 }
 .new-project-form-input::placeholder {
@@ -209,8 +209,14 @@
 
 .add-new-guide-item-button {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   margin-bottom: 80px;
+}
+.add-new-guide-item-buttons-line {
+  width: 100%;
+  display: flex;
+  align-items: center;
 }
 .new-guide-item-type-selection-button {
   display: flex;
@@ -257,10 +263,25 @@
 .each-new-guide-item-type:hover {
   background-color: rgb(248, 248, 248);
 }
+.new-guide-item-create-button {
+  margin-left: 15px;
+  height: 40px;
+  padding: 0 20px;
+  background-color: rgb(130, 170, 235);
+  color: rgb(254, 254, 254);
+  font-weight: 800;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
 .new-guide-item-text-input {
   margin: 0px !important;
-  margin-left: 8px !important;
+  margin-top: 15px !important;
+  height: 150px !important;
 }
+
 
 .project-requirements-wrapper {
   width: 100%;

@@ -75,7 +75,21 @@ function createProject(project) {
 
   const projectDescription = document.createElement('div');
   projectDescription.classList.add('each-project-description');
-  projectDescription.innerHTML = project.description;
+  console.log(project.description)
+  const descriptionParts = project.description.split('\n').join('<br/>').split(' ');
+  for (let i = 0; i < descriptionParts.length; i++) {
+    if (descriptionParts[i].includes('{')) {
+      const a = document.createElement('a');
+      a.innerHTML = descriptionParts[i].substring(0, descriptionParts[i].indexOf('{'));
+      a.target = '_blank';
+      a.href = descriptionParts[i].substring(descriptionParts[i].indexOf('{')+1, descriptionParts[i].indexOf('}'));
+      projectDescription.appendChild(a);
+    } else {
+      const span = document.createElement('span');
+      span.innerHTML = (i > 0 && descriptionParts[i-1].includes('{') ? ' ' : '') + descriptionParts[i] + ' ';
+      projectDescription.appendChild(span);
+    }
+  }
   projectContentWrapper.appendChild(projectDescription);
 
   const projectButtonsWrapper = document.createElement('div');

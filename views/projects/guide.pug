@@ -5,7 +5,13 @@ block main
     .project-logo(style=`background-image: url(${project.image})`)
     .project-name= project.name
     .project-links-wrapper
-  .project-description= project.description
+  each description in project.description.split('\n')
+    .project-description
+      each text, i in description.split(' ')
+        if text.includes('{')
+          a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+        else
+          span= (i > 0 && description.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
   if project.requirements && project.requirements.length
     .project-title-wrapper
       .project-title= __('Requirements')
@@ -25,20 +31,23 @@ block main
         if item.type == 'image'
           .guide-image(style=`background-image: url(${item.content})`)
         else if item.type == 'code'
-          div(class='guide-' + item.type)= item.content
+          each par in item.content.split('\n').filter(each => each.trim().length)
+            div(class='guide-' + item.type)= par
         else if item.type == 'info'
-          .guide-info-wrapper
-            .guide-info-sign !
-            div(class='guide-' + item.type)
-              each text in item.content.split(' ')
-                if text.includes('https://')
-                  a(href=text target='_blank')= text + ' '
-                else
-                  span= text + ' '
+          each par in item.content.split('\n').filter(each => each.trim().length)
+            .guide-info-wrapper
+              .guide-info-sign !
+              div(class='guide-' + item.type)
+                each text, i in par.split(' ')
+                  if text.includes('{')
+                    a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                  else
+                    span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
         else
-          div(class='guide-' + item.type)
-            each text in item.content.split(' ')
-              if text.includes('https://')
-                a(href=text target='_blank')= text + ' '
-              else
-                span= text + ' '
+          each par in item.content.split('\n').filter(each => each.trim().length)
+            div(class='guide-' + item.type)
+              each text in par.split(' ')
+                if text.includes('{')
+                  a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                else
+                  span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '

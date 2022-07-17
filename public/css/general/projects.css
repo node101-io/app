@@ -118,6 +118,15 @@
   font-size: 15px;
   padding: 0px 20px;
 }
+.each-project-description a {
+  color: rgb(130, 170, 235);
+  font-weight: 800;
+  cursor: pointer;
+  text-decoration: none;
+}
+.each-project-description a:hover {
+  text-decoration: underline;
+}
 
 .each-project-buttons-wrapper {
   display: flex;

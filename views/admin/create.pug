@@ -3,6 +3,7 @@ block main
   .new-project-form
     .new-project-form-title New Project
     .new-project-form-subtitle The new project will be created as 'inactive'. You may activate the project once you create it. Users cannot see inactive projects.
+    .new-project-form-subtitle IMPORTANT: In order to add a link, use text{link} syntax. For instance, "Please follow the link{https://ex.com} to open the site."
     .new-project-form-title General Information
     .project-inputs-outer-wrapper
       .each-project-input-wrapper
@@ -19,7 +20,7 @@ block main
             input.display-none.image-input(type="file" accept="image/*")
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Description
-        input.new-project-form-input#description-input(type='text' placeholder='Project description')
+        textarea.new-project-form-input#description-input(type='text' placeholder='Project description (multiline)')
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Dates
         input.new-project-form-input#dates-input(type='text' placeholder='Project dates')
@@ -74,18 +75,18 @@ block main
         .new-project-form-input-title Explorer
         input.new-project-form-input#links-explorer-input(type='text' placeholder='Project explorer url')
     .new-project-form-title Project Guide
-    .new-project-form-subtitle Items you add below will be created in the order shown. Click enter to add a new one.
+    .new-project-form-subtitle Items you add below will be created in the order shown.
     .project-guide-items-wrapper.drag-and-drop-wrapper
     .add-new-guide-item-button
       .new-guide-item-type-selection-button
         .new-guide-item-type-selected
           span Title
           i.fas.fa-chevron-down
-        each type in guide_type_values
-          .each-new-guide-item-type= type.substring(0, 1).toUpperCase() + type.substring(1)
-      input.new-guide-item-text-input#new-guide-item-text-input.new-project-form-input(type='text' placeholder='Enter the title')
+        each guide_type in guide_type_values
+          .each-new-guide-item-type= guide_type.substring(0, 1).toUpperCase() + guide_type.substring(1)
+      textarea.new-guide-item-text-input#new-guide-item-text-input.new-project-form-input(type='text' placeholder='Enter the title')
     .new-project-form-title Project Requirements
-    .new-project-form-subtitle Items you add below will be created in order. Click enter to add a new one.
+    .new-project-form-subtitle Items you add below will be created in order.
     .project-requirements-wrapper
       .add-new-requirement-form
         input.new-requirement-name-input#new-requirement-name-input(type='text' placeholder='Enter the name of the requirement')
