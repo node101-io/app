@@ -2,10 +2,8 @@ const Project = require('../../../models/project/Project');
 
 module.exports = (req, res) => {
   const identifier = req.originalUrl.replace('/projects/guide/', '');
-  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : null);
+  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : 'en');
   const identifier_prefix = identifier.split('_')[0];
-
-  console.log(identifier_prefix)
 
   Project.findProjectByIdentifier(identifier_prefix + (page_lang != 'en' ? '_' + page_lang : ''), (err, project) => {
     if (!err)
@@ -20,6 +18,7 @@ module.exports = (req, res) => {
         },
         url: '/projects/guide/' + identifier_prefix + (page_lang != 'en' ? '_' + page_lang : ''),
         lang: req.query.lang,
+        page_lang,
         project
       });
 
@@ -38,6 +37,7 @@ module.exports = (req, res) => {
         },
         url: '/projects/guide/' + identifier,
         lang: req.query.lang,
+        page_lang,
         project
       });
     })

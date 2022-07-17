@@ -1,7 +1,7 @@
 const Project = require('../../../models/project/Project');
 
 module.exports = (req, res) => {
-  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : null);
+  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : 'en');
 
   Project.findStakableProjects({
     language: page_lang
@@ -20,6 +20,7 @@ module.exports = (req, res) => {
       },
       url: '/stake',
       lang: req.query.lang,
+      page_lang,
       projects
     });
   });

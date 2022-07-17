@@ -1,5 +1,5 @@
 module.exports = (req, res) => {
-  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : null);
+  const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : 'en');
 
   return res.render('projects/index', {
     page: 'projects/index',
