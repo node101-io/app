@@ -30,6 +30,8 @@ block main
       each item in project.guide
         if item.type == 'image'
           .guide-image(style=`background-image: url(${item.content})`)
+        else if item.type == 'video'
+          iframe.guide-video(src=item.content)
         else if item.type == 'code'
           .guide-code
             .guide-code-lines-wrapper

@@ -5,7 +5,7 @@ const guide_item_type_placeholders = {
   code: 'Enter the code line',
   info: 'Enter the info',
   image: 'Enter the image url',
-  video: 'Enter the video url'
+  video: 'Enter the YouTube url (use /embed/id syntax)'
 }
 const language_values = ['en', 'tr', 'ru'];
 const status_values = ['active', 'upcoming', 'ended'];
@@ -83,6 +83,8 @@ window.addEventListener('load', () => {
         if (event.target.value) {
           if (selected_guide_item_type == 'image')
             guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
+          else if (selected_guide_item_type == 'video')
+            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].src = event.target.value;
           else
             guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');
         } else {
@@ -95,10 +97,20 @@ window.addEventListener('load', () => {
         const newGuideItemWrapper = document.createElement('div');
         newGuideItemWrapper.classList.add('guide-item-outer-wrapper');
 
-        const newGuideItem = document.createElement('div');
-        newGuideItem.classList.add('guide-' + selected_guide_item_type);
+        let newGuideItem;
+
+        if (selected_guide_item_type == 'video') {
+          newGuideItem = document.createElement('iframe');
+          newGuideItem.classList.add('guide-video');
+        } else {
+          newGuideItem = document.createElement('div');
+          newGuideItem.classList.add('guide-' + selected_guide_item_type);
+        }
+       
         if (selected_guide_item_type == 'image')
           newGuideItem.style.backgroundImage = `url(${event.target.value})`
+        else if (selected_guide_item_type == 'video')
+          newGuideItem.src = event.target.value;
         else
           newGuideItem.innerHTML = event.target.value.split('\n').join('<br/>');
         newGuideItemWrapper.appendChild(newGuideItem);
@@ -147,6 +159,15 @@ window.addEventListener('load', () => {
         if (event.target.innerHTML.toLowerCase() == 'image') {
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${guideItemInput.value})`
+        } else if (event.target.innerHTML.toLowerCase() == 'video') {
+          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].remove();
+
+          const newGuideItem = document.createElement('iframe');
+          newGuideItem.classList.add('guide-video');
+          newGuideItem.src = guideItemInput.value;
+
+          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].appendChild(newGuideItem);
+          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].insertBefore(newGuideItem, newGuideItem.previousElementSibling);
         } else {
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = guideItemInput.value.split('\n').join('<br/>');;
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = null;
@@ -286,7 +307,7 @@ window.addEventListener('load', () => {
       for (let i = 0; i < guideItems.length; i++) {
         const guide = guideItems[i].childNodes[0];
         const type = guide.className.replace('guide-', '');
-        const content = type == 'image' ? guide.style.backgroundImage.replace('url(', '').replace(')', '').trim() : guide.innerHTML;
+        const content = type == 'image' ? guide.style.backgroundImage.replace('url(', '').replace(')', '').trim() : (type == 'video' ? guide.src : guide.innerHTML);
         project.guide.push({
           type,
           content

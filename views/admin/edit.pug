@@ -82,6 +82,8 @@ block main
         .guide-item-outer-wrapper
           if item.type == 'image'
             .guide-image(style=`background-image: url(${item.content})`)
+          else if item.type == 'video'
+            iframe.guide-video(src=item.content)
           else
             div(class=`guide-${item.type}`)= item.content
           i.guide-item-delete-button.fas.fa-trash-alt

@@ -261,6 +261,15 @@
   transform: translateX(-50%);
   cursor: pointer;
 }
+.guide-video {
+  width: 400px;
+  min-width: 400px;
+  height: 250px;
+  min-height: 250px;
+  margin-bottom: 30px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
 
 .no-info-text {
   flex: 1;
@@ -400,6 +409,12 @@
     transform: translateX(-50%);
     margin-right: 0px;
   }
+  .guide-video {
+    width: 300px;
+    min-width: 300px;
+    height: 200px;
+    min-height: 200px;
+  }
 }
 @media only screen and (max-width: 500px) {
   .project-logo {
@@ -435,6 +450,12 @@
   }
   .guide-text, .guide-code {
     margin-bottom: 20px;
+  }
+  .guide-video {
+    width: 200px;
+    min-width: 200px;
+    height: 150px;
+    min-height: 150px;
   }
 }
 @media only screen and (max-width: 400px) {

@@ -213,6 +213,15 @@
   margin-left: 50%;
   transform: translateX(-50%);
 }
+.guide-video {
+  width: 400px;
+  min-width: 400px;
+  height: 250px;
+  min-height: 250px;
+  margin-bottom: 30px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
 .guide-item-delete-button {
   color: rgba(255, 22, 3, 0.8);
   font-size: 14px;
