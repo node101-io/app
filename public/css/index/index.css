@@ -145,6 +145,7 @@
   width: 100%;
   display: flex;
   justify-content: center;
+  text-align: center;
   margin: 20px 0px;
 }
 
@@ -197,8 +198,6 @@
 .projects-title-wrapper {
   display: flex;
   align-items: flex-end;
-  height: 250px;
-  min-height: 250px;
   padding: 0 60px;
   padding-top: 190px;
 }
@@ -206,13 +205,7 @@
   color: rgb(10, 10, 20);
   font-weight: 800;
   font-size: 60px;
-}
-.project-title-info {
-  margin-bottom: 15px;
-  margin-left: 8px;
-  color: rgb(130, 170, 235);
-  font-weight: 300;
-  font-size: 16px;
+  margin-bottom: 30px;
 }
 
 .projects-header-wrapper {
@@ -278,52 +271,6 @@
   }
 }
 
-@media only screen and (max-width: 950px) {
-  .projects-header-wrapper {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  .projects-info-titles-wrapper {
-    margin-top: 5px;
-    margin-left: auto;
-  }
-}
-@media only screen and (max-width: 850px) {
-  .start-page-wrapper, .projects-title-wrapper, .projects-header-wrapper, .projects-wrapper, .footer-wrapper {
-    padding-left: 30px;
-    padding-right: 30px;
-  }
-  .projects-header-wrapper {
-    padding-bottom: 10px;
-  }
-}
-@media only screen and (max-width: 700px) {
-  .projects-title {
-    font-size: 50px;
-  }
-}
-@media only screen and (max-width: 580px) {
-  .all-content-wrapper {
-    padding: 30px 0;
-  }
-  .projects-title {
-    font-size: 45px;
-  }
-}
-@media only screen and (max-width: 450px) {
-  .each-status-color-text {
-    font-size: 14px;
-  }
-}
-@media only screen and (max-width: 400px) {
-  .project-dates-info-title, .project-dates-info-title-seperator {
-    display: none;
-  }
-  .projects-title {
-    font-size: 40px;
-  }
-}
-
 @media only screen and (max-width: 1200px) {
   .start-page-left-wrapper {
     width: 600px;
@@ -333,7 +280,10 @@
   .start-page-left-wrapper {
     width: 500px;
   }
-  .start-page-title, .start-page-motto {
+  .start-page-title {
+    width: 350px;
+  }
+  .start-page-motto {
     font-size: 70px;
   }
   .start-page-subtitle {
@@ -359,11 +309,20 @@
     line-height: 26px;
   }
 }
+@media only screen and (max-width: 850px) {
+  .start-page-wrapper {
+    padding: 0 30px;
+    padding-bottom: 80px;
+  }
+}
 @media only screen and (max-width: 800px) {
   .start-page-left-wrapper {
     width: 350px;
   }
-  .start-page-title, .start-page-motto {
+  .start-page-title {
+    width: 300px;
+  }
+  .start-page-motto {
     font-size: 57px;
   }
   .start-page-subtitle {
@@ -394,7 +353,7 @@
   .start-page-left-wrapper {
     width: 100%;
   }
-  .start-page-title, .start-page-motto {
+  .start-page-motto {
     font-size: 57px;
   }
   .start-page-subtitle {
@@ -406,5 +365,392 @@
   }
 }
 @media only screen and (max-width: 600px) {
-  
+  .start-page-right-wrapper {
+    display: none;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .start-page-title {
+    width: 240px;
+  }
+  .start-page-subtitle {
+    font-size: 18px;
+  }
+  .start-page-text {
+    font-size: 15px;
+    line-height: 23px;
+  }
+  .learn-more-button {
+    font-size: 16px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .each-how-it-works-step {
+    width: 300px;
+  }
+  .how-it-works-title {
+    font-size: 55px;
+  }
+  .each-how-it-works-step svg {
+    height: 130px;
+  }
+  .each-how-it-works-title {
+    font-size: 30px;
+  }
+  .each-how-it-works-text {
+    font-size: 16px;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .each-how-it-works-step {
+    width: 250px;
+  }
+  .each-how-it-works-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .how-it-works-wrapper {
+    margin-bottom: 120px;
+  }
+  .each-how-it-works-step {
+    width: 220px;
+  }
+  .each-how-it-works-title {
+    font-size: 26px;
+    margin-bottom: 10px;
+  }
+  .each-how-it-works-step svg {
+    height: 120px;
+  }
+  .each-how-it-works-text {
+    font-size: 15px;
+  }
+}
+@media only screen and (max-width: 850px) {
+  .how-it-works-title {
+    margin: 60px 30px;
+  }
+  .how-it-works-wrapper {
+    padding: 0 30px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .how-it-works-wrapper {
+    margin-bottom: 100px;
+  }
+  .each-how-it-works-step {
+    width: 200px;
+  }
+  .each-how-it-works-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  .each-how-it-works-step svg {
+    height: 100px;
+  }
+  .each-how-it-works-text {
+    font-size: 14px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .how-it-works-title {
+    margin-bottom: 0px;
+  }
+  .how-it-works-wrapper {
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+    margin-bottom: 60px;
+  }
+  .each-how-it-works-step {
+    width: 320px;
+    margin-top: 60px;
+  }
+  .how-it-works-title {
+    font-size: 55px;
+  }
+  .each-how-it-works-step svg {
+    height: initial;
+    width: 200px;
+  }
+  .each-how-it-works-title {
+    font-size: 30px;
+  }
+  .each-how-it-works-text {
+    font-size: 17px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .how-it-works-title {
+    font-size: 40px;
+  }
+  .each-how-it-works-step {
+    margin-top: 45px;
+  }
+  .each-how-it-works-step svg {
+    height: initial;
+    width: 160px;
+  }
+  .each-how-it-works-title {
+    font-size: 25px;
+  }
+  .each-how-it-works-text {
+    font-size: 16px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .how-it-works-title {
+    font-size: 36px;
+  }
+  .each-how-it-works-step {
+    width: 280px;
+    margin-top: 60px;
+  }
+  .each-how-it-works-step svg {
+    height: initial;
+    width: 140px;
+  }
+  .each-how-it-works-title {
+    font-size: 23px;
+  }
+  .each-how-it-works-text {
+    font-size: 15px;
+  }
+} 
+
+@media only screen and (max-width: 1100px) {
+  .main-motto-text {
+    font-size: 60px;
+    margin: 15px 0;
+  }
+}
+@media only screen and (max-width: 900px) {
+  .main-motto-text {
+    font-size: 55px;
+    margin: 10px 0;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .main-motto-text {
+    font-size: 50px;
+    margin: 5px 0;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .main-motto-text {
+    font-size: 40px;
+    margin: 0;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .main-motto-text {
+    font-size: 30px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .staking-left-wrapper svg {
+    width: 450px;
+  }
+  .staking-right-wrapper {
+    margin-left: 45px;
+  }
+  .staking-title {
+    font-size: 60px;
+  }
+  .staking-text, .staking-button {
+    font-size: 19px;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .staking-wrapper {
+    margin: 120px 0;
+  }
+  .staking-left-wrapper svg {
+    width: 400px;
+  }
+  .staking-right-wrapper {
+    margin-left: 45px;
+  }
+  .staking-title {
+    font-size: 50px;
+  }
+  .staking-text {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  .staking-wrapper {
+    margin: 70px 0;
+  }
+  .staking-left-wrapper svg {
+    width: 300px;
+  }
+  .staking-right-wrapper {
+    margin-left: 30px;
+  }
+  .staking-title {
+    font-size: 40px;
+  }
+  .staking-button {
+    font-size: 18px;
+  }
+  .staking-text {
+    font-size: 17px;
+    line-height: 26px;
+  }
+}
+@media only screen and (max-width: 850px) {
+  .staking-wrapper {
+    padding: 0 30px;
+  }
+}
+@media only screen and (max-width: 800px) {
+  .staking-wrapper {
+    margin: 30px 0;
+  }
+  .staking-left-wrapper svg {
+    width: 250px;
+  }
+  .staking-right-wrapper {
+    margin-left: 30px;
+  }
+  .staking-title {
+    font-size: 30px;
+  }
+  .staking-button {
+    font-size: 17px;
+  }
+  .staking-text {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .staking-wrapper {
+    flex-direction: column;
+    justify-content: initial;
+    align-items: center;
+  }
+  .staking-left-wrapper svg {
+    width: 400px;
+  }
+  .staking-right-wrapper {
+    margin-left: auto;
+    max-width: 400px;
+  }
+  .staking-title {
+    font-size: 40px;
+  }
+  .staking-button {
+    font-size: 18px;
+  }
+  .staking-text {
+    font-size: 17px;
+    line-height: 26px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .staking-wrapper {
+    margin: 0;
+    margin-bottom: 60px;
+  }
+  .staking-left-wrapper svg {
+    width: 300px;
+    margin-bottom: -60px;
+  }
+  .staking-right-wrapper {
+    margin-left: auto;
+    max-width: 340px;
+  }
+  .staking-title {
+    font-size: 35px;
+  }
+  .staking-button {
+    font-size: 17px;
+  }
+  .staking-text {
+    font-size: 16px;
+    line-height: 24px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .staking-left-wrapper svg {
+    width: 260px;
+    margin-bottom: -60px;
+  }
+  .staking-right-wrapper {
+    margin-left: auto;
+    max-width: 280px;
+  }
+  .staking-title {
+    font-size: 30px;
+  }
+  .staking-button {
+    font-size: 17px;
+  }
+  .staking-text {
+    font-size: 15px;
+    line-height: 23px;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .projects-title-wrapper {
+    padding-top: 100px;
+  }
+  .project-title {
+    font-size: 50px;
+  }
+}
+@media only screen and (max-width: 850px) {
+  .projects-title-wrapper, .projects-header-wrapper {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .projects-title-wrapper {
+    padding-top: 80px;
+  }
+  .project-title {
+    font-size: 40px;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .projects-title-wrapper {
+    padding-top: 70px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .projects-title-wrapper {
+    padding-top: 60px;
+  }
+  .project-title {
+    font-size: 30px;
+    margin-bottom: 15px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .projects-wrapper {
+    margin-top: 0px !important;
+  }
+  .project-title {
+    font-size: 25px;
+    margin-bottom: 15px;
+  }
+  .see-more-projects-button {
+    font-size: 16px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .project-dates-info-title, .project-dates-info-title-seperator, .each-project-info-dates, .each-project-info-seperator-dates {
+    display: none;
+  }
 }

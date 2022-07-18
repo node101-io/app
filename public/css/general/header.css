@@ -41,14 +41,18 @@
   display: flex;
   align-items: center;
   margin-right: 30px;
+  overflow: hidden;
 }
 .all-header-logo-responsive {
   width: 25px;
+  height: 25px;
   margin-right: 15px;
   display: none !important;
+  overflow: hidden;
 }
 .all-header-logo-responsive svg {
   width: 25px;
+  height: 25px;
 }
 .all-header-logo svg {
   width: 130px;
