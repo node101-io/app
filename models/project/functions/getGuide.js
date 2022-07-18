@@ -12,7 +12,7 @@ module.exports = data => {
       if (item.type && guide_type_values.includes(item.type) && item.content && typeof item.content == 'string' && item.content.trim().length && item.content.length < MAX_DATABASE_TEXT_FIELD_LENGTH)
         guide.push({
           type: item.type,
-          content: item.content.split('&amp;').join('&')
+          content: item.content.split('&amp;').join('&').split('<br>').join('\n')
         });
     }
 
