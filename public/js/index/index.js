@@ -150,7 +150,6 @@ function textAnimation(textCount) {
   if (textCount > 3)
     return;
 
-  const text = document.getElementById('start-page-animation-text-' + textCount).innerHTML;
   const wrapper = document.querySelector('.start-page-animation-wrapper');
 
   if (wrapper.childElementCount >= 3) {
@@ -158,8 +157,13 @@ function textAnimation(textCount) {
     textCount = 1;
   }
 
+  const text = document.getElementById('start-page-animation-text-' + textCount).innerHTML;
+
   const newTextWrapper = document.createElement('div');;
   newTextWrapper.classList.add('start-page-motto-wrapper');
+
+  if (document.querySelector('.start-page-motto-cursor'))
+    document.querySelector('.start-page-motto-cursor').remove();
 
   const newCursor = document.createElement('div');
   newCursor.classList.add('start-page-motto-cursor');
