@@ -109,7 +109,6 @@ function createProject(project) {
 
   const projectDescription = document.createElement('div');
   projectDescription.classList.add('each-project-description');
-  console.log(project.description)
   const descriptionParts = project.description.split('\n').join('<br/>').split(' ');
   for (let i = 0; i < descriptionParts.length; i++) {
     if (descriptionParts[i].includes('{')) {
@@ -175,30 +174,6 @@ window.addEventListener('load', () => {
         document.querySelector('.each-project-wrapper-opened').classList.remove('each-project-wrapper-opened');
 
       target.classList.add('each-project-wrapper-opened');
-    }
-
-    if (event.target.classList.contains('each-status-color-wrapper') || (event.target.parentNode && event.target.parentNode.classList.contains('each-status-color-wrapper'))) {
-      const target = event.target.classList.contains('each-status-color-wrapper') ? event.target : event.target.parentNode;
-      const language = target.id.replace('language-', '');
-      const projects = document.querySelectorAll('.each-project-wrapper');
-
-      if (target.classList.contains('each-status-color-wrapper-selected')) {
-        target.classList.remove('each-status-color-wrapper-selected');
-
-        for (let i = 0; i < projects.length; i++)
-          projects[i].style.display = 'flex';
-      } else {
-        if (document.querySelector('.each-status-color-wrapper-selected'))
-          document.querySelector('.each-status-color-wrapper-selected').classList.remove('each-status-color-wrapper-selected');
-
-        target.classList.add('each-status-color-wrapper-selected');
-
-        for (let i = 0; i < projects.length; i++)
-          if (!projects[i].classList.contains('each-project-' + language))
-            projects[i].style.display = 'none';
-          else
-            projects[i].style.display = 'flex';
-      }
     }
 
     if (event.target.classList.contains('each-project-delete-button')) {

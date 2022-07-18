@@ -294,7 +294,7 @@ window.addEventListener('load', () => {
 
       serverRequest('/admin/edit?id=' + project._id, 'POST', data, res => {
         if (res.success)
-          return window.location = '/admin';
+          return window.location.reload();
 
         createConfirm({
           title: 'An Error Occured',

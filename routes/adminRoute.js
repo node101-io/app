@@ -19,11 +19,6 @@ const orderPostController = require('../controllers/admin/order/post');
 const statusPostController = require('../controllers/admin/status/post');
 
 router.get(
-  '/',
-    isAdmin,
-    indexGetController
-);
-router.get(
   '/create',
     isAdmin,
     createGetController
@@ -46,6 +41,11 @@ router.get(
   '/restore',
     isAdmin,
     restoreGetController
+);
+router.get(
+  '/*',
+    isAdmin,
+    indexGetController
 );
 
 router.post(

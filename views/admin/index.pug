@@ -1,16 +1,18 @@
 extends ../partials/admin
 block main
+  input.display-none#is-admin(type='text' value='true')
+  input.display-none#language(type='text' value=language)
   .projects-title-wrapper
     .projects-title Projects
   .projects-header-wrapper
     .status-colors-wrapper
-      .each-status-color-wrapper#language-en
+      a.each-status-color-wrapper(href='/admin/en' class=(language == 'en' ? 'each-status-color-wrapper-selected' : ''))
         .each-status-color(style='background-color: rgb(57, 129, 29)')
         .each-status-color-text(style='color: rgb(57, 129, 29)') EN
-      .each-status-color-wrapper#language-tr
+      a.each-status-color-wrapper(href='/admin/tr' class=(language == 'tr' ? 'each-status-color-wrapper-selected' : ''))
         .each-status-color(style='background-color: rgb(130, 170, 235)')
         .each-status-color-text(style='color: rgb(130, 170, 235') TR
-      .each-status-color-wrapper#language-ru
+      a.each-status-color-wrapper(href='/admin/ru' class=(language == 'ru' ? 'each-status-color-wrapper-selected' : ''))
         .each-status-color(style='background-color: rgb(255, 22, 3)')
         .each-status-color-text(style='color: rgb(255, 22, 3)') RU
     .projects-info-titles-wrapper 

@@ -39,6 +39,7 @@
   padding: 0px 15px;
   border-radius: 8px;
   cursor: pointer;
+  text-decoration: none;
 }
 .each-status-color-wrapper:hover {
   background-color: rgb(236, 236, 236);
