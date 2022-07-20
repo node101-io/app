@@ -27,7 +27,7 @@
   color: rgb(10, 10, 20, 0.9);
   font-size: 23px;
   line-height: 32px;
-  font-weight: 600;
+  font-weight: 400;
   margin-top: 20px;
 }
 
@@ -41,15 +41,17 @@
 
 .start-page-motto {
   font-weight: 800;
-  font-size: 75px;
+  font-size: 60px;
   color: rgb(10, 10, 20);
-  line-height: 70px;
+  line-height: 60px;
   text-align: right;
+  height: 60px;
 }
 .start-page-motto-wrapper {
   display: flex;
   align-items: flex-end;
-  height: 70px;
+  height: 50px;
+  /* margin-top: 10px; */
 }
 .start-page-animation-wrapper {
   display: flex;
@@ -57,7 +59,7 @@
   align-items: flex-end;
 }
 .start-page-motto-cursor {
-  width: 40px;
+  width: 30px;
   height: 8px;
   border-radius: 4px;
   background-color: rgb(10, 10, 20);
