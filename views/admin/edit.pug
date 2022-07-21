@@ -88,12 +88,14 @@ block main
             div(class=`guide-${item.type}`)= item.content
           i.guide-item-delete-button.fas.fa-trash-alt
     .add-new-guide-item-button
-      .new-guide-item-type-selection-button
-        .new-guide-item-type-selected
-          span Title
-          i.fas.fa-chevron-down
-        each guide_type in guide_type_values
-          .each-new-guide-item-type= guide_type.substring(0, 1).toUpperCase() + guide_type.substring(1)
+      .add-new-guide-item-buttons-line
+        .new-guide-item-type-selection-button
+          .new-guide-item-type-selected
+            span Title
+            i.fas.fa-chevron-down
+          each guide_type in guide_type_values
+            .each-new-guide-item-type= guide_type.substring(0, 1).toUpperCase() + guide_type.substring(1)
+        .new-guide-item-create-button Add
       textarea.new-guide-item-text-input#new-guide-item-text-input.new-project-form-input(type='text' placeholder='Enter the title')
     .new-project-form-title Project Requirements
     .new-project-form-subtitle Items you add below will be created in order.
