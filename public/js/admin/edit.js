@@ -1,6 +1,3 @@
-let project;
-
-let selected_guide_item_type = 'title'; // Default
 const guide_item_type_placeholders = {
   title: 'Enter the title',
   text: 'Enter the text',
@@ -11,6 +8,10 @@ const guide_item_type_placeholders = {
 }
 const status_values = ['active', 'upcoming', 'ended'];
 const popularity_values = ['low', 'medium', 'high'];
+
+let project;
+let selected_guide_item_type = 'title'; // Default
+let currentGuideItemCountOnEdit = 0;
 
 function uploadImage (file, callback) {
   const formdata = new FormData();
@@ -138,6 +139,63 @@ window.addEventListener('load', () => {
       createImagePicker(wrapper);
     }
 
+    if (event.target.classList.contains('guide-item-edit-button')) {
+      currentGuideItemCountOnEdit++;
+
+      const guideItemType = event.target.previousElementSibling.className.replace('guide-', '');
+
+      const guideItemEditInput = document.createElement('textarea');
+      guideItemEditInput.classList.add('new-project-form-input');
+      guideItemEditInput.classList.add('guide-item-edit-input');
+
+      guideItemEditInput.id = 'guide-edit-input-' + guideItemType;
+      guideItemEditInput.placeholder = 'Please enter a value.';
+      guideItemEditInput.value = event.target.previousElementSibling.innerHTML;
+
+      event.target.previousElementSibling.remove();
+
+      event.target.parentNode.appendChild(guideItemEditInput);
+      while (guideItemEditInput.previousElementSibling)
+        event.target.parentNode.insertBefore(guideItemEditInput, guideItemEditInput.previousElementSibling);
+
+      guideItemEditInput.focus();
+
+      setTimeout(() => {
+        event.target.classList.remove('guide-item-edit-button');
+        event.target.classList.add('guide-item-edit-finish-button');
+        event.target.classList.remove('fa-cog');
+        event.target.classList.add('fa-check');
+      }, 500);
+    }
+
+    if (event.target.classList.contains('guide-item-edit-finish-button')) {
+      const guideInput = event.target.previousElementSibling;
+
+      if (!guideInput || !guideInput.value || !guideInput.value.length)
+        return;
+
+      currentGuideItemCountOnEdit--;
+
+      const guideItemType = guideInput.id.replace('guide-edit-input-', '');
+
+      const guideItem = document.createElement('div');
+      guideItem.classList.add('guide-' + guideItemType);
+      guideItem.innerHTML = guideInput.value.split('\n').join('<br/>');
+
+      guideInput.remove();
+
+      event.target.parentNode.appendChild(guideItem);
+      while (guideItem.previousElementSibling)
+        event.target.parentNode.insertBefore(guideItem, guideItem.previousElementSibling);
+
+      setTimeout(() => {
+        event.target.classList.remove('guide-item-edit-finish-button');
+        event.target.classList.add('guide-item-edit-button');
+        event.target.classList.remove('fa-check');
+        event.target.classList.add('fa-cog');
+      }, 500);
+    }
+
     if (event.target.classList.contains('guide-item-delete-button')) {
       event.target.parentNode.remove();
       lastGuideItemExists = false;
@@ -183,6 +241,18 @@ window.addEventListener('load', () => {
     }
 
     if (event.target.classList.contains('new-guide-item-create-button')) {
+      if (selected_guide_item_type != 'image' && selected_guide_item_type != 'video') {
+        const lastGuideItem = guideItemsWrapper.children[guideItemsWrapper.children.length - 1];
+
+        const newGuideItemEditButton = document.createElement('i');
+        newGuideItemEditButton.classList.add('guide-item-edit-button')
+        newGuideItemEditButton.classList.add('fas');
+        newGuideItemEditButton.classList.add('fa-cog');
+        lastGuideItem.appendChild(newGuideItemEditButton);
+
+        lastGuideItem.insertBefore(newGuideItemEditButton, newGuideItemEditButton.previousElementSibling);
+      }
+
       guideItemInput.value = '';
       lastGuideItemExists = false;
       guideItemInput.focus();
@@ -249,6 +319,9 @@ window.addEventListener('load', () => {
       const error = document.getElementById('new-project-form-error');
 
       error.innerHTML = '';
+
+      if (currentGuideItemCountOnEdit)
+        return error.innerHTML = 'You have unsaved changes in guide items. Please save them before continue.';
 
       const data = {
         name: document.getElementById('name-input').value,

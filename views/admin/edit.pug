@@ -86,6 +86,7 @@ block main
             iframe.guide-video(src=item.content)
           else
             div(class=`guide-${item.type}`)= item.content
+            i.guide-item-edit-button.fas.fa-cog
           i.guide-item-delete-button.fas.fa-trash-alt
     .add-new-guide-item-button
       .add-new-guide-item-buttons-line
