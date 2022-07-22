@@ -161,39 +161,97 @@ ProjectSchema.statics.createProject = function (data, callback) {
   if (!data || typeof data != 'object')
     return callback('bad_request');
 
-  if (!data.language || !language_values.includes(data.language))
-    return callback('bad_request');
+  if (data.language == 'all') {
+    async.timesSeries(
+      language_values.length,
+      (time, next) => {
+        data.language = language_values[time];
+        
+        Project.createProject(data, (err, id) => {
+          if (err) return next(err);
 
-  if (!data.name || typeof data.name != 'string' || !data.name.length || data.name.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-    return callback('bad_request');
+          return next(null, id);
+        });
+      },
+      (err, id_list) => {
+        if (err) return callback(err);
 
-  if (!data.description || typeof data.description != 'string' || !data.description.length || data.description.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-    return callback('bad_request');
+        return callback(null, id_list);
+      }
+    );
+  } else {
+    if (!data.language || !language_values.includes(data.language))
+      return callback('bad_request');
 
-  if (!data.dates || typeof data.dates != 'string' || !data.dates.length || data.dates.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-    return callback('bad_request');
+    if (!data.name || typeof data.name != 'string' || !data.name.length || data.name.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
+      return callback('bad_request');
 
-  if (!data.reward || typeof data.reward != 'string' || !data.reward.length || data.reward.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-    return callback('bad_request');
+    if (!data.description || typeof data.description != 'string' || !data.description.length || data.description.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
+      return callback('bad_request');
 
-  if (!data.status || !status_values.includes(data.status))
-    return callback('bad_request');
+    if (!data.dates || typeof data.dates != 'string' || !data.dates.length || data.dates.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
+      return callback('bad_request');
 
-  if (!data.popularity || !popularity_values.includes(data.popularity))
-    return callback('bad_request');
+    if (!data.reward || typeof data.reward != 'string' || !data.reward.length || data.reward.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
+      return callback('bad_request');
 
-  Image.findImageByUrl(data.image, (err, image) => {
-    if (err) return callback(err);
+    if (!data.status || !status_values.includes(data.status))
+      return callback('bad_request');
 
-    Project.findProjectCountByLanguage(data.language, (err, order) => {
+    if (!data.popularity || !popularity_values.includes(data.popularity))
+      return callback('bad_request');
+
+    Image.findImageByUrl(data.image, (err, image) => {
       if (err) return callback(err);
 
-      const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
+      Project.findProjectCountByLanguage(data.language, (err, order) => {
+        if (err) return callback(err);
 
-      if (is_stakable) {
-        fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
-          if (err) return callback(err);
-  
+        const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
+
+        if (is_stakable) {
+          fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
+            if (err) return callback(err);
+    
+            const newProjectData = {
+              identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+              order,
+              is_active: data.is_active ? true : false,
+              language: data.language,
+              name: data.name.trim(),
+              image: image.url,
+              created_at: parseInt((new Date()).getTime()),
+              description: data.description.trim(),
+              guide: getGuide(data.guide),
+              requirements: getRequirements(data.requirements),
+              status: data.status,
+              dates: data.dates.trim(),
+              reward: data.reward.trim(),
+              get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
+              popularity: data.popularity,
+              links: getLinks(data.links),
+              is_stakable,
+              stake_url: data.stake_url.toString(),
+              stake_api_title: data.stake_api_title.toString(),
+              stake_rate,
+              last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+            };
+          
+            const newProject = new Project(newProjectData);
+          
+            newProject.save((err, project) => {
+              console.log(err);
+              if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+              if (err) return callback('database_error');
+        
+              Image.findImageByUrlAndSetAsUsed(project.image, err => {
+                if (err) return callback(err);
+        
+                return callback(null, project._id.toString());
+              });  
+            });
+          });
+        } else {
           const newProjectData = {
             identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
             order,
@@ -211,17 +269,12 @@ ProjectSchema.statics.createProject = function (data, callback) {
             get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
             popularity: data.popularity,
             links: getLinks(data.links),
-            is_stakable,
-            stake_url: data.stake_url.toString(),
-            stake_api_title: data.stake_api_title.toString(),
-            stake_rate,
-            last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+            is_stakable: false
           };
         
           const newProject = new Project(newProjectData);
         
           newProject.save((err, project) => {
-            console.log(err);
             if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
             if (err) return callback('database_error');
       
@@ -231,44 +284,10 @@ ProjectSchema.statics.createProject = function (data, callback) {
               return callback(null, project._id.toString());
             });  
           });
-        });
-      } else {
-        const newProjectData = {
-          identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
-          order,
-          is_active: data.is_active ? true : false,
-          language: data.language,
-          name: data.name.trim(),
-          image: image.url,
-          created_at: parseInt((new Date()).getTime()),
-          description: data.description.trim(),
-          guide: getGuide(data.guide),
-          requirements: getRequirements(data.requirements),
-          status: data.status,
-          dates: data.dates.trim(),
-          reward: data.reward.trim(),
-          get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
-          popularity: data.popularity,
-          links: getLinks(data.links),
-          is_stakable: false
-        };
-      
-        const newProject = new Project(newProjectData);
-      
-        newProject.save((err, project) => {
-          console.log(err);
-          if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
-          if (err) return callback('database_error');
-    
-          Image.findImageByUrlAndSetAsUsed(project.image, err => {
-            if (err) return callback(err);
-    
-            return callback(null, project._id.toString());
-          });  
-        });
-      }
+        }
+      });
     });
-  });
+  }
 };
 
 ProjectSchema.statics.findProjectById = function (id, callback) {
@@ -457,6 +476,23 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
   });
 };
 
+ProjectSchema.statics.checkIfImageIsUsed = function (url, callback) {
+  const Project = this;
+
+  if (!url || typeof url != 'string')
+    return callback('bad_request');
+
+  Project.findOne({
+    image: url.trim()
+  }, (err, project) => {
+    if (err)
+      return callback('database_error');
+    if (!project)
+      return callback(null, false);
+    return callback(null, true);
+  });
+};
+
 ProjectSchema.statics.findProjectByIdAndUpdateImage = function (id, data, callback) {
   const Project = this;
 
@@ -466,18 +502,23 @@ ProjectSchema.statics.findProjectByIdAndUpdateImage = function (id, data, callba
     Image.findImageByUrl(data.image, (err, image) => {
       if (err) return callback(err);
 
-      Image.findImageByUrlAndDelete(project.image, err => {
-        if (err) return callback(err);
+      Project.findByIdAndUpdate(project._id, {$set: {
+        image: image.url
+      }}, err => {
+        if (err) return callback('database_error');
 
-        Project.findByIdAndUpdate(project._id, {$set: {
-          image: image.url
-        }}, err => {
-          if (err) return callback('database_error');
+        Image.findImageByUrlAndSetAsUsed(image.url, err => {
+          if (err) return callback(err);
 
-          Image.findImageByUrlAndSetAsUsed(image.url, err => {
-            if (err) return callback('database_error');
+          Project.checkIfImageIsUsed(project.image, (err, res) => {
+            if (err) return callback(err);
+            if (res) return callback(null); // Another project is using the image
 
-            return callback(null);
+            Image.findImageByUrlAndDelete(project.image, err => {
+              if (err) return callback(err);
+      
+              return callback(null); 
+            });
           });
         });
       });

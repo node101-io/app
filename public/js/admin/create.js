@@ -7,7 +7,7 @@ const guide_item_type_placeholders = {
   image: 'Enter the image url',
   video: 'Enter the YouTube url (use /embed/id syntax)'
 }
-const language_values = ['en', 'tr', 'ru'];
+const language_values = ['all', 'en', 'tr', 'ru'];
 const status_values = ['active', 'upcoming', 'ended'];
 const popularity_values = ['low', 'medium', 'high'];
 
