@@ -290,12 +290,6 @@ window.addEventListener('load', () => {
       if (!project.description || !project.description.length)
         return error.innerHTML = 'Please enter a description.';
 
-      if (!project.dates || !project.dates.length)
-        return error.innerHTML = 'Please enter the dates.';
-
-      if (!project.reward || !project.reward.length)
-        return error.innerHTML = 'Please enter the reward.';
-
       if (!project.status || !status_values.includes(project.status))
         return error.innerHTML = 'Please enter a valid status.';
 

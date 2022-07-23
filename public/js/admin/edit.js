@@ -354,12 +354,6 @@ window.addEventListener('load', () => {
       if (!data.description || !data.description.length)
         return error.innerHTML = 'Please enter a description.';
 
-      if (!data.dates || !data.dates.length)
-        return error.innerHTML = 'Please enter the dates.';
-
-      if (!data.reward || !data.reward.length)
-        return error.innerHTML = 'Please enter the reward.';
-
       if (!data.status || !status_values.includes(data.status))
         return error.innerHTML = 'Please enter a valid status.';
 

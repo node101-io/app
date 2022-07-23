@@ -24,10 +24,10 @@ block main
         textarea.new-project-form-input#description-input(type='text' placeholder='Project description (multiline)')= project.description
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Dates
-        input.new-project-form-input#dates-input(type='text' value=project.dates placeholder='Project dates')
+        input.new-project-form-input#dates-input(type='text' value=project.dates placeholder='Project dates. Leave empty for TBA')
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Reward
-        input.new-project-form-input#reward-input(type='text' value=project.reward placeholder='Project reward')
+        input.new-project-form-input#reward-input(type='text' value=project.reward placeholder='Project reward. Leave empty for TBA')
       .each-project-input-wrapper
         .new-project-form-input-title.required-input Status
         input.new-project-form-input#status-input(type='text' value=project.status placeholder='Allowed Values: active, upcoming, ended')

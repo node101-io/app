@@ -190,10 +190,14 @@ ProjectSchema.statics.createProject = function (data, callback) {
       return callback('bad_request');
 
     if (!data.dates || typeof data.dates != 'string' || !data.dates.length || data.dates.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-      return callback('bad_request');
+      data.dates = 'TBA';
+    else
+      data.dates = data.dates.toLowerCase();
 
     if (!data.reward || typeof data.reward != 'string' || !data.reward.length || data.reward.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-      return callback('bad_request');
+      data.reward = 'TBA';
+    else
+      data.reward = data.reward.toLowerCase();
 
     if (!data.status || !status_values.includes(data.status))
       return callback('bad_request');
@@ -423,8 +427,8 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
           guide: getGuide(data.guide),
           requirements: getRequirements(data.requirements),
           status: data.status && status_values.includes(data.status) ? data.status : project.status,
-          dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.trim() : project.dates,
-          reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.trim() : project.reward,
+          dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.toLowerCase().trim() : 'TBA',
+          reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.toLowerCase().trim() : 'TBA',
           get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
           popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
           links: getLinks(data.links),
@@ -453,8 +457,8 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
         guide: getGuide(data.guide),
         requirements: getRequirements(data.requirements),
         status: data.status && status_values.includes(data.status) ? data.status : project.status,
-        dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.trim() : project.dates,
-        reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.trim() : project.reward,
+        dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.toLowerCase().trim() : 'TBA',
+        reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.toLowerCase().trim() : 'TBA',
         get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
         popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
         links: getLinks(data.links),
