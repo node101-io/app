@@ -128,6 +128,7 @@ const ProjectSchema = new Schema({
       instagram: null,
       gitbook: null,
       docs: null,
+      discord: null,
       explorer: null
     }
   },

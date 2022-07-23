@@ -342,6 +342,7 @@ window.addEventListener('load', () => {
           instagram: document.getElementById('links-instagram-input').value,
           gitbook: document.getElementById('links-gitbook-input').value,
           docs: document.getElementById('links-docs-input').value,
+          discord: document.getElementById('links-discord-input').value,
           explorer: document.getElementById('links-explorer-input').value
         },
         stake_url: document.getElementById('stake-url-input').value,
