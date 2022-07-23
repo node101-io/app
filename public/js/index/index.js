@@ -1,4 +1,11 @@
+const TEN_SECOND_IN_MS = 10 * 1000;
+
 let projectCount = 0;
+let lastAnimationStartTime = 0;
+
+function now() {
+  return (new Date()).getTime();
+}
 
 function createProject(project) {
   if (projectCount >= 5)
@@ -183,6 +190,11 @@ function textAnimation(textCount) {
 }
 
 function repeatTextAnimation() {
+  if (lastAnimationStartTime + TEN_SECOND_IN_MS > now())
+    return;
+
+  lastAnimationStartTime = now();
+  
   const wrapper = document.querySelector('.start-page-animation-wrapper');
   wrapper.innerHTML = '';
 
@@ -190,7 +202,7 @@ function repeatTextAnimation() {
 
   setTimeout(() => {
     repeatTextAnimation();
-  }, 7000);
+  }, TEN_SECOND_IN_MS);
 }
 
 function smoothScroll(element, amount) {

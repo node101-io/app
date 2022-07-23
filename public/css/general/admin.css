@@ -7,7 +7,7 @@
 }
 
 .all-header-wrapper {
-  background-color: rgb(254, 254, 254);
+  background-color: var(--background-color);
   position: fixed;
   height: 80px;
   min-height: 80px;
@@ -49,13 +49,13 @@
 .each-all-header-button {
   font-weight: 800;
   font-size: 18px;
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   cursor: pointer;
   margin-right: 30px;
   text-decoration: none;
 }
 .each-all-header-button:hover {
-  border-bottom: 2px solid rgb(10, 10, 20);
+  border-bottom: 2px solid var(--text-color);
   margin-bottom: -2px;
 }
 
@@ -66,16 +66,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(130, 170, 235);
+  background-color: var(--main-color);
   font-size: 18px;
   font-weight: 800;
-  color: rgb(254, 254, 254);
+  color: var(--background-color);
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(130, 170, 235, 0.8);
+  box-shadow: 0 0 6px var(--border-color);
 }
 .all-header-create-project-button:hover {
-  box-shadow: 0 0 6px rgba(130, 170, 235, 1);
+  box-shadow: 0 0 8px var(--border-color);
 }
 
 .all-content-wrapper {

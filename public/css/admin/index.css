@@ -14,7 +14,7 @@
   padding: 0 60px;
 }
 .projects-title {
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   font-weight: 800;
   font-size: 60px;
 }
@@ -24,7 +24,7 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  background-color: rgb(254, 254, 254);
+  background-color: var(--background-color);
   padding: 5px 60px;
 }
 
@@ -42,10 +42,10 @@
   text-decoration: none;
 }
 .each-status-color-wrapper:hover {
-  background-color: rgb(236, 236, 236);
+  background-color: var(--border-color);
 }
 .each-status-color-wrapper-selected {
-  background-color: rgb(236, 236, 236) !important;
+  background-color: var(--border-color) !important;
 }
 .each-status-color {
   width: 18px;
@@ -65,7 +65,7 @@
 .each-project-info-title {
   width: 150px;
   text-align: center;
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   font-weight: 800;
   letter-spacing: 0.3px;
   font-size: 15px;
@@ -73,7 +73,7 @@
 .each-project-info-title-seperator {
   width: 3px;
   height: 30px;
-  background-color: rgb(10, 10, 20);
+  background-color: var(--text-color);
   border-radius: 2px;
 }
 
@@ -85,7 +85,7 @@
   cursor: pointer;
 }
 .each-project-edit-button:hover {
-  color: rgba(10, 10, 20, 0.4);
+  color: var(--text-color-light);
 }
 
 @media only screen and (max-width: 1150px) {

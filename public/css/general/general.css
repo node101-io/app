@@ -3,7 +3,7 @@
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  font-family: 'Nunito', 'Open Sans', 'Helvetica Neue', sans-serif;;
+  font-family: 'Nunito Sans', 'Open Sans', 'Helvetica Neue', sans-serif;;
 }
 html {
   width: 100vw;
@@ -54,9 +54,32 @@ textarea {
   resize: none;
 }
 
+:root {
+  --main-color: rgb(125, 128, 218);
+  --second-color: rgb(185, 214, 242);
+  --text-color: rgb(0, 4, 40);
+  --text-color-light: rgba(0, 4, 40, 0.8);
+  --code-color: rgb(65, 144, 34);
+  --placeholder-color: rgb(0, 4, 40, 0.2);
+  --border-color: rgb(236, 236, 236);
+  --shadow-color: rgba(0, 4, 40, 0.6);
+  --shadow-hover-color: rgba(0, 4, 40, 0.8);
+  --highlight-color: rgb(248, 248, 248);
+  --background-color: rgb(254, 254, 254);
+  --active-status-color: rgb(57, 129, 29);
+  --upcoming-status-color: rgb(130, 170, 235);
+  --endeed-status-color: rgb(255, 22, 3);
+  --high-popularity-color: rgb(57, 129, 29);
+  --medium-popularity-color: rgb(255, 215, 0);
+  --low-popularity-color: rgb(255, 22, 3);
+}
+
 .bold {
   font-weight: 800 !important;
 }
-.blue {
-  color: rgb(130, 170, 235) !important;
+.main-color {
+  color: var(--main-color) !important;
+}
+.second-color {
+  color: var(--second-color) !important;
 }

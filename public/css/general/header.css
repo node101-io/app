@@ -7,7 +7,7 @@
 }
 
 .all-header-wrapper {
-  background-color: rgb(254, 254, 254);
+  background-color: var(--background-color);
   position: fixed;
   height: 80px;
   min-height: 80px;
@@ -79,7 +79,7 @@
   align-items: center;
   width: 350px;
   z-index: 10;
-  background-color: rgb(254, 254, 254);
+  background-color: var(--background-color);
 }
 .all-header-search-input-wrapper svg {
   width: 20px;
@@ -89,25 +89,25 @@
 .all-header-search-input {
   border: none;
   outline: none;
-  color: rgba(10, 10, 20, 0.4);
-  font-weight: 800;
-  font-size: 18px;
+  color: var(--text-color-light);
+  font-weight: 700;
+  font-size: 17px;
   width: 330px;
   background-color: transparent;
 }
 .all-header-search-input::placeholder {
-  color: rgba(10, 10, 20, 0.2);
-  font-weight: 800;
+  color: var(--placeholder-color);
+  font-weight: 700;
 }
 
 .all-header-search-results-wrapper {
   width: 350px;
   height: 150px;
   min-height: 150px;
-  background-color: rgb(254, 254, 254);
-  border: 1px solid rgb(236, 236, 236);
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
   border-top: none;
-  box-shadow: 0 0 10px rgb(236, 236, 236);
+  box-shadow: 0 0 10px var(--border-color);
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
   overflow: scroll;
@@ -124,10 +124,10 @@
   cursor: pointer;
 }
 .each-all-header-search-result:hover {
-  background-color: rgb(248, 248, 248);
+  background-color: var(--highlight-color);
 }
 .each-all-header-search-result-highlighted {
-  background-color: rgb(248, 248, 248);
+  background-color: var(--highlight-color);
 }
 .each-all-header-search-result-image {
   width: 30px;
@@ -139,7 +139,7 @@
   margin-left: 7px;
   font-weight: 800;
   font-size: 16px;
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
 }
 
 .all-header-buttons-wrapper {
@@ -148,15 +148,15 @@
   margin-left: auto;
 }
 .each-all-header-button {
-  font-weight: 800;
+  font-weight: 700;
   font-size: 18px;
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   cursor: pointer;
   margin-right: 30px;
   text-decoration: none;
 }
 .each-all-header-button:hover {
-  border-bottom: 2px solid rgb(10, 10, 20);
+  border-bottom: 2px solid var(--text-color);
   margin-bottom: -2px;
 }
 
@@ -167,17 +167,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgb(130, 170, 235);
-  font-size: 18px;
+  background-color: var(--main-color);
+  font-size: 17px;
   font-weight: 800;
-  color: rgb(254, 254, 254);
+  letter-spacing: 0.1px;
+  color: var(--background-color);
   margin-right: 30px;
   border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 0 6px rgba(130, 170, 235, 0.8);
+  box-shadow: 0 0 6px var(--shadow-color);
 }
 .all-header-stake-with-us-button:hover {
-  box-shadow: 0 0 6px rgba(130, 170, 235, 1);
+  box-shadow: 0 0 6px var(--shadow-hover-color);
 }
 
 .all-header-language-wrapper {
@@ -186,18 +187,18 @@
 }
 .each-all-header-language-button {
   font-size: 18px;
-  color: rgb(10, 10, 20);
-  font-weight: 800;
+  color: var(--text-color);
+  font-weight: 700;
   text-decoration: none;
 }
 .each-all-header-language-button:hover {
-  border-bottom: 2px solid rgb(10, 10, 20);
+  border-bottom: 2px solid var(--text-color);
   margin-bottom: -2px;
 }
 .all-header-language-seperator {
-  width: 3px;
+  width: 2px;
   height: 30px;
-  background-color: rgb(10, 10, 20);
+  background-color: var(--text-color);
   border-radius: 2px;
   margin: 0px 8px;
 }

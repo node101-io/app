@@ -2,7 +2,7 @@
   Listens for containers with classname '.drag-and-drop-wrapper'.
   Assumes elements in the wrapper are vertically aligned, use 'display: flex; flex-direction: column;' to guarantee it.
   DO NOT use wrappers inside another, this would hurt functionality.
-  Uses duplicateElement utility function, include utilities.js. 
+  Uses duplicateElement utility function, include duplicateElement.js. 
 */
 
 let dragAndDropElement, newElement, newElementMouseLeftDifference, newElementMouseTopDifference;

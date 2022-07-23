@@ -9,40 +9,52 @@
 }
 
 .start-page-left-wrapper {
-  width: 650px;
+  width: auto;
+  padding-right: 30px;
+  max-width: 830px;
   display: flex;
   flex-direction: column;
 }
 
 .start-page-title {
-  width: 400px;
+  height: 80px;
+  width: auto;
   margin-bottom: 30px;
+  margin-right: auto;
 }
 .start-page-subtitle {
-  color: rgba(10, 10, 20, 0.9);
-  font-weight: 700;
-  font-size: 28px;
+  color: var(--text-color);
+  font-weight: 600;
+  font-size: 25px;
+  line-height: 30px;
 }
 .start-page-text {
-  color: rgb(10, 10, 20, 0.9);
-  font-size: 23px;
+  color: var(--text-color);
+  font-size: 20px;
   line-height: 32px;
-  font-weight: 400;
+  font-weight: 500;
   margin-top: 20px;
 }
 
 .start-page-right-wrapper {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex;
   justify-content: center;
-  padding-bottom: 80px;
+  width: 310px;
+  min-width: 310px;
+}
+.start-page-right-aligner {
+  width: 100px;
+  height: 80px;
+  min-height: 80px;
+  visibility: hidden;
 }
 
 .start-page-motto {
   font-weight: 800;
   font-size: 60px;
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   line-height: 60px;
   text-align: right;
   height: 60px;
@@ -51,7 +63,7 @@
   display: flex;
   align-items: flex-end;
   height: 50px;
-  /* margin-top: 10px; */
+  margin-top: 8px;
 }
 .start-page-animation-wrapper {
   display: flex;
@@ -61,8 +73,8 @@
 .start-page-motto-cursor {
   width: 30px;
   height: 8px;
-  border-radius: 4px;
-  background-color: rgb(10, 10, 20);
+  border-radius: 3px;
+  background-color: var(--text-color);
   margin-bottom: 8px;
   animation: blink-animation 0.7s steps(4, start) infinite;
   -webkit-animation: blink-animation 0.7s steps(4, start) infinite;
@@ -84,7 +96,6 @@
   transform: translateX(-50%);
   bottom: 30px;
   opacity: 0.8;
-  font-size: 18px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -94,18 +105,24 @@
   opacity: 1;
 }
 .learn-more-button span {
-  font-weight: 700;
-  color: rgb(130, 170, 235);
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--main-color);
 }
 .learn-more-button svg {
   width: 17px;
 }
 
 .how-it-works-title {
-  margin: 60px;
-  font-weight: 800;
-  font-size: 70px;
-  color: rgb(10, 10, 20);
+  margin: 60px 0;
+  font-weight: 700;
+  font-size: 45px;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .how-it-works-wrapper {
@@ -115,7 +132,7 @@
   margin-bottom: 160px;
 }
 .each-how-it-works-step {
-  width: 350px;
+  width: calc(33% - 40px);
   height: fit-content;
   min-height: fit-content;
   display: flex;
@@ -124,35 +141,36 @@
 }
 .each-how-it-works-step svg {
   margin-bottom: 30px;
-  height: 160px;
+  height: 140px;
+  width: auto;
 }
 .each-how-it-works-title {
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   font-weight: 800;
   font-size: 33px;
   text-align: center;
   margin-bottom: 20px;
 }
 .each-how-it-works-text {
-  color: rgba(10, 10, 20, 0.8);
-  font-weight: 600;
-  font-size: 18px;
-  text-align: center;
+  color: var(--text-color-light);
+  font-weight: 500;
+  font-size: 16px;
+  text-align: justify;
+  text-align-last: center;
 }
 
 .main-motto-text {
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   font-weight: 800;
-  font-size: 70px;
+  font-size: 50px;
   width: 100%;
   display: flex;
   justify-content: center;
   text-align: center;
-  margin: 20px 0px;
 }
 
 .staking-wrapper {
-  margin: 160px 0px;
+  margin: 60px 0px;
   display: flex;
   align-items: center;
   padding: 0 60px;
@@ -160,53 +178,58 @@
 .staking-left-wrapper {
   width: fit-content;
   min-width: fit-content;
+  margin-right: 60px;
+}
+.staking-left-wrapper svg {
+  width: 400px;
+  height: auto;
 }
 
 .staking-right-wrapper {
   flex: 1;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
-  margin-left: 60px;
+  margin-left: auto;
   align-items: flex-end;
   justify-content: center;
 }
 .staking-title {
-  color: rgb(10, 10, 20);
+  color: var(--main-color);
   font-weight: 800;
-  font-size: 65px;
+  font-size: 45px;
   text-align: right;
   margin-bottom: 30px;
 }
 .staking-text {
-  color: rgba(10, 10, 20, 0.9);
+  color: var(--text-color-light);
   font-weight: 600;
-  font-size: 20px;
+  font-size: 18px;
   text-align: right;
-  max-width: 500px;
 }
 .staking-button {
   margin-top: 30px;
-  color: rgb(130, 170, 235);
+  color: var(--main-color);
   font-weight: 800;
-  font-size: 20px;
+  font-size: 18px;
   text-decoration: none;
   padding-bottom: 2px;
   border-bottom: 2px solid transparent;
 }
 .staking-button:hover {
-  border-bottom: 2px solid rgb(130, 170, 235);
+  border-bottom: 2px solid var(--main-color);
 }
 
 .projects-title-wrapper {
   display: flex;
   align-items: flex-end;
   padding: 0 60px;
-  padding-top: 190px;
+  margin-top: 60px;
 }
 .project-title {
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   font-weight: 800;
-  font-size: 60px;
+  font-size: 45px;
   margin-bottom: 30px;
 }
 
@@ -226,7 +249,7 @@
 .each-project-info-title {
   width: 150px;
   text-align: center;
-  color: rgb(10, 10, 20);
+  color: var(--text-color);
   font-weight: 800;
   letter-spacing: 0.3px;
   font-size: 15px;
@@ -234,14 +257,15 @@
 .each-project-info-title-seperator {
   width: 3px;
   height: 30px;
-  background-color: rgb(10, 10, 20);
+  background-color: var(--text-color);
   border-radius: 2px;
 }
 
 .see-more-projects-button {
-  color: rgba(130, 170, 235, 0.8);
+  opacity: 0.8;
+  color: var(--main-color);
   font-weight: 800;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   text-decoration: none;
   height: fit-content;
@@ -249,12 +273,11 @@
   margin: 60px 0;
   display: flex;
   justify-content: center;
-  width: 80px;
   margin-left: 50vw;
   transform: translateX(-50%);
 }
 .see-more-projects-button:hover {
-  color: rgb(130, 170, 235);
+  opacity: 1;
 }
 
 @media only screen and (max-width: 1150px) {
@@ -273,168 +296,136 @@
   }
 }
 
-@media only screen and (max-width: 1200px) {
-  .start-page-left-wrapper {
-    width: 600px;
-  }
-}
-@media only screen and (max-width: 1100px) {
-  .start-page-left-wrapper {
-    width: 500px;
-  }
-  .start-page-title {
-    width: 350px;
-  }
-  .start-page-motto {
-    font-size: 70px;
-  }
-  .start-page-subtitle {
-    font-size: 25px;
-  }
-  .start-page-text {
-    font-size: 20px;
-    line-height: 28px;
-  }
-}
 @media only screen and (max-width: 1000px) {
-  .start-page-left-wrapper {
-    width: 400px;
-  }
-  .start-page-title, .start-page-motto {
-    font-size: 65px;
+  .start-page-title, .start-page-right-aligner {
+    height: 60px;
+    min-height: 60px;
   }
   .start-page-subtitle {
-    font-size: 23px;
+    font-size: 20px;
   }
   .start-page-text {
     font-size: 18px;
-    line-height: 26px;
+    line-height: 30px;
+  }
+  .start-page-right-wrapper {
+    width: 258px;
+    min-width: 258px;
+  }
+  .start-page-motto {
+    font-size: 50px;
   }
 }
 @media only screen and (max-width: 850px) {
   .start-page-wrapper {
-    padding: 0 30px;
-    padding-bottom: 80px;
+    padding-left: 30px;
+    padding-right: 30px;
   }
 }
 @media only screen and (max-width: 800px) {
-  .start-page-left-wrapper {
-    width: 350px;
+  .start-page-title, .start-page-right-aligner {
+    height: 50px;
+    min-height: 50px;
   }
   .start-page-title {
-    width: 300px;
-  }
-  .start-page-motto {
-    font-size: 57px;
-  }
-  .start-page-subtitle {
-    font-size: 20px;
-  }
-  .start-page-text {
-    font-size: 17px;
-    line-height: 26px;
-  }
-}
-@media only screen and (max-width: 700px) {
-  .start-page-wrapper {
-    flex-direction: column-reverse;
-    justify-content: center;
-  }
-  .start-page-right-wrapper {
-    height: auto;
-    width: 100%;
-    padding: 0px;
     margin-bottom: 20px;
-  }
-  .start-page-animation-wrapper {
-    flex-direction: row-reverse;
-  }
-  .start-page-motto {
-    margin-left: 10px;
-  }
-  .start-page-left-wrapper {
-    width: 100%;
-  }
-  .start-page-motto {
-    font-size: 57px;
-  }
-  .start-page-subtitle {
-    font-size: 20px;
-  }
-  .start-page-text {
-    font-size: 17px;
-    line-height: 26px;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .start-page-right-wrapper {
-    display: none;
-  }
-}
-@media only screen and (max-width: 400px) {
-  .start-page-title {
-    width: 240px;
   }
   .start-page-subtitle {
     font-size: 18px;
   }
   .start-page-text {
-    font-size: 15px;
-    line-height: 23px;
-  }
-  .learn-more-button {
     font-size: 16px;
+    line-height: 25px;
+  }
+  .start-page-right-wrapper {
+    width: 207px;
+    min-width: 207px;
+  }
+  .start-page-motto {
+    font-size: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+  .start-page-motto-wrapper {
+    height: 35px;
+    margin-top: 5px;
+  }
+  .start-page-motto-cursor {
+    height: 4px;
+    width: 20px;
+    margin-bottom: 6px;
+  }
+  .learn-more-button span {
+    font-size: 16px;
+  }
+}
+@media only screen and (max-width: 700px) {
+  .start-page-right-wrapper {
+    display: none;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .start-page-title, .start-page-right-aligner {
+    height: 40px;
+    min-height: 40px;
+  }
+  .start-page-title {
+    margin-bottom: 15px;
+  }
+  .start-page-subtitle {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .start-page-text {
+    font-size: 14px;
+    line-height: 22px;
+    margin-top: 10px;
+  }
+  .learn-more-button span {
+    font-size: 13px;
+    margin-bottom: -2px;
   }
 }
 
 @media only screen and (max-width: 1200px) {
-  .each-how-it-works-step {
-    width: 300px;
-  }
-  .how-it-works-title {
-    font-size: 55px;
-  }
   .each-how-it-works-step svg {
     height: 130px;
   }
   .each-how-it-works-title {
     font-size: 30px;
   }
-  .each-how-it-works-text {
-    font-size: 16px;
-  }
 }
 @media only screen and (max-width: 1100px) {
   .each-how-it-works-step {
-    width: 250px;
+    width: calc(33% - 30px);
   }
   .each-how-it-works-title {
-    font-size: 28px;
+    font-size: 26px;
     margin-bottom: 15px;
   }
 }
 @media only screen and (max-width: 900px) {
+  .how-it-works-title {
+    font-size: 40px;
+  }
   .how-it-works-wrapper {
     margin-bottom: 120px;
   }
   .each-how-it-works-step {
-    width: 220px;
+    width: calc(33% - 20px);
   }
   .each-how-it-works-title {
-    font-size: 26px;
+    font-size: 22px;
     margin-bottom: 10px;
   }
   .each-how-it-works-step svg {
-    height: 120px;
+    height: 110px;
   }
   .each-how-it-works-text {
     font-size: 15px;
   }
 }
 @media only screen and (max-width: 850px) {
-  .how-it-works-title {
-    margin: 60px 30px;
-  }
   .how-it-works-wrapper {
     padding: 0 30px;
   }
@@ -444,14 +435,14 @@
     margin-bottom: 100px;
   }
   .each-how-it-works-step {
-    width: 200px;
+    width: calc(33% - 15px);
   }
   .each-how-it-works-title {
-    font-size: 24px;
-    margin-bottom: 10px;
+    font-size: 20px;
+    margin-bottom: 7px;
   }
   .each-how-it-works-step svg {
-    height: 100px;
+    height: 90px;
   }
   .each-how-it-works-text {
     font-size: 14px;
@@ -460,94 +451,81 @@
 @media only screen and (max-width: 700px) {
   .how-it-works-title {
     margin-bottom: 0px;
+    font-size: 45px;
+    margin-bottom: 15px;
   }
   .how-it-works-wrapper {
     flex-direction: column;
     justify-content: initial;
     align-items: center;
+    margin-bottom: 0px;
+  }
+  .each-how-it-works-step {
+    width: 100%;
+    max-width: 350px;
     margin-bottom: 60px;
   }
-  .each-how-it-works-step {
-    width: 320px;
-    margin-top: 60px;
-  }
-  .how-it-works-title {
-    font-size: 55px;
-  }
   .each-how-it-works-step svg {
-    height: initial;
-    width: 200px;
+    height: auto;
+    width: 180px;
   }
   .each-how-it-works-title {
-    font-size: 30px;
-  }
-  .each-how-it-works-text {
-    font-size: 17px;
-  }
-}
-@media only screen and (max-width: 600px) {
-  .how-it-works-title {
-    font-size: 40px;
-  }
-  .each-how-it-works-step {
-    margin-top: 45px;
-  }
-  .each-how-it-works-step svg {
-    height: initial;
-    width: 160px;
-  }
-  .each-how-it-works-title {
-    font-size: 25px;
+    font-size: 28px;
   }
   .each-how-it-works-text {
     font-size: 16px;
   }
 }
-@media only screen and (max-width: 400px) {
+@media only screen and (max-width: 600px) {
   .how-it-works-title {
-    font-size: 36px;
+    font-size: 40px;
   }
-  .each-how-it-works-step {
-    width: 280px;
-    margin-top: 60px;
-  }
-  .each-how-it-works-step svg {
-    height: initial;
-    width: 140px;
+}
+@media only screen and (max-width: 500px) {
+  .how-it-works-title {
+    font-size: 35px;
   }
   .each-how-it-works-title {
-    font-size: 23px;
+    font-size: 26px;
+  }
+  .each-how-it-works-step svg {
+    width: 160px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  .how-it-works-wrapper {
+    margin-bottom: 15px;
+  }
+  .how-it-works-title {
+    font-size: 30px;
+    margin-bottom: 5px;
+  }
+  .each-how-it-works-step {
+    margin-bottom: 30px;
+  }
+  .each-how-it-works-title {
+    font-size: 25px;
+  }
+  .each-how-it-works-step svg {
+    width: 150px;
+    margin-bottom: 15px;
   }
   .each-how-it-works-text {
     font-size: 15px;
   }
-} 
-
-@media only screen and (max-width: 1100px) {
-  .main-motto-text {
-    font-size: 60px;
-    margin: 15px 0;
-  }
 }
+
 @media only screen and (max-width: 900px) {
   .main-motto-text {
-    font-size: 55px;
-    margin: 10px 0;
+    font-size: 45px;
   }
 }
 @media only screen and (max-width: 600px) {
   .main-motto-text {
-    font-size: 50px;
-    margin: 5px 0;
+    font-size: 35px;
   }
 }
 @media only screen and (max-width: 500px) {
-  .main-motto-text {
-    font-size: 40px;
-    margin: 0;
-  }
-}
-@media only screen and (max-width: 400px) {
   .main-motto-text {
     font-size: 30px;
   }
@@ -557,49 +535,27 @@
   .staking-left-wrapper svg {
     width: 450px;
   }
-  .staking-right-wrapper {
-    margin-left: 45px;
-  }
-  .staking-title {
-    font-size: 60px;
-  }
-  .staking-text, .staking-button {
-    font-size: 19px;
-  }
-}
-@media only screen and (max-width: 1100px) {
-  .staking-wrapper {
-    margin: 120px 0;
-  }
-  .staking-left-wrapper svg {
-    width: 400px;
-  }
-  .staking-right-wrapper {
-    margin-left: 45px;
-  }
-  .staking-title {
-    font-size: 50px;
-  }
-  .staking-text {
-    font-size: 18px;
-    line-height: 28px;
+  .staking-left-wrapper {
+    margin-right: 45px;
   }
 }
 @media only screen and (max-width: 1000px) {
   .staking-wrapper {
-    margin: 70px 0;
+    margin: 80px 0;
   }
   .staking-left-wrapper svg {
     width: 300px;
   }
-  .staking-right-wrapper {
-    margin-left: 30px;
+  .staking-left-wrapper {
+    margin-right: 30px;
   }
   .staking-title {
     font-size: 40px;
+    margin-bottom: 15px;
   }
   .staking-button {
     font-size: 18px;
+    margin-top: 15px;
   }
   .staking-text {
     font-size: 17px;
@@ -612,14 +568,8 @@
   }
 }
 @media only screen and (max-width: 800px) {
-  .staking-wrapper {
-    margin: 30px 0;
-  }
   .staking-left-wrapper svg {
     width: 250px;
-  }
-  .staking-right-wrapper {
-    margin-left: 30px;
   }
   .staking-title {
     font-size: 30px;
@@ -638,8 +588,13 @@
     justify-content: initial;
     align-items: center;
   }
+  .staking-left-wrapper {
+    margin-bottom: 15px;
+    margin-right: auto;
+  }
   .staking-left-wrapper svg {
     width: 400px;
+    margin-right: auto;
   }
   .staking-right-wrapper {
     margin-left: auto;
@@ -657,13 +612,8 @@
   }
 }
 @media only screen and (max-width: 500px) {
-  .staking-wrapper {
-    margin: 0;
-    margin-bottom: 60px;
-  }
   .staking-left-wrapper svg {
     width: 300px;
-    margin-bottom: -60px;
   }
   .staking-right-wrapper {
     margin-left: auto;
@@ -681,9 +631,11 @@
   }
 }
 @media only screen and (max-width: 400px) {
+  .staking-wrapper {
+    margin: 45px 0;
+  }
   .staking-left-wrapper svg {
     width: 260px;
-    margin-bottom: -60px;
   }
   .staking-right-wrapper {
     margin-left: auto;
@@ -701,14 +653,6 @@
   }
 }
 
-@media only screen and (max-width: 900px) {
-  .projects-title-wrapper {
-    padding-top: 100px;
-  }
-  .project-title {
-    font-size: 50px;
-  }
-}
 @media only screen and (max-width: 850px) {
   .projects-title-wrapper, .projects-header-wrapper {
     padding-left: 30px;
@@ -716,22 +660,11 @@
   }
 }
 @media only screen and (max-width: 700px) {
-  .projects-title-wrapper {
-    padding-top: 80px;
-  }
   .project-title {
     font-size: 40px;
   }
 }
-@media only screen and (max-width: 600px) {
-  .projects-title-wrapper {
-    padding-top: 70px;
-  }
-}
 @media only screen and (max-width: 500px) {
-  .projects-title-wrapper {
-    padding-top: 60px;
-  }
   .project-title {
     font-size: 30px;
     margin-bottom: 15px;
