@@ -331,6 +331,7 @@ window.addEventListener('load', () => {
         status: document.getElementById('status-input').value,
         popularity: document.getElementById('popularity-input').value,
         get_involved_url: document.getElementById('get-involved-url-input').value,
+        will_be_stakable: document.getElementById('will-be-stakable-input').value && document.getElementById('will-be-stakable-input').value == 'true' ? true : false,
         guide: [],
         requirements: [],
         links: {

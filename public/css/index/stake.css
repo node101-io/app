@@ -47,7 +47,7 @@
   margin-bottom: 60px;
 }
 
-.each-stake-project {
+.each-stake-project, .each-coming-stake-project {
   width: 260px;
   height: 320px;
   border: 2px solid var(--border-color);
@@ -60,6 +60,9 @@
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
+}
+.each-coming-stake-project {
+  cursor: default !important;
 }
 .each-stake-project:hover {
   margin-top: -5px;

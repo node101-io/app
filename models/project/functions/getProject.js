@@ -23,6 +23,7 @@ module.exports = (project, callback) => {
     get_involved_url: project.get_involved_url,
     popularity: project.popularity,
     links: project.links,
-    stake_rate: project.stake_rate
+    stake_rate: project.stake_rate,
+    will_be_stakable: project.will_be_stakable
   });
 }

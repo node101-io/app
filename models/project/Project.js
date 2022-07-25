@@ -16,7 +16,7 @@ const popularity_values = ['low', 'medium', 'high'];
 
 const DEFAULT_STAKE_RATE_UPDATE_TIME_IN_MS = 5 * 60 * 1000;
 const DUPLICATED_UNIQUE_FIELD_ERROR_CODE = 11000;
-const DOCUMENT_LIMIT_FOR_FIND_QUERY = 20;
+const DOCUMENT_LIMIT_FOR_FIND_QUERY = 100;
 const MAX_DATABASE_ARRAY_FIELD_LENGTH = 1e4;
 const MAX_DATABASE_TEXT_FIELD_LENGTH = 1e4;
 const LANGUAGE_LENGTH = 2;
@@ -133,6 +133,10 @@ const ProjectSchema = new Schema({
     }
   },
   is_stakable: {
+    type: Boolean,
+    default: false
+  },
+  will_be_stakable: {
     type: Boolean,
     default: false
   },
@@ -274,7 +278,8 @@ ProjectSchema.statics.createProject = function (data, callback) {
             get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
             popularity: data.popularity,
             links: getLinks(data.links),
-            is_stakable: false
+            is_stakable: false,
+            will_be_stakable: data.will_be_stakable ? true : false
           };
         
           const newProject = new Project(newProjectData);
@@ -391,6 +396,9 @@ ProjectSchema.statics.findProjectsByFilters = function (data, callback) {
   if (data.popularity && Array.isArray(data.popularity) && !data.popularity.find(each => !popularity_values.includes(each)))
     filters.popularity = { $in: data.popularity };
 
+  if ('will_be_stakable' in data)
+    filters.will_be_stakable = data.will_be_stakable ? true : false;
+
   Project
     .find(filters)
     .sort({
@@ -431,6 +439,7 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
           dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.toLowerCase().trim() : 'TBA',
           reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.toLowerCase().trim() : 'TBA',
           get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
+          will_be_stakable: false,
           popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
           links: getLinks(data.links),
           is_stakable: true,
@@ -461,6 +470,7 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
         dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.dates.toLowerCase().trim() : 'TBA',
         reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.reward.toLowerCase().trim() : 'TBA',
         get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
+        will_be_stakable: data.will_be_stakable ? true : (project.will_be_stakable ? true : false),
         popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
         links: getLinks(data.links),
         is_stakable: false,

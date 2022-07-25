@@ -6,22 +6,30 @@ module.exports = (req, res) => {
   Project.findStakableProjects({
     language: page_lang
   }, (err, projects) => {
-    if (err)
-      return res.redirect('/error?message=' + err);
+    if (err) return res.redirect('/error?message=' + err);
 
-    return res.render('index/stake', {
-      page: 'index/stake',
-      title: res.__('Stake with us'),
-      includes: {
-        external: {
-          css: ['confirm', 'footer', 'general', 'header', 'page'],
-          js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
-        }
-      },
-      url: '/stake',
-      lang: req.query.lang,
-      page_lang,
-      projects
+    Project.findProjectsByFilters({
+      language: page_lang,
+      is_active: true,
+      will_be_stakable: true
+    }, (err, will_be_stakable_projects) => {
+      if (err) return res.redirect('/error?message=' + err);
+
+      return res.render('index/stake', {
+        page: 'index/stake',
+        title: res.__('Stake with us'),
+        includes: {
+          external: {
+            css: ['confirm', 'footer', 'general', 'header', 'page'],
+            js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
+          }
+        },
+        url: '/stake',
+        lang: req.query.lang,
+        page_lang,
+        projects,
+        will_be_stakable_projects
+      });
     });
   });
 }

@@ -61,6 +61,7 @@
 }
 .new-project-form-input::placeholder {
   color: var(--text-color-light);
+  font-weight: 600;
 }
 .new-project-form-input:focus {
   border: 2px solid var(--main-color);
