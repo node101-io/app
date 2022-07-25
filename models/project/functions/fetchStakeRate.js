@@ -1,8 +1,12 @@
+// Disabled the function for now
+
 const fetch = require('node-fetch');
 
 const STAKE_API_URL = 'https://stake.nodes.guru/_next/data/e2KFuh0xDr4wAZxf9P5n3/index.json';
 
 module.exports = (title, callback) => {
+  return callback(null, 1);
+
   fetch(STAKE_API_URL, {
     method: 'GET'
   })

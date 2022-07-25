@@ -67,11 +67,12 @@
   box-shadow: 0 0 15px var(--border-color);
 }
 .each-stake-project-image {
+  margin-top: 40px;
   width: 100px;
   height: 100px;
   border-radius: 100%;
   background-size: cover;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 .each-stake-project-name {
   margin-bottom: 15px;
@@ -91,7 +92,8 @@
   font-size: 27px;
 }
 .each-stake-project-stake-button {
-  color: var(--text-color);
+  margin-top: auto;
+  color: var(--main-color);
   font-weight: 800;
   font-size: 16px;
   border-radius: 8px;
