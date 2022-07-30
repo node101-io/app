@@ -23,6 +23,14 @@
   margin-bottom: 25px;
   text-align: center;
 }
+.nft-error {
+  width: 300px;
+  font-weight: 700;
+  font-size: 16px;
+  color: rgb(200, 0, 10);
+  margin-bottom: 25px;
+  text-align: center;
+}
 .nft-button {
   background-color: rgb(1, 1, 1);
   color: #68FCE7;
