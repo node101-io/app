@@ -16,7 +16,7 @@ const popularity_values = ['low', 'medium', 'high'];
 
 const DEFAULT_STAKE_RATE_UPDATE_TIME_IN_MS = 5 * 60 * 1000;
 const DUPLICATED_UNIQUE_FIELD_ERROR_CODE = 11000;
-const DOCUMENT_LIMIT_FOR_FIND_QUERY = 100;
+const DOCUMENT_LIMIT_PER_FIND_QUERY = 100;
 const MAX_DATABASE_ARRAY_FIELD_LENGTH = 1e4;
 const MAX_DATABASE_TEXT_FIELD_LENGTH = 1e4;
 const LANGUAGE_LENGTH = 2;
@@ -249,7 +249,6 @@ ProjectSchema.statics.createProject = function (data, callback) {
             const newProject = new Project(newProjectData);
           
             newProject.save((err, project) => {
-              console.log(err);
               if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
               if (err) return callback('database_error');
         
@@ -370,7 +369,7 @@ ProjectSchema.statics.findProjectsByFilters = function (data, callback) {
   const Project = this;
 
   const filters = { is_deleted: { $ne: true } };
-  const limit = data.limit && Number.isInteger(data.limit) && data.limit > 0 && data.limit <= DOCUMENT_LIMIT_FOR_FIND_QUERY ? data.limit : DOCUMENT_LIMIT_FOR_FIND_QUERY;
+  const limit = data.limit && Number.isInteger(data.limit) && data.limit > 0 && data.limit <= DOCUMENT_LIMIT_PER_FIND_QUERY ? data.limit : DOCUMENT_LIMIT_PER_FIND_QUERY;
 
   if (data.nin_id_list && !data.nin_id_list.find(each => !validator.isMongoId(each.toString())))
     filters._id = { $nin: data.nin_id_list.map(each => mongoose.Types.ObjectId(each.toString())) };
@@ -430,7 +429,7 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
       fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
         if (err) return callback(err);
 
-        Project.findByIdAndUpdate(project._id, {$set: {
+        const update = {
           name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
           description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
           guide: getGuide(data.guide),
@@ -447,21 +446,18 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
           stake_api_title: data.stake_api_title.toString(),
           stake_rate,
           last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
-        }}, { new: true }, (err, project) => {
+        };
+
+        update.identifier = update.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : '');
+
+        Project.findByIdAndUpdate(project._id, {$set: update}, err => {
           if (err) return callback('database_error');
     
-          Project.findByIdAndUpdate(project._id, {$set: {
-            identifier: project.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : ''),
-          }}, err => {
-            if (err) return callback('database_error');
-    
-            return callback(null);
-          });
+          return callback(null);
         });
       });
     } else {
-      Project.findByIdAndUpdate(project._id, {$set: {
-        language: data.language && language_values.includes(data.language) ? data.language : project.language,
+      const update = {
         name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
         description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
         guide: getGuide(data.guide),
@@ -476,16 +472,14 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
         is_stakable: false,
         stake_url: null,
         stake_api_title: null
-      }}, { new: true }, (err, project) => {
+      };
+      
+      update.identifier = update.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : '');
+
+      Project.findByIdAndUpdate(project._id, {$set: update}, err => {
         if (err) return callback('database_error');
   
-        Project.findByIdAndUpdate(project._id, {$set: {
-          identifier: project.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : ''),
-        }}, err => {
-          if (err) return callback('database_error');
-  
-          return callback(null);
-        });
+        return callback(null);
       });
     }
   });
