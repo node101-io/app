@@ -4,7 +4,6 @@ const router = express.Router();
 const isAdmin = require('../middleware/isAdmin');
 
 const createGetController = require('../controllers/admin/create/get');
-const cryptistGetController = require('../controllers/admin/cryptist/get');
 const deleteGetController = require('../controllers/admin/delete/get');
 const editGetController = require('../controllers/admin/edit/get');
 const indexGetController = require('../controllers/admin/index/get');
@@ -23,11 +22,6 @@ router.get(
   '/create',
     isAdmin,
     createGetController
-);
-router.get(
-  '/cryptist',
-    isAdmin,
-    cryptistGetController
 );
 router.get(
   '/delete',
