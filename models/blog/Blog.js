@@ -106,84 +106,31 @@ BlogSchema.statics.createBlog = function (data, callback) {
   if (!data || typeof data != 'object')
     return callback('bad_request');
 
-  if (data.language == 'all') {
-    async.timesSeries(
-      language_values.length,
-      (time, next) => {
-        data.language = language_values[time];
-        
-        Blog.createBlog(data, (err, id) => {
-          if (err) return next(err);
+  if (!data.language || !language_values.includes(data.language))
+    return callback('bad_request');
 
-          return next(null, id);
-        });
-      },
-      (err, id_list) => {
-        if (err) return callback(err);
+  if (!data.title || typeof data.title != 'string' || !data.title.length || data.title.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
+    return callback('bad_request');
 
-        return callback(null, id_list);
-      }
-    );
-  } else {
-    if (!data.language || !language_values.includes(data.language))
-      return callback('bad_request');
+  if (!data.subtitle || typeof data.subtitle != 'string' || !data.subtitle.length || data.subtitle.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
+    return callback('bad_request');
 
-    if (!data.title || typeof data.title != 'string' || !data.title.length || data.title.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-      return callback('bad_request');
+  if (!data.type || !type_values.includes(data.type))
+    return callback('bad_request');
 
-    if (!data.subtitle || typeof data.subtitle != 'string' || !data.subtitle.length || data.subtitle.length > MAX_DATABASE_TEXT_FIELD_LENGTH)
-      return callback('bad_request');
+  Image.findImageByUrl(data.image, (err, image) => {
+    if (err) return callback(err);
 
-    if (!data.type || !type_values.includes(data.type))
-      return callback('bad_request');
-
-    Image.findImageByUrl(data.image, (err, image) => {
+    Writer.findWriterById(data.writer_id, (err, writer) => {
       if (err) return callback(err);
 
-      Writer.findWriteById(data.writer_id, (err, writer) => {
-        if (err) return callback(err);
+      if (data.type == 'project') {
+        Project.findProjectById(data.project_id, (err, project) => {
+          if (err) return callback(err);
 
-        if (data.type == 'project') {
-          Project.findProjectById(data.project_id, (err, project) => {
-            if (err) return callback(err);
-
-            Blog.findBlogCountByTypeAndLanguage({
-              type: data.type,
-              project_id: project._id,
-              language: data.language
-            }, (err, order) => {
-              if (err) return callback(err);
-      
-              const newBlogData = {
-                identifier: getIdentifier(data.title),
-                order,
-                writer,
-                language: data.language,
-                type: data.type,
-                title: data.title.trim(),
-                subtitle: data.subtitle.trim(),
-                image: image.url,
-                created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
-                content: getContent(data.content)
-              };
-            
-              const newBlog = new Blog(newBlogData);
-            
-              newBlog.save((err, blog) => {
-                if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
-                if (err) return callback('database_error');
-          
-                Image.findImageByUrlAndSetAsUsed(blog.image, err => {
-                  if (err) return callback(err);
-          
-                  return callback(null, blog._id.toString());
-                });  
-              });
-            });
-          });
-        } else {
           Blog.findBlogCountByTypeAndLanguage({
             type: data.type,
+            project_id: project._id,
             language: data.language
           }, (err, order) => {
             if (err) return callback(err);
@@ -191,9 +138,10 @@ BlogSchema.statics.createBlog = function (data, callback) {
             const newBlogData = {
               identifier: getIdentifier(data.title),
               order,
-              writer,
+              writer_id: writer._id,
               language: data.language,
               type: data.type,
+              project_id: project._id,
               title: data.title.trim(),
               subtitle: data.subtitle.trim(),
               image: image.url,
@@ -214,10 +162,43 @@ BlogSchema.statics.createBlog = function (data, callback) {
               });  
             });
           });
-        }
-      });
+        });
+      } else {
+        Blog.findBlogCountByTypeAndLanguage({
+          type: data.type,
+          language: data.language
+        }, (err, order) => {
+          if (err) return callback(err);
+  
+          const newBlogData = {
+            identifier: getIdentifier(data.title),
+            order,
+            writer_id: writer._id,
+            language: data.language,
+            type: data.type,
+            title: data.title.trim(),
+            subtitle: data.subtitle.trim(),
+            image: image.url,
+            created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
+            content: getContent(data.content)
+          };
+        
+          const newBlog = new Blog(newBlogData);
+        
+          newBlog.save((err, blog) => {
+            if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+            if (err) return callback('database_error');
+      
+            Image.findImageByUrlAndSetAsUsed(blog.image, err => {
+              if (err) return callback(err);
+      
+              return callback(null, blog._id.toString());
+            });  
+          });
+        });
+      }
     });
-  }
+  });
 };
 
 BlogSchema.statics.findBlogById = function (id, callback) {
@@ -303,20 +284,20 @@ BlogSchema.statics.findBlogCountByTypeAndLanguage = function (data, callback) {
 
       Blog
         .find({
-          type,
+          type: data.type,
           project_id: project._id,
-          language,
+          language: data.language,
           is_deleted: { $ne: true } 
         })
         .countDocuments()
         .then(number => callback(null, number))
-        .catch(err => callback('database_error'));
+        .catch(err => {console.log(err);callback('database_error')});
     });
   } else {
     Blog
       .find({
-        type,
-        language,
+        type: data.type,
+        language: data.language,
         is_deleted: { $ne: true } 
       })
       .countDocuments()

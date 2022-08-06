@@ -6,6 +6,12 @@ const isAdmin = require('../middleware/isAdmin');
 const indexGetController = require('../controllers/admin/index/get');
 const loginGetController = require('../controllers/admin/login/get');
 
+const blogsIndexGetController = require('../controllers/admin/blogs/index/get');
+const blogsCreateGetController = require('../controllers/admin/blogs/create/get');
+const blogsDeleteGetController = require('../controllers/admin/blogs/delete/get');
+const blogsEditGetController = require('../controllers/admin/blogs/edit/get');
+const blogsRestoreGetController = require('../controllers/admin/blogs/restore/get');
+
 const projectsIndexGetController = require('../controllers/admin/projects/index/get');
 const projectsCreateGetController = require('../controllers/admin/projects/create/get');
 const projectsDeleteGetController = require('../controllers/admin/projects/delete/get');
@@ -17,6 +23,12 @@ const writersCreateGetController = require('../controllers/admin/writers/create/
 const writersEditGetController = require('../controllers/admin/writers/edit/get');
 
 const loginPostController = require('../controllers/admin/login/post');
+
+const blogsCreatePostController = require('../controllers/admin/blogs/create/post');
+const blogsDeletePostController = require('../controllers/admin/blogs/delete/post');
+const blogsEditPostController = require('../controllers/admin/blogs/edit/post');
+const blogsImagePostController = require('../controllers/admin/blogs/image/post');
+const blogsOrderPostController = require('../controllers/admin/blogs/order/post');
 
 const projectsCreatePostController = require('../controllers/admin/projects/create/post');
 const projectsDeletePostController = require('../controllers/admin/projects/delete/post');
@@ -37,6 +49,32 @@ router.get(
 router.get(
   '/login',
     loginGetController
+);
+
+router.get(
+  '/blogs',
+    isAdmin,
+    blogsIndexGetController
+);
+router.get(
+  '/blogs/create',
+    isAdmin,
+    blogsCreateGetController
+);
+router.get(
+  '/blogs/delete',
+    isAdmin,
+    blogsDeleteGetController
+);
+router.get(
+  '/blogs/edit',
+    isAdmin,
+    blogsEditGetController
+);
+router.get(
+  '/blogs/restore',
+    isAdmin,
+    blogsRestoreGetController
 );
 
 router.get(
@@ -84,6 +122,32 @@ router.get(
 router.post(
   '/login',
     loginPostController
+);
+
+router.post(
+  '/blogs/create',
+    isAdmin,
+    blogsCreatePostController
+);
+router.post(
+  '/blogs/delete',
+    isAdmin,
+    blogsDeletePostController
+);
+router.post(
+  '/blogs/edit',
+    isAdmin,
+    blogsEditPostController
+);
+router.post(
+  '/blogs/image',
+    isAdmin,
+    blogsImagePostController
+);
+router.post(
+  '/blogs/order',
+    isAdmin,
+    blogsOrderPostController
 );
 
 router.post(

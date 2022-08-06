@@ -16,6 +16,7 @@ module.exports = (blog, callback) => {
 
       return callback(null, {
         _id: blog._id.toString(),
+        identifier: blog.identifier,
         writer,
         language: blog.language,
         title: blog.title,
