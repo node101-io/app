@@ -1,0 +1,67 @@
+extends ../partials/header
+block main
+  input.display-none#blog-json(type='text' value=JSON.stringify(blog))
+  .blog-outer-wrapper
+    .blog-wrapper
+      .blog-background(style=`background-image: url(${blog.image})`)
+      .blog-title= blog.title
+      .blog-subtitle= blog.subtitle
+      .blog-created-at POSTED ON: #{blog.created_at}
+      .blog-writer
+        .writer-image(style=`background-image: url(${blog.writer.image})`)
+        .writer-info-wrapper
+          .writer-name= blog.writer.name
+          .writer-position= blog.writer.position
+      each item in blog.content
+        if item.type == 'image'
+          .blog-content-image(style=`background-image: url(${item.content})`)
+        else if item.type == 'video'
+          iframe.blog-content-video(src=item.content)
+        else if item.type == 'code'
+          .blog-content-code
+            .blog-content-code-lines-wrapper
+              each par in item.content.split('\n').filter(each => each.trim().length)
+                .blog-content-code-line= par
+        else if item.type == 'info'
+          each par in item.content.split('\n').filter(each => each.trim().length)
+            .blog-content-info-wrapper
+              .blog-content-info-sign !
+              div(class='blog-content-' + item.type)
+                each text, i in par.split(' ')
+                  if text.includes('{')
+                    a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                  else
+                    span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
+        else
+          each par in item.content.split('\n').filter(each => each.trim().length)
+            div(class='blog-content-' + item.type)
+              each text in par.split(' ')
+                if text.includes('{')
+                  a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                else
+                  span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
+      .blog-buttons-wrapper
+        if blog.previous_blog
+          a.each-blog-button(href='/blog/' + blog.previous_blog.identifier)
+            svg.blog-button-icon(style='margin-right: var(--small-distance)' width='12' height='20' viewBox='0 0 12 20' fill='none' xmlns='http://www.w3.org/2000/svg')
+              path(d='M11.4833 1.18333C11.6378 1.33752 11.7604 1.52067 11.844 1.72229C11.9277 1.92391 11.9707 2.14005 11.9707 2.35833C11.9707 2.57661 11.9277 2.79275 11.844 2.99437C11.7604 3.19599 11.6378 3.37914 11.4833 3.53333L5.01663 10L11.4833 16.4667C11.7949 16.7783 11.97 17.201 11.97 17.6417C11.97 18.0824 11.7949 18.505 11.4833 18.8167C11.1717 19.1283 10.749 19.3034 10.3083 19.3034C9.86759 19.3034 9.44493 19.1283 9.1333 18.8167L1.4833 11.1667C1.32879 11.0125 1.20621 10.8293 1.12258 10.6277C1.03894 10.4261 0.995891 10.2099 0.995891 9.99166C0.995891 9.77338 1.03894 9.55724 1.12258 9.35562C1.20621 9.154 1.32879 8.97085 1.4833 8.81666L9.1333 1.16666C9.76663 0.533329 10.8333 0.533329 11.4833 1.18333Z' fill='var(--main-color)')
+            .blog-button-text= blog.previous_blog.title
+        if blog.next_blog
+          a.each-blog-button(href='/blog/' + blog.next_blog.identifier style=(blog.previous_blog ? '' : 'margin-left: auto'))
+            .blog-button-text= blog.next_blog.title
+            svg.blog-button-icon(style='margin-left: var(--small-distance)' width='12' height='20' viewBox='0 0 12 20' fill='none' xmlns='http://www.w3.org/2000/svg')
+              path(d='M0.516704 1.18333C0.362198 1.33752 0.239619 1.52067 0.155983 1.72229C0.0723472 1.92391 0.0292969 2.14005 0.0292969 2.35833C0.0292969 2.57661 0.0723472 2.79275 0.155983 2.99437C0.239619 3.19599 0.362198 3.37914 0.516704 3.53333L6.98337 10L0.516704 16.4667C0.205075 16.7783 0.0300026 17.201 0.0300026 17.6417C0.0300026 18.0824 0.205075 18.505 0.516704 18.8167C0.828333 19.1283 1.25099 19.3034 1.6917 19.3034C2.13241 19.3034 2.55507 19.1283 2.8667 18.8167L10.5167 11.1667C10.6712 11.0125 10.7938 10.8293 10.8774 10.6277C10.9611 10.4261 11.0041 10.2099 11.0041 9.99166C11.0041 9.77338 10.9611 9.55724 10.8774 9.35562C10.7938 9.154 10.6712 8.97085 10.5167 8.81666L2.8667 1.16666C2.23337 0.533329 1.1667 0.533329 0.516704 1.18333Z' fill='var(--main-color)')
+    .other-blogs-wrapper
+      .other-blogs-header
+        if blog.type == 'node101'
+        else if blog.type == 'term'
+        else if blog.type == 'project'
+          .other-blog-image-wrapper
+            .other-blog-image(style=`background-image: url(${blog.project .image})`)
+          .other-blog-name= blog.project.name.toLocaleUpperCase()
+          .other-blog-text #{__('Read more on')} #{blog.project.name}
+      .other-blogs-content
+        a.each-other-blog
+          .each-other-blog-title What is staking?
+          .each-other-blog-subtitle Learn what is staking
+          .each-other-blog-created-at 07.08.2022

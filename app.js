@@ -34,6 +34,7 @@ if (cluster.isMaster) {
   const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/node101';
 
   const adminRouteController = require('./routes/adminRoute');
+  const blogRouteController = require('./routes/blogRoute');
   const imageRouteController = require('./routes/imageRoute');
   const indexRouteController = require('./routes/indexRoute');
   const projectsRouteController = require('./routes/projectsRoute');
@@ -81,6 +82,7 @@ if (cluster.isMaster) {
 
   app.use('/', indexRouteController);
   app.use('/admin', adminRouteController);
+  app.use('/blog', blogRouteController);
   app.use('/image', imageRouteController);
   app.use('/projects', projectsRouteController);
 
