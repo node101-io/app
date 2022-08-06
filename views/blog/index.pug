@@ -35,7 +35,7 @@ block main
         else
           each par in item.content.split('\n').filter(each => each.trim().length)
             div(class='blog-content-' + item.type)
-              each text in par.split(' ')
+              each text, i in par.split(' ')
                 if text.includes('{')
                   a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
                 else
