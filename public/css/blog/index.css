@@ -5,7 +5,7 @@
   --blog-interval: 30px;
   --blog-writer-image-size: 40px;
   --blog-writer-details-image-size: 100px;
-  --other-blog-image-size: 80px;
+  --other-blog-image-size: 60px;
   --each-other-blog-height: 80px;
 }
 
@@ -321,7 +321,7 @@
   width: fit-content;
   height: fit-content;
   min-height: fit-content;
-  padding: var(--small-distance);
+  padding: 30px;
   margin-bottom: var(--small-distance);
   overflow: hidden;
 }
@@ -331,7 +331,6 @@
   min-height: var(--other-blog-image-size);
   background-size: cover;
   background-position: center;
-  border-radius: 100%;
 }
 .other-blog-name {
   color: var(--text-color);
