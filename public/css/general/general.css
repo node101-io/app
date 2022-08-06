@@ -55,6 +55,14 @@ textarea {
 }
 
 :root {
+  --page-padding: 60px;
+  --small-distance: 10px;
+
+  --border-width: 1px;
+  --border-radius: 7px;
+
+  --shadow-width: 3px;
+
   --main-color: rgb(125, 128, 218);
   --second-color: rgb(185, 214, 242);
   --text-color: rgb(0, 4, 40);

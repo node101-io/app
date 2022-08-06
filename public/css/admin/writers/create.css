@@ -1,0 +1,188 @@
+.new-writer-form {
+  margin: 60px;
+  width: calc(100% - 120px);
+  height: fit-content;
+  min-height: fit-content;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  border-radius: 5px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.new-writer-form-title {
+  color: var(--main-color);
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.new-writer-form-subtitle {
+  color: var(--text-color-light);
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.writer-inputs-outer-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+  margin-bottom: 60px;
+}
+.each-writer-input-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.new-writer-form-input-title {
+  color: var(--text-color);
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.new-writer-form-input {
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  outline: none;
+  border-radius: 5px;
+  width: calc(min(500px, 100%));
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 8px 20px;
+  margin-bottom: 20px;
+}
+.new-writer-form-input::placeholder {
+  color: var(--placeholder-color);
+}
+.new-writer-form-input:focus {
+  border: 2px solid var(--main-color);
+}
+.required-input::after {
+  content: "*";
+  color: var(--main-color);
+  font-weight: 800;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.image-input-outer-wrapper {
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+}
+.choose-image-input-text {
+  width: calc(min(500px, 100%));
+  height: 40px;
+  min-height: 40px;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  margin-bottom: 20px;
+  color: var(--text-color-light);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+.image-input-wrapper {
+  width: calc(min(500px, 100%));
+  height: 40px;
+  min-height: 40px;
+  padding: 0px 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.image-input-wrapper i {
+  color: rgba(167, 167, 168, 0.8);
+  font-size: 14px;
+  cursor: pointer;
+}
+.image-input-wrapper i:hover {
+  color: rgb(167, 167, 160);
+}
+.image-input-wrapper-image {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.image-input-wrapper-image img {
+  height: 100%;
+}
+
+.new-writer-buttons-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+}
+
+.new-writer-back-button {
+  width: calc(min(100%, 235px));
+  height: 45px;
+  background-color: var(--background-color);
+  color: rgb(255, 22, 3);
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 22, 3, 0.3);
+  border: 2px solid rgb(255, 22, 3);
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.new-writer-back-button:hover {
+  box-shadow: 0 0 8px rgba(255, 22, 3, 0.4);
+}
+.new-writer-create-button {
+  width: calc(min(100%, 235px));
+  height: 45px;
+  background-color: var(--main-color);
+  color: var(--background-color);
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 0 0 8px rgba(130, 170, 235, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.new-writer-create-button:hover {
+  box-shadow: 0 0 8px rgba(130, 170, 235, 0.7);
+}
+
+.new-writer-error {
+  margin-top: 25px;
+  height: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgb(255, 22, 3);
+  margin-left: auto;
+}

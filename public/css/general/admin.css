@@ -41,6 +41,12 @@
   height: 50px;
 }
 
+.all-header-title {
+  font-size: 20px;
+  color: var(--text-color);
+  font-weight: 700;
+}
+
 .all-header-buttons-wrapper {
   display: flex;
   align-items: center;
@@ -59,7 +65,7 @@
   margin-bottom: -2px;
 }
 
-.all-header-create-project-button {
+.all-header-create-button {
   text-decoration: none;
   width: 150px;
   height: 50px;
@@ -74,7 +80,7 @@
   cursor: pointer;
   box-shadow: 0 0 6px var(--border-color);
 }
-.all-header-create-project-button:hover {
+.all-header-create-button:hover {
   box-shadow: 0 0 8px var(--border-color);
 }
 

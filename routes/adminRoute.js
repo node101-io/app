@@ -3,84 +3,134 @@ const router = express.Router();
 
 const isAdmin = require('../middleware/isAdmin');
 
-const createGetController = require('../controllers/admin/create/get');
-const deleteGetController = require('../controllers/admin/delete/get');
-const editGetController = require('../controllers/admin/edit/get');
 const indexGetController = require('../controllers/admin/index/get');
 const loginGetController = require('../controllers/admin/login/get');
-const restoreGetController = require('../controllers/admin/restore/get');
 
-const createPostController = require('../controllers/admin/create/post');
-const deletePostController = require('../controllers/admin/delete/post');
-const editPostController = require('../controllers/admin/edit/post');
-const imagePostController = require('../controllers/admin/image/post');
+const projectsIndexGetController = require('../controllers/admin/projects/index/get');
+const projectsCreateGetController = require('../controllers/admin/projects/create/get');
+const projectsDeleteGetController = require('../controllers/admin/projects/delete/get');
+const projectsEditGetController = require('../controllers/admin/projects/edit/get');
+const projectsRestoreGetController = require('../controllers/admin/projects/restore/get');
+
+const writersIndexGetController = require('../controllers/admin/writers/index/get');
+const writersCreateGetController = require('../controllers/admin/writers/create/get');
+const writersEditGetController = require('../controllers/admin/writers/edit/get');
+
 const loginPostController = require('../controllers/admin/login/post');
-const orderPostController = require('../controllers/admin/order/post');
-const statusPostController = require('../controllers/admin/status/post');
+
+const projectsCreatePostController = require('../controllers/admin/projects/create/post');
+const projectsDeletePostController = require('../controllers/admin/projects/delete/post');
+const projectsEditPostController = require('../controllers/admin/projects/edit/post');
+const projectsImagePostController = require('../controllers/admin/projects/image/post');
+const projectsOrderPostController = require('../controllers/admin/projects/order/post');
+const projectsStatusPostController = require('../controllers/admin/projects/status/post');
+
+const writersCreatePostController = require('../controllers/admin/writers/create/post');
+const writersEditPostController = require('../controllers/admin/writers/edit/post');
+const writersImagePostController = require('../controllers/admin/writers/image/post');
 
 router.get(
-  '/create',
+  '/',
     isAdmin,
-    createGetController
-);
-router.get(
-  '/delete',
-    isAdmin,
-    deleteGetController
-);
-router.get(
-  '/edit',
-    isAdmin,
-    editGetController
+    indexGetController
 );
 router.get(
   '/login',
     loginGetController
 );
+
 router.get(
-  '/restore',
+  '/projects',
     isAdmin,
-    restoreGetController
+    projectsIndexGetController
 );
 router.get(
-  '/*',
+  '/projects/create',
     isAdmin,
-    indexGetController
+    projectsCreateGetController
+);
+router.get(
+  '/projects/delete',
+    isAdmin,
+    projectsDeleteGetController
+);
+router.get(
+  '/projects/edit',
+    isAdmin,
+    projectsEditGetController
+);
+router.get(
+  '/projects/restore',
+    isAdmin,
+    projectsRestoreGetController
 );
 
-router.post(
-  '/create',
+router.get(
+  '/writers',
     isAdmin,
-    createPostController
+    writersIndexGetController
 );
-router.post(
-  '/delete',
+router.get(
+  '/writers/create',
     isAdmin,
-    deletePostController
+    writersCreateGetController
 );
-router.post(
-  '/edit',
+router.get(
+  '/writers/edit',
     isAdmin,
-    editPostController
+    writersEditGetController
 );
-router.post(
-  '/image',
-    isAdmin,
-    imagePostController
-);
+
 router.post(
   '/login',
     loginPostController
 );
+
 router.post(
-  '/order',
+  '/projects/create',
     isAdmin,
-    orderPostController
+    projectsCreatePostController
 );
 router.post(
-  '/status',
+  '/projects/delete',
     isAdmin,
-    statusPostController
+    projectsDeletePostController
+);
+router.post(
+  '/projects/edit',
+    isAdmin,
+    projectsEditPostController
+);
+router.post(
+  '/projects/image',
+    isAdmin,
+    projectsImagePostController
+);
+router.post(
+  '/projects/order',
+    isAdmin,
+    projectsOrderPostController
+);
+router.post(
+  '/projects/status',
+    isAdmin,
+    projectsStatusPostController
+);
+
+router.post(
+  '/writers/create',
+    isAdmin,
+    writersCreatePostController
+);
+router.post(
+  '/writers/edit',
+    isAdmin,
+    writersEditPostController
+);
+router.post(
+  '/writers/image',
+    isAdmin,
+    writersImagePostController
 );
 
 module.exports = router;

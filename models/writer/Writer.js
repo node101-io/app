@@ -176,4 +176,14 @@ WriterSchema.statics.findWriterByIdAndUpdateImage = function (id, data, callback
   });
 };
 
+WriterSchema.statics.findAllWritersInAlphabeticalOrder = function (callback) {
+  const Writer = this;
+
+  Writer
+    .find({})
+    .sort({ name: 1 })
+    .then(writers => callback(null, writers))
+    .catch(err => callback('database_error'));
+};
+
 module.exports = mongoose.model('Writer', WriterSchema);
