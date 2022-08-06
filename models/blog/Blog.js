@@ -230,14 +230,14 @@ BlogSchema.statics.findBlogByIdAndFormat = function (id, callback) {
         getBlog(blog, (err, blog) => {
           if (err) return callback(err);
     
-          blog.previous_blog = {
+          blog.previous_blog = prev_blog ? {
             identifier: prev_blog.identifier,
             title: prev_blog.title
-          };
-          blog.next_blog = {
+          } : null;
+          blog.next_blog = next_blog ? {
             identifier: next_blog.identifier,
             title: next_blog.title
-          };
+          } : null;
     
           return callback(null, blog);
         }); 
@@ -247,7 +247,7 @@ BlogSchema.statics.findBlogByIdAndFormat = function (id, callback) {
 };
 
 BlogSchema.statics.findBlogByIdentifier = function (identifier, callback) {
-  const Project = this;
+  const Blog = this;
 
   if (!identifier || typeof identifier != 'string')
     return callback('bad_request');
@@ -324,9 +324,9 @@ BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
 
       Blog
         .find({
-          type,
+          type: data.type,
           project_id: project._id,
-          language,
+          language: data.language,
           is_deleted: { $ne: true } 
         })
         .then(blogs => async.timesSeries(
@@ -343,8 +343,8 @@ BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
   } else {
     Blog
       .find({
-        type,
-        language,
+        type: data.type,
+        language: data.language,
         is_deleted: { $ne: true } 
       })
       .countDocuments()

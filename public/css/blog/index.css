@@ -267,6 +267,7 @@
   min-height: fit-content;
   padding: var(--small-distance);
   margin-bottom: var(--small-distance);
+  overflow: hidden;
 }
 .other-blog-image {
   width: var(--other-blog-image-size);
@@ -274,6 +275,7 @@
   min-height: var(--other-blog-image-size);
   background-size: cover;
   background-position: center;
+  border-radius: 100%;
 }
 .other-blog-name {
   color: var(--text-color);
@@ -315,11 +317,21 @@
   color: var(--text-color);
   font-weight: 700;
   font-size: 16px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .each-other-blog-subtitle {
   color: var(--text-color-light);
   font-weight: 500;
   font-size: 14px;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .each-other-blog-created-at {
   color: var(--main-color);

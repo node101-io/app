@@ -54,14 +54,18 @@ block main
     .other-blogs-wrapper
       .other-blogs-header
         if blog.type == 'node101'
+          .other-blog-image-wrapper
+            .other-blog-image(style=`background-image: url(/res/images/blog/node101.png)`)
+          .other-blog-name Terms
+          .other-blog-text #{__('Learn more on')} Node101
         else if blog.type == 'term'
+          .other-blog-image-wrapper
+            .other-blog-image(style=`background-image: url(/res/images/blog/term.png)`)
+          .other-blog-name Terms
+          .other-blog-text #{__('Learn more on')} crypto terms
         else if blog.type == 'project'
           .other-blog-image-wrapper
             .other-blog-image(style=`background-image: url(${blog.project .image})`)
           .other-blog-name= blog.project.name.toLocaleUpperCase()
           .other-blog-text #{__('Read more on')} #{blog.project.name}
-      .other-blogs-content
-        a.each-other-blog
-          .each-other-blog-title What is staking?
-          .each-other-blog-subtitle Learn what is staking
-          .each-other-blog-created-at 07.08.2022
+      .other-blogs-content= __('Loading')
