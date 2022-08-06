@@ -1,4 +1,4 @@
-const guide_item_type_placeholders = {
+const content_item_type_placeholders = {
   title: 'Enter the title',
   text: 'Enter the text',
   code: 'Enter the code line',
@@ -6,11 +6,9 @@ const guide_item_type_placeholders = {
   image: 'Enter the image url',
   video: 'Enter the YouTube url (use /embed/id syntax)'
 }
-const status_values = ['active', 'upcoming', 'ended'];
-const popularity_values = ['low', 'medium', 'high'];
 
-let project;
-let selected_guide_item_type = 'title'; // Default
+let blog;
+let selected_content_item_type = 'title'; // Default
 let currentGuideItemCountOnEdit = 0;
 
 function uploadImage (file, callback) {
@@ -75,57 +73,57 @@ function createUploadedImage (url, wrapper) {
 }
 
 window.addEventListener('load', () => {
-  project = JSON.parse(document.getElementById('project-json').value);
+  blog = JSON.parse(document.getElementById('blog-json').value);
 
-  const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
-  const guideItemInput = document.getElementById('new-guide-item-text-input');
+  const contentItemsWrapper = document.querySelector('.blog-content-items-wrapper');
+  const contentItemInput = document.getElementById('new-content-item-text-input');
   let lastGuideItemExists = false;
 
-  guideItemInput.addEventListener('keyup', event => {
+  contentItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
       if (lastGuideItemExists) {
         if (event.target.value) {
-          if (selected_guide_item_type == 'image')
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
-          else if (selected_guide_item_type == 'video')
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].src = event.target.value;
+          if (selected_content_item_type == 'image')
+            contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
+          else if (selected_content_item_type == 'video')
+            contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].src = event.target.value;
           else
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');
+            contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');
         } else {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].remove();
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].remove();
           lastGuideItemExists = false;
         }
       } else if (event.target.value) {
         lastGuideItemExists = true;
 
         const newGuideItemWrapper = document.createElement('div');
-        newGuideItemWrapper.classList.add('guide-item-outer-wrapper');
+        newGuideItemWrapper.classList.add('content-item-outer-wrapper');
 
         let newGuideItem;
 
-        if (selected_guide_item_type == 'video') {
+        if (selected_content_item_type == 'video') {
           newGuideItem = document.createElement('iframe');
-          newGuideItem.classList.add('guide-video');
+          newGuideItem.classList.add('content-video');
         } else {
           newGuideItem = document.createElement('div');
-          newGuideItem.classList.add('guide-' + selected_guide_item_type);
+          newGuideItem.classList.add('content-' + selected_content_item_type);
         }
        
-        if (selected_guide_item_type == 'image')
+        if (selected_content_item_type == 'image')
           newGuideItem.style.backgroundImage = `url(${event.target.value})`
-        else if (selected_guide_item_type == 'video')
+        else if (selected_content_item_type == 'video')
           newGuideItem.src = event.target.value;
         else
           newGuideItem.innerHTML = event.target.value.split('\n').join('<br/>');
         newGuideItemWrapper.appendChild(newGuideItem);
 
         const newGuideItemDeleteButton = document.createElement('i');
-        newGuideItemDeleteButton.classList.add('guide-item-delete-button')
+        newGuideItemDeleteButton.classList.add('content-item-delete-button')
         newGuideItemDeleteButton.classList.add('fas');
         newGuideItemDeleteButton.classList.add('fa-trash-alt');
         newGuideItemWrapper.appendChild(newGuideItemDeleteButton);
 
-        guideItemsWrapper.appendChild(newGuideItemWrapper);
+        contentItemsWrapper.appendChild(newGuideItemWrapper);
       }
     }
   });
@@ -139,113 +137,130 @@ window.addEventListener('load', () => {
       createImagePicker(wrapper);
     }
 
-    if (event.target.classList.contains('guide-item-edit-button')) {
+    if (ancestorWithClassName(event.target, 'new-blog-selection-input')) {
+      const target = ancestorWithClassName(event.target, 'new-blog-selection-input');
+
+      if (document.querySelector('.new-blog-selection-input-open'))
+        document.querySelector('.new-blog-selection-input-open').classList.remove('new-blog-selection-input-open');
+
+      target.classList.add('new-blog-selection-input-open');
+    } else if (document.querySelector('.new-blog-selection-input-open')) {
+      document.querySelector('.new-blog-selection-input-open').classList.remove('new-blog-selection-input-open');
+    }
+
+    if (event.target.classList.contains('each-blog-selection-value')) {
+      event.target.parentNode.parentNode.classList.remove('new-blog-selection-input-open');
+      event.target.parentNode.parentNode.childNodes[0].value = event.target.id;
+      event.target.parentNode.parentNode.childNodes[1].innerHTML = event.target.innerHTML;
+    }
+
+    if (event.target.classList.contains('content-item-edit-button')) {
       currentGuideItemCountOnEdit++;
 
-      const guideItemType = event.target.previousElementSibling.className.replace('guide-', '');
+      const contentItemType = event.target.previousElementSibling.className.replace('content-', '');
 
-      const guideItemEditInput = document.createElement('textarea');
-      guideItemEditInput.classList.add('new-project-form-input');
-      guideItemEditInput.classList.add('guide-item-edit-input');
+      const contentItemEditInput = document.createElement('textarea');
+      contentItemEditInput.classList.add('new-blog-form-input');
+      contentItemEditInput.classList.add('content-item-edit-input');
 
-      guideItemEditInput.id = 'guide-edit-input-' + guideItemType;
-      guideItemEditInput.placeholder = 'Please enter a value.';
-      guideItemEditInput.value = event.target.previousElementSibling.innerHTML;
+      contentItemEditInput.id = 'content-edit-input-' + contentItemType;
+      contentItemEditInput.placeholder = 'Please enter a value.';
+      contentItemEditInput.value = event.target.previousElementSibling.innerHTML;
 
       event.target.previousElementSibling.remove();
 
-      event.target.parentNode.appendChild(guideItemEditInput);
-      while (guideItemEditInput.previousElementSibling)
-        event.target.parentNode.insertBefore(guideItemEditInput, guideItemEditInput.previousElementSibling);
+      event.target.parentNode.appendChild(contentItemEditInput);
+      while (contentItemEditInput.previousElementSibling)
+        event.target.parentNode.insertBefore(contentItemEditInput, contentItemEditInput.previousElementSibling);
 
-      guideItemEditInput.focus();
+      contentItemEditInput.focus();
 
       setTimeout(() => {
-        event.target.classList.remove('guide-item-edit-button');
-        event.target.classList.add('guide-item-edit-finish-button');
+        event.target.classList.remove('content-item-edit-button');
+        event.target.classList.add('content-item-edit-finish-button');
         event.target.classList.remove('fa-cog');
         event.target.classList.add('fa-check');
       }, 500);
     }
 
-    if (event.target.classList.contains('guide-item-edit-finish-button')) {
-      const guideInput = event.target.previousElementSibling;
+    if (event.target.classList.contains('content-item-edit-finish-button')) {
+      const contentInput = event.target.previousElementSibling;
 
-      if (!guideInput || !guideInput.value || !guideInput.value.length)
+      if (!contentInput || !contentInput.value || !contentInput.value.length)
         return;
 
       currentGuideItemCountOnEdit--;
 
-      const guideItemType = guideInput.id.replace('guide-edit-input-', '');
+      const contentItemType = contentInput.id.replace('content-edit-input-', '');
 
-      const guideItem = document.createElement('div');
-      guideItem.classList.add('guide-' + guideItemType);
-      guideItem.innerHTML = guideInput.value.split('\n').join('<br/>');
+      const contentItem = document.createElement('div');
+      contentItem.classList.add('content-' + contentItemType);
+      contentItem.innerHTML = contentInput.value.split('\n').join('<br/>');
 
-      guideInput.remove();
+      contentInput.remove();
 
-      event.target.parentNode.appendChild(guideItem);
-      while (guideItem.previousElementSibling)
-        event.target.parentNode.insertBefore(guideItem, guideItem.previousElementSibling);
+      event.target.parentNode.appendChild(contentItem);
+      while (contentItem.previousElementSibling)
+        event.target.parentNode.insertBefore(contentItem, contentItem.previousElementSibling);
 
       setTimeout(() => {
-        event.target.classList.remove('guide-item-edit-finish-button');
-        event.target.classList.add('guide-item-edit-button');
+        event.target.classList.remove('content-item-edit-finish-button');
+        event.target.classList.add('content-item-edit-button');
         event.target.classList.remove('fa-check');
         event.target.classList.add('fa-cog');
       }, 500);
     }
 
-    if (event.target.classList.contains('guide-item-delete-button')) {
+    if (event.target.classList.contains('content-item-delete-button')) {
       event.target.parentNode.remove();
       lastGuideItemExists = false;
-      guideItemInput.value = '';
-      guideItemInput.focus();
+      contentItemInput.value = '';
+      contentItemInput.focus();
     }
 
-    if (event.target.classList.contains('new-guide-item-type-selected') || event.target.parentNode.classList.contains('new-guide-item-type-selected')) {
-      document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'visible';
-    } else if (!event.target.classList.contains('new-guide-item-type-selection-button') && !event.target.parentNode.classList.contains('new-guide-item-type-selection-button') && !event.target.parentNode.parentNode.classList.contains('new-guide-item-type-selection-button')) {
-      document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
+    if (event.target.classList.contains('new-content-item-type-selected') || event.target.parentNode.classList.contains('new-content-item-type-selected')) {
+      document.querySelector('.new-content-item-type-selection-button').style.overflow = 'visible';
+    } else if (!event.target.classList.contains('new-content-item-type-selection-button') && !event.target.parentNode.classList.contains('new-content-item-type-selection-button') && !event.target.parentNode.parentNode.classList.contains('new-content-item-type-selection-button')) {
+      document.querySelector('.new-content-item-type-selection-button').style.overflow = 'hidden';
     }
 
-    if (event.target.classList.contains('each-new-guide-item-type')) {
+    if (event.target.classList.contains('each-new-content-item-type')) {
       if (lastGuideItemExists) {
-        guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].classList.remove(`guide-${selected_guide_item_type}`);
-        guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].classList.add(`guide-${event.target.innerHTML.toLowerCase()}`);
+        contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].classList.remove(`content-${selected_content_item_type}`);
+        contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].classList.add(`content-${event.target.innerHTML.toLowerCase()}`);
 
         if (event.target.innerHTML.toLowerCase() == 'image') {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${guideItemInput.value})`
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${contentItemInput.value})`
         } else if (event.target.innerHTML.toLowerCase() == 'video') {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].remove();
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].remove();
 
           const newGuideItem = document.createElement('iframe');
-          newGuideItem.classList.add('guide-video');
-          newGuideItem.src = guideItemInput.value;
+          newGuideItem.classList.add('content-video');
+          newGuideItem.src = contentItemInput.value;
 
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].appendChild(newGuideItem);
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].insertBefore(newGuideItem, newGuideItem.previousElementSibling);
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].appendChild(newGuideItem);
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].insertBefore(newGuideItem, newGuideItem.previousElementSibling);
         } else {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = guideItemInput.value.split('\n').join('<br/>');;
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = null;
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = contentItemInput.value.split('\n').join('<br/>');;
+          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = null;
         }
       } 
 
-      document.querySelector('.new-guide-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
-      selected_guide_item_type = event.target.innerHTML.toLowerCase();
-      guideItemInput.placeholder = guide_item_type_placeholders[selected_guide_item_type];
-      guideItemInput.focus();
+      document.querySelector('.new-content-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
+      selected_content_item_type = event.target.innerHTML.toLowerCase();
+      contentItemInput.placeholder = content_item_type_placeholders[selected_content_item_type];
+      contentItemInput.focus();
 
-      document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
+      document.querySelector('.new-content-item-type-selection-button').style.overflow = 'hidden';
     }
 
-    if (event.target.classList.contains('new-guide-item-create-button')) {
-      if (selected_guide_item_type != 'image' && selected_guide_item_type != 'video') {
-        const lastGuideItem = guideItemsWrapper.children[guideItemsWrapper.children.length - 1];
+    if (event.target.classList.contains('new-content-item-create-button')) {
+      if (selected_content_item_type != 'image' && selected_content_item_type != 'video') {
+        const lastGuideItem = contentItemsWrapper.children[contentItemsWrapper.children.length - 1];
 
         const newGuideItemEditButton = document.createElement('i');
-        newGuideItemEditButton.classList.add('guide-item-edit-button')
+        newGuideItemEditButton.classList.add('content-item-edit-button')
         newGuideItemEditButton.classList.add('fas');
         newGuideItemEditButton.classList.add('fa-cog');
         lastGuideItem.appendChild(newGuideItemEditButton);
@@ -253,58 +268,12 @@ window.addEventListener('load', () => {
         lastGuideItem.insertBefore(newGuideItemEditButton, newGuideItemEditButton.previousElementSibling);
       }
 
-      guideItemInput.value = '';
+      contentItemInput.value = '';
       lastGuideItemExists = false;
-      guideItemInput.focus();
+      contentItemInput.focus();
     }
 
-    if (event.target.classList.contains('new-requirement-add-button')) {
-      const name = document.getElementById('new-requirement-name-input').value;
-      const value = document.getElementById('new-requirement-value-input').value;
-
-      if (!name || !value)
-        return;
-
-      const newProjectRequirement = document.createElement('div');
-      newProjectRequirement.classList.add('each-project-requirement');
-
-      const requirementDeleteButton = document.createElement('i');
-      requirementDeleteButton.classList.add('each-project-requirement-delete-button');
-      requirementDeleteButton.classList.add('fas');
-      requirementDeleteButton.classList.add('fa-trash-alt');
-      newProjectRequirement.appendChild(requirementDeleteButton);
-
-      const requirementContentWrapper = document.createElement('div');
-      requirementContentWrapper.classList.add('each-project-requirement-content-wrapper');
-
-      const requirementName = document.createElement('div');
-      requirementName.classList.add('each-project-requirement-name');
-      requirementName.innerHTML = name;
-      requirementContentWrapper.appendChild(requirementName);
-
-      const requirementSeperator = document.createElement('div');
-      requirementSeperator.classList.add('each-project-requirement-seperator');
-      requirementSeperator.innerHTML = ':';
-      requirementContentWrapper.appendChild(requirementSeperator);
-
-      const requirementValue = document.createElement('div');
-      requirementValue.classList.add('each-project-requirement-value');
-      requirementValue.innerHTML = value;
-      requirementContentWrapper.appendChild(requirementValue);
-
-      newProjectRequirement.appendChild(requirementContentWrapper);
-
-      document.querySelector('.project-requirements-wrapper').appendChild(newProjectRequirement);
-      document.querySelector('.project-requirements-wrapper').insertBefore(newProjectRequirement, newProjectRequirement.previousElementSibling);
-      document.getElementById('new-requirement-name-input').value = '';
-      document.getElementById('new-requirement-value-input').value = '';
-    }
-
-    if (event.target.classList.contains('each-project-requirement-delete-button')) {
-      event.target.parentNode.remove();
-    }
-
-    if (event.target.id == 'edit-project-back-button') {
+    if (event.target.id == 'edit-blog-back-button') {
       createConfirm({
         title: 'Are you sure you want to exit this page?',
         text: 'Your changes will not be saved. You may loose your progress.',
@@ -315,80 +284,52 @@ window.addEventListener('load', () => {
       });
     }
 
-    if (event.target.id == 'edit-project-save-button') {
-      const error = document.getElementById('new-project-form-error');
+    if (event.target.id == 'edit-blog-save-button') {
+      const error = document.getElementById('edit-blog-form-error');
 
       error.innerHTML = '';
 
       if (currentGuideItemCountOnEdit)
-        return error.innerHTML = 'You have unsaved changes in guide items. Please save them before continue.';
+        return error.innerHTML = 'You have unsaved changes in content items. Please save them before continue.';
 
       const data = {
-        name: document.getElementById('name-input').value,
-        description: document.getElementById('description-input').value,
-        dates: document.getElementById('dates-input').value,
-        reward: document.getElementById('reward-input').value,
-        status: document.getElementById('status-input').value,
-        popularity: document.getElementById('popularity-input').value,
-        get_involved_url: document.getElementById('get-involved-url-input').value,
-        will_be_stakable: document.getElementById('will-be-stakable-input').value && document.getElementById('will-be-stakable-input').value == 'true' ? true : false,
-        guide: [],
-        requirements: [],
-        links: {
-          web: document.getElementById('links-web-input').value,
-          github: document.getElementById('links-github-input').value,
-          telegram: document.getElementById('links-telegram-input').value,
-          medium: document.getElementById('links-medium-input').value,
-          twitter: document.getElementById('links-twitter-input').value,
-          instagram: document.getElementById('links-instagram-input').value,
-          gitbook: document.getElementById('links-gitbook-input').value,
-          docs: document.getElementById('links-docs-input').value,
-          discord: document.getElementById('links-discord-input').value,
-          explorer: document.getElementById('links-explorer-input').value
-        },
-        stake_url: document.getElementById('stake-url-input').value,
-        stake_api_title: document.getElementById('stake-api-title-input').value
+        writer_id: document.getElementById('writer-input').value,
+        title: document.getElementById('title-input').value,
+        subtitle: document.getElementById('subtitle-input').value,
+        content: []
       };
 
-      if (!data.name || !data.name.length)
-        return error.innerHTML = 'Please enter a name.';
-      
-      if (!data.description || !data.description.length)
-        return error.innerHTML = 'Please enter a description.';
+      if (!data.writer_id || !data.writer_id.length)
+        return error.innerHTML = 'Please select a writer.';
 
-      if (!data.status || !status_values.includes(data.status))
-        return error.innerHTML = 'Please enter a valid status.';
+      if (!data.title || !data.title.length)
+        return error.innerHTML = 'Please enter a title.';
 
-      if (!data.popularity || !popularity_values.includes(data.popularity))
-        return error.innerHTML = 'Please enter a valid popularity.';
+      const contentItems = document.querySelectorAll('.content-item-outer-wrapper');
 
-      const guideItems = document.querySelectorAll('.guide-item-outer-wrapper');
-
-      for (let i = 0; i < guideItems.length; i++) {
-        const guide = guideItems[i].childNodes[0];
-        const type = guide.className.replace('guide-', '');
-        const content = type == 'image' ? guide.style.backgroundImage.replace('url(', '').replace(')', '').trim() : (type == 'video' ? guide.src : guide.innerHTML);
-        data.guide.push({
+      for (let i = 0; i < contentItems.length; i++) {
+        const contentItem = contentItems[i].childNodes[0];
+        const type = contentItem.className.replace('content-', '');
+        const content = type == 'image' ? contentItem.style.backgroundImage.replace('url(', '').replace(')', '').trim() : (type == 'video' ? contentItem.src : contentItem.innerHTML);
+        data.content.push({
           type,
           content
         });
       }
 
-      const requirements = document.querySelectorAll('.each-project-requirement-content-wrapper');
-
-      for (let i = 0; i < requirements.length; i++)
-        data.requirements.push({
-          name: requirements[i].childNodes[0].innerHTML,
-          content: requirements[i].childNodes[2].innerHTML
-        });
-
-      serverRequest('/admin/projects/edit?id=' + project._id, 'POST', data, res => {
+      serverRequest('/admin/blogs/edit?id=' + blog._id, 'POST', data, res => {
         if (res.success)
           return window.location.reload();
+        if (res.error == 'duplicated_unique_field')
+          return createConfirm({
+            title: 'Title Duplicate',
+            text: 'A blog with this title already exists. Please enter a different title',
+            reject: 'Close'
+          }, res => { return; });
 
         createConfirm({
           title: 'An Error Occured',
-          text: 'An error occured while creating your project. Please try again later or contact our developer team. Error message: ' + res.error ? res.error : 'unknown_error',
+          text: 'An error occured while saving your blog. Please try again later or contact our developer team. Error message: ' + res.error ? res.error : 'unknown_error',
           reject: 'Close'
         }, res => { return; });
       });
@@ -406,7 +347,7 @@ window.addEventListener('load', () => {
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
 
-        serverRequest('/admin/projects/image?id=' + project._id, 'POST', {
+        serverRequest('/admin/blogs/image?id=' + blog._id, 'POST', {
           image: url
         }, res => {
           if (!res.success) return createConfirm({

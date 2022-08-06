@@ -306,6 +306,16 @@ BlogSchema.statics.findBlogCountByTypeAndLanguage = function (data, callback) {
   }
 };
 
+BlogSchema.statics.findAllBlogs = function (callback) {
+  const Blog = this;
+
+  Blog
+    .find({ is_deleted: { $ne: true } })
+    .sort({ name: 1 })
+    .then(blocks => callback(null, blocks))
+    .catch(err => callback('database_error'));
+}
+
 BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
   const Blog = this;
 

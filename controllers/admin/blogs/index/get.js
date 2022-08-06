@@ -1,24 +1,20 @@
-const language_values = ['en', 'tr', 'ru'];
+const Blog = require('../../../../models/blog/Blog');
 
 module.exports = (req, res) => {
-  let language = req.query.lang;
+  Blog.findAllBlogs((err, blogs) => {
+    if (err) return res.redirect('/error?message=' + err);
 
-  if (!language || !language.length)
-    language = 'en';
-
-  if (!language_values.includes(language))
-    return res.redirect('/admin');
-
-  return res.render('admin/blogs/index', {
-    page: 'admin/blogs/index',
-    title: 'Blogs',
-    includes: {
-      external: {
-        css: ['confirm', 'admin', 'fontawesome', 'general', 'page', 'blogs'],
-        js: ['ancestorWithClassName', 'confirm', 'admin', 'page', 'serverRequest', 'blogs']
-      }
-    },
-    language,
-    url: '/admin/blogs'
+    return res.render('admin/blogs/index', {
+      page: 'admin/blogs/index',
+      title: 'Blogs',
+      includes: {
+        external: {
+          css: ['confirm', 'admin', 'fontawesome', 'general', 'page', 'blogs'],
+          js: ['ancestorWithClassName', 'confirm', 'admin', 'page', 'serverRequest', 'blogs']
+        }
+      },
+      blogs,
+      url: '/admin/blogs'
+    });
   });
 }

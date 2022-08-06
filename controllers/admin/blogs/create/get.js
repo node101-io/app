@@ -2,7 +2,7 @@ const Writer = require('../../../../models/writer/Writer');
 
 module.exports = (req, res) => {
   Writer.findAllWritersInAlphabeticalOrder((err, writers) => {
-    if (err) return res.redirect('/admin');
+    if (err) return res.redirect('/error?message=' + err);
 
     return res.render('admin/blogs/create', {
       page: 'admin/blogs/create',
