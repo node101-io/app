@@ -97,6 +97,7 @@ window.addEventListener('load', () => {
         image: imageWrapper.querySelector('img').src,
         position: document.getElementById('position-input').value,
         links: {
+          linkedin: document.getElementById('links-linkedin-input').value,
           github: document.getElementById('links-github-input').value,
           telegram: document.getElementById('links-telegram-input').value,
           medium: document.getElementById('links-medium-input').value,

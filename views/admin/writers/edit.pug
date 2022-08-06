@@ -30,6 +30,9 @@ block content
         .new-writer-form-title Writer Social Accounts
         .writer-inputs-outer-wrapper
           .each-writer-input-wrapper
+            .new-writer-form-input-title LinkedIn
+            input.new-writer-form-input#links-linkedin-input(type='text' placeholder='Writer\'s LinkedIn url' value=writer.links.linkedin)
+          .each-writer-input-wrapper
             .new-writer-form-input-title GitHub
             input.new-writer-form-input#links-github-input(type='text' placeholder='Writer\'s GitHub url' value=writer.links.github)
           .each-writer-input-wrapper

@@ -93,6 +93,7 @@ window.addEventListener('load', () => {
         name: document.getElementById('name-input').value,
         position: document.getElementById('position-input').value,
         links: {
+          linkedin: document.getElementById('links-linkedin-input').value,
           github: document.getElementById('links-github-input').value,
           telegram: document.getElementById('links-telegram-input').value,
           medium: document.getElementById('links-medium-input').value,

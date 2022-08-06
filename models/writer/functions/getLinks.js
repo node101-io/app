@@ -1,9 +1,10 @@
 const validator = require('validator');
 
-const link_values = ['github', 'telegram', 'medium', 'twitter', 'instagram', 'discord'];
+const link_values = ['linkedin', 'github', 'telegram', 'medium', 'twitter', 'instagram', 'discord'];
 
 module.exports = data => {
   const links = {
+    linkedin: null,
     github: null,
     telegram: null,
     medium: null,
