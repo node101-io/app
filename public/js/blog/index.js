@@ -5,7 +5,7 @@ function createBlog(blog) {
 
   const otherBlog = document.createElement('a');
   otherBlog.classList.add('each-other-blog')
-  otherBlog.href = '/blog/' + blog.identifier;
+  otherBlog.href = '/blog/' + blog.identifier + (language ? '?lang=' + language : '');
 
   const otherBlogTitle = document.createElement('div');
   otherBlogTitle.classList.add('each-other-blog-title');
@@ -44,6 +44,7 @@ function loadSimilarBlogs() {
 
 window.addEventListener('load', () => {
   blog = JSON.parse(document.getElementById('blog-json').value);
+
 
   loadSimilarBlogs();
 });

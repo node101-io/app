@@ -81,7 +81,7 @@ block main
     .staking-right-wrapper
       .staking-title= __('What is staking?')
       .staking-text= __('Staking is basically stocking your coins with a profitable interest. We also help you stake your coins easily in the projects in which we are a validator. By staking your coins in our stake-options, you double your gain, as well as helping us growing and providing you better staking options.')
-      a.staking-button(href='/stake')= __('Read more on staking')
+      a.staking-button(href='/stake' + (lang ? '?lang=' + lang : ''))= __('Read more on staking')
   .main-motto-text= __('See our projects,')
   .main-motto-text= __('Start earning now!')
   .projects-title-wrapper
@@ -94,4 +94,4 @@ block main
       .each-project-info-title-seperator
       .each-project-info-title= __('Popularity')
   .projects-wrapper= __('loading...')
-  a.see-more-projects-button(href='/projects')= __('SEE MORE')
+  a.see-more-projects-button(href='/projects' + + (lang ? '?lang=' + lang : ''))= __('SEE MORE')

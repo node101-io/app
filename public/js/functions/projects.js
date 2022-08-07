@@ -131,7 +131,6 @@ function getProjectLinkIconDOM(link) {
 }
 
 let is_admin = false;
-let language = null;
 let isUploadFistCall = true;
 let isUploadingFinished = false;
 let projects = [];
@@ -141,8 +140,11 @@ function uploadProjects() {
   if (isUploadingFinished)
     return;
 
+  if (!pageLanguage)
+    pageLanguage = document.getElementById('page-language').value; // Make sure pageLanguage is loaded
+
   const filters = {
-    language,
+    language: pageLanguage,
     limit: PROJECT_LIMIT_PER_QUERY,
     nin_id_list: projectIds
   };
@@ -195,8 +197,6 @@ function uploadProjects() {
 }
 
 window.addEventListener('load', () => {
-  if (document.getElementById('language'))
-    language = document.getElementById('language').value;
   if (document.getElementById('is-admin'))
     is_admin = true;
   uploadProjects();

@@ -2,6 +2,9 @@ const alphaNumeric = [
   'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 ];
 
+let language = null;
+let pageLanguage = null;
+
 let isSearchMenuOpen = false;
 let searchFunctionCallCount = 0;
 let highlightedSearchResult = null;
@@ -77,6 +80,11 @@ function loadSearchProjects(query, count) {
 }
 
 window.addEventListener('load', () => {
+  if (document.getElementById('language'))
+    language = document.getElementById('language').value;
+  if (document.getElementById('page-language'))
+    pageLanguage = document.getElementById('page-language').value;
+
   document.querySelector('.all-wrapper').addEventListener('scroll', event => {
     document.querySelector('.all-header-wrapper').style.borderBottomColor = `rgba(236, 236, 236, ${Math.min(event.target.scrollTop, window.innerHeight) / window.innerHeight})`;
     document.querySelector('.all-header-wrapper').style.boxShadow = `0 0 10px rgba(236, 236, 236, ${Math.min(event.target.scrollTop, window.innerHeight) / window.innerHeight})`;
@@ -102,7 +110,7 @@ window.addEventListener('load', () => {
     
     if (isSearchMenuOpen && event.key == 'Enter' && highlightedSearchResult) {
       const identifier = highlightedSearchResult.id.replace('search-project-', '');
-      window.location = '/projects/guide/' + identifier; 
+      window.location = '/projects/guide/' + identifier + (language ? '?lang=' + language : ''); 
     }
 
     if (isSearchMenuOpen && event.key == 'ArrowUp') {
@@ -172,7 +180,7 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('each-all-header-search-result') || (event.target.parentNode && event.target.parentNode.classList.contains('each-all-header-search-result'))) {
       const target = event.target.classList.contains('each-all-header-search-result') ? event.target : event.target.parentNode;
       const identifier = target.id.replace('search-project-', '');
-      window.location = '/projects/guide/' + identifier; 
+      window.location = '/projects/guide/' + identifier + (language ? '?lang=' + language : ''); 
     } else if (event.target.classList.contains('all-header-search-wrapper') || (event.target.parentNode && (event.target.parentNode.classList.contains('all-header-search-wrapper') || (event.target.parentNode.parentNode && (event.target.parentNode.parentNode.classList.contains('all-header-search-wrapper') || (event.target.parentNode.parentNode.parentNode && event.target.parentNode.parentNode.parentNode.classList.contains('all-header-search-wrapper'))))))) {
       searchInput.focus();
       isSearchMenuOpen = true;
