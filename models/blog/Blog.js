@@ -258,38 +258,53 @@ BlogSchema.statics.findBlogByIdentifierAndLanguage = function (data, callback) {
   if (!data.language || !language_values.includes(data.language.toString()))
     data.language = 'en';
 
+  data.language = data.language.toString();
+
   Blog.findOne({
     identifier: data.identifier.trim()
   }, (err, blog) => {
     if (err) return callback('database_error');
     if (!blog) return callback('document_not_found');
 
-    if (blog.language == data.language.toString()) {
+    if (blog.language == data.language) {
       Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
         if (err) return callback(err);
   
         return callback(null, blog);
       });
     } else {
-      Blog.findOne({
-        order: blog.order,
-        type: blog.type,
-        project_id: blog.project_id,
-        language: data.language.toString()
-      }, (err, new_blog) => {
-        if (err) return callback('database_error');
+      Project.findProjectByIdAndGetEquivalanceInGivenLanguage(blog.project_id, data.language, (err, project) => {
+        if (err && err != 'document_not_found')
+          return callback(err);
 
-        if (!new_blog) {
+        if (err) {
           Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
             if (err) return callback(err);
       
             return callback(null, blog);
           });
         } else {
-          Blog.findBlogByIdAndFormat(new_blog._id, (err, blog) => {
-            if (err) return callback(err);
-      
-            return callback(null, blog);
+          Blog.findOne({
+            order: blog.order,
+            type: blog.type,
+            project_id: project._id,
+            language: data.language
+          }, (err, new_blog) => {
+            if (err) return callback('database_error');
+    
+            if (!new_blog) {
+              Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
+                if (err) return callback(err);
+          
+                return callback(null, blog);
+              });
+            } else {
+              Blog.findBlogByIdAndFormat(new_blog._id, (err, blog) => {
+                if (err) return callback(err);
+          
+                return callback(null, blog);
+              });
+            }
           });
         }
       });

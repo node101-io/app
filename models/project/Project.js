@@ -723,4 +723,31 @@ ProjectSchema.statics.findProjectByIdAndRestore = function (id, callback) {
   })
 };
 
+ProjectSchema.statics.findProjectByIdAndGetEquivalanceInGivenLanguage = function (id, language, callback) {
+  const Project = this;
+
+  if (!language || typeof language != 'string' || !language_values.includes(language))
+    return callback('bad_request');
+
+  Project.findProjectById(id, (err, project) => {
+    if (err) return callback(err);
+
+    if (project.language == language)
+      return callback(null, project);
+
+    const new_identifier = project.identifier.replace('_' + project.language, '') + (language == 'en' ? '' : '_' + language);
+
+    Project.findOne({
+      identifier: new_identifier,
+      language
+    }, (err, project) => {
+      if (err) return callback('database_error');
+      if (!project)
+        return callback('document_not_found');
+
+      return callback(null, project);
+    });
+  });
+};
+
 module.exports = mongoose.model('Project', ProjectSchema);
