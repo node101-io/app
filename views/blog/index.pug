@@ -14,9 +14,9 @@ block main
           .writer-position= blog.writer.position
       each item in blog.content
         if item.type == 'image'
-          .blog-content-image(style=`background-image: url(${item.content})`)
+          img.blog-content-image(src=item.content.split('"').join('') alt='node101 ' + blog.title loading='lazy')
         else if item.type == 'video'
-          iframe.blog-content-video(src=item.content)
+          iframe.blog-content-video(src=item.content.split('"').join('') loading='lazy')
         else if item.type == 'code'
           .blog-content-code
             .blog-content-code-lines-wrapper
