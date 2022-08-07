@@ -1,11 +1,17 @@
 const Blog = require('../../../models/blog/Blog');
 
 module.exports = (req, res) => {
-  const identifier = req.originalUrl.replace('/blog/', '');
+  const identifier = req.originalUrl.replace('/blog/', '').split('?')[0];
   const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : 'en');
 
-  Blog.findBlogByIdentifier(identifier, (err, blog) => {
+  Blog.findBlogByIdentifierAndLanguage({
+    language: page_lang,
+    identifier
+  }, (err, blog) => {
     if (err) return res.redirect('/error?message=' + err);
+
+    if (blog.identifier != identifier)
+      return res.redirect('/blog/' + blog.identifier + (req.query.lang ? '?lang=' + req.query.lang : ''));
 
     return res.render('blog/index', {
       page: 'blog/index',

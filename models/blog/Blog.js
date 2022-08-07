@@ -246,23 +246,54 @@ BlogSchema.statics.findBlogByIdAndFormat = function (id, callback) {
   });
 };
 
-BlogSchema.statics.findBlogByIdentifier = function (identifier, callback) {
+BlogSchema.statics.findBlogByIdentifierAndLanguage = function (data, callback) {
   const Blog = this;
 
-  if (!identifier || typeof identifier != 'string')
+  if (!data || typeof data != 'object')
     return callback('bad_request');
 
+  if (!data.identifier || typeof data.identifier != 'string')
+    return callback('bad_request');
+
+  if (!data.language || !language_values.includes(data.language.toString()))
+    data.language = 'en';
+
   Blog.findOne({
-    identifier: identifier.trim()
+    identifier: data.identifier.trim()
   }, (err, blog) => {
     if (err) return callback('database_error');
     if (!blog) return callback('document_not_found');
 
-    Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
-      if (err) return callback(err);
+    if (blog.language == data.language.toString()) {
+      Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
+        if (err) return callback(err);
+  
+        return callback(null, blog);
+      });
+    } else {
+      Blog.findOne({
+        order: blog.order,
+        type: blog.type,
+        project_id: blog.project_id,
+        language: data.language.toString()
+      }, (err, new_blog) => {
+        if (err) return callback('database_error');
 
-      return callback(null, blog);
-    })
+        if (!new_blog) {
+          Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
+            if (err) return callback(err);
+      
+            return callback(null, blog);
+          });
+        } else {
+          Blog.findBlogByIdAndFormat(new_blog._id, (err, blog) => {
+            if (err) return callback(err);
+      
+            return callback(null, blog);
+          });
+        }
+      });
+    }
   });
 };
 
@@ -314,7 +345,7 @@ BlogSchema.statics.findAllBlogs = function (callback) {
     .sort({ name: 1 })
     .then(blocks => callback(null, blocks))
     .catch(err => callback('database_error'));
-}
+};
 
 BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
   const Blog = this;
