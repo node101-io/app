@@ -1,6 +1,8 @@
 extends ../partials/header
 block main
   input.display-none#blog-json(type='text' value=JSON.stringify(blog))
+  .blog-progress-bar-wrapper
+    .blog-progress-bar
   .blog-outer-wrapper
     .blog-wrapper
       .blog-background(style=`background-image: url(${blog.image})`)

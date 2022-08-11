@@ -45,6 +45,12 @@ function loadSimilarBlogs() {
 window.addEventListener('load', () => {
   blog = JSON.parse(document.getElementById('blog-json').value);
 
-
   loadSimilarBlogs();
+
+  const windowWidth = window.innerWidth;
+  const progressBar = document.querySelector('.blog-progress-bar');
+
+  document.querySelector('.all-wrapper').addEventListener('scroll', event => {
+    progressBar.style.width = (event.target.scrollTop / (event.target.scrollHeight - window.innerHeight) * windowWidth) + 'px';
+  });
 });

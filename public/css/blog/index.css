@@ -9,6 +9,20 @@
   --each-other-blog-height: 80px;
 }
 
+.blog-progress-bar-wrapper {
+  position: fixed;
+  margin-top: 0;
+  left: 0;
+  width: 100vw;
+  height: 3px;
+  z-index: 9;
+}
+.blog-progress-bar {
+  height: 3px;
+  width: 0px;
+  background-color: var(--main-color);
+}
+
 .blog-outer-wrapper {
   width: var(--outer-blog-wrapper-width);
   min-width: var(--outer-blog-wrapper-width);
