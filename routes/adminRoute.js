@@ -28,6 +28,7 @@ const blogsCreatePostController = require('../controllers/admin/blogs/create/pos
 const blogsDeletePostController = require('../controllers/admin/blogs/delete/post');
 const blogsEditPostController = require('../controllers/admin/blogs/edit/post');
 const blogsImagePostController = require('../controllers/admin/blogs/image/post');
+const blogsLogoPostController = require('../controllers/admin/blogs/logo/post');
 const blogsOrderPostController = require('../controllers/admin/blogs/order/post');
 
 const projectsCreatePostController = require('../controllers/admin/projects/create/post');
@@ -143,6 +144,11 @@ router.post(
   '/blogs/image',
     isAdmin,
     blogsImagePostController
+);
+router.post(
+  '/blogs/logo',
+    isAdmin,
+    blogsLogoPostController
 );
 router.post(
   '/blogs/order',

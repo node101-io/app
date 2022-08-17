@@ -220,7 +220,7 @@ window.addEventListener('load', () => {
 
     if (event.target.classList.contains('new-content-item-type-selected') || event.target.parentNode.classList.contains('new-content-item-type-selected')) {
       document.querySelector('.new-content-item-type-selection-button').style.overflow = 'visible';
-    } else if (!event.target.classList.contains('new-content-item-type-selection-button') && !event.target.parentNode.classList.contains('new-content-item-type-selection-button') && !event.target.parentNode.parentNode.classList.contains('new-content-item-type-selection-button')) {
+    } else if (!ancestorWithClassName(event.target, 'new-content-item-type-selection-button')) {
       document.querySelector('.new-content-item-type-selection-button').style.overflow = 'hidden';
     }
 
@@ -340,6 +340,8 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('image-input')) {
       const file = event.target.files[0];
 
+      const fileType = event.target.parentNode.parentNode.parentNode.id == 'logo-input-wrapper' ? 'logo' : 'image';
+
       event.target.parentNode.style.cursor = 'progress';
       event.target.parentNode.childNodes[0].innerHTML = 'Uploading...';
       event.target.parentNode.childNodes[1].type = 'text';
@@ -347,8 +349,8 @@ window.addEventListener('load', () => {
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
 
-        serverRequest('/admin/blogs/image?id=' + blog._id, 'POST', {
-          image: url
+        serverRequest(`/admin/blogs/${fileType}?id=${blog._id}`, 'POST', {
+          [fileType]: url
         }, res => {
           if (!res.success) return createConfirm({
             title: 'An Error Occured',

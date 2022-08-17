@@ -27,6 +27,12 @@ block content
           .each-blog-input-wrapper
             .new-blog-form-input-title.required-input Title
             input.new-blog-form-input#title-input(type='text' placeholder='Blog title' value=blog.title)
+          .each-blog-input-wrapper#logo-input-wrapper
+            .new-blog-form-input-title.required-input Logo
+            .image-input-outer-wrapper
+              .image-input-wrapper
+                img.image-input-wrapper-image(src=blog.logo)
+                i.delete-image-button.fas.fa-times
           .each-blog-input-wrapper#image-input-wrapper
             .new-blog-form-input-title.required-input Image
             .image-input-outer-wrapper

@@ -1,6 +1,8 @@
 const Project = require('../../project/Project');
 const Writer = require('../../writer/Writer');
 
+const DEFAULT_LOGO = '/res/images/blog/node101.png';
+
 module.exports = (blog, callback) => {
   if (!blog || !blog._id)
     return callback('bad_request');
@@ -24,6 +26,7 @@ module.exports = (blog, callback) => {
         type: blog.type,
         project,
         created_at: blog.created_at,
+        logo: blog.logo || DEFAULT_LOGO,
         image: blog.image,
         content: blog.content,
         view_count: blog.view_count,

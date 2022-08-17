@@ -249,12 +249,16 @@ window.addEventListener('load', () => {
 
     if (event.target.id == 'new-blog-create-button') {
       const error = document.getElementById('new-blog-form-error');
+      const logoWrapper = document.getElementById('logo-input-wrapper');
       const imageWrapper = document.getElementById('image-input-wrapper');
 
       error.innerHTML = '';
 
+      if (!logoWrapper.querySelector('img') || !logoWrapper.querySelector('img').src)
+        return error.innerHTML = 'Please choose a logo.';
+
       if (!imageWrapper.querySelector('img') || !imageWrapper.querySelector('img').src)
-        return error.innerHTML = 'Please choose an image';
+        return error.innerHTML = 'Please choose an image.';
 
       const blog = {
         language: document.getElementById('language-input').value,
@@ -263,6 +267,7 @@ window.addEventListener('load', () => {
         project_id: document.getElementById('project-id-input').value,
         title: document.getElementById('title-input').value,
         subtitle: document.getElementById('subtitle-input').value,
+        logo: logoWrapper.querySelector('img').src,
         image: imageWrapper.querySelector('img').src,
         content: []
       };
