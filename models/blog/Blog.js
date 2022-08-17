@@ -476,7 +476,6 @@ BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
         language: data.language,
         is_deleted: { $ne: true } 
       })
-      .countDocuments()
       .then(blogs => async.timesSeries(
         blogs.length,
         (time, next) => Blog.findBlogByIdAndFormat(blogs[time]._id, (err, blog) => next(err, blog)),
