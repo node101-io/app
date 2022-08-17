@@ -10,9 +10,32 @@ module.exports = (blog, callback) => {
   if (blog.is_deleted)
     return callback('not_authenticated_request');
 
-  Project.findProjectById(blog.project_id, (err, project) => {
-    if (err) return callback(err);
-
+  if (blog.type == 'project') {
+    Project.findProjectById(blog.project_id, (err, project) => {
+      if (err) return callback(err);
+  
+      Writer.findWriterById(blog.writer_id, (err, writer) => {
+        if (err) return callback(err);
+  
+        return callback(null, {
+          _id: blog._id.toString(),
+          identifier: blog.identifier,
+          writer,
+          language: blog.language,
+          title: blog.title,
+          subtitle: blog.subtitle,
+          type: blog.type,
+          project,
+          created_at: blog.created_at,
+          logo: blog.logo || DEFAULT_LOGO,
+          image: blog.image,
+          content: blog.content,
+          view_count: blog.view_count,
+          like_count: blog.like_count
+        });
+      });
+    });
+  } else {
     Writer.findWriterById(blog.writer_id, (err, writer) => {
       if (err) return callback(err);
 
@@ -24,7 +47,7 @@ module.exports = (blog, callback) => {
         title: blog.title,
         subtitle: blog.subtitle,
         type: blog.type,
-        project,
+        project: {},
         created_at: blog.created_at,
         logo: blog.logo || DEFAULT_LOGO,
         image: blog.image,
@@ -33,5 +56,5 @@ module.exports = (blog, callback) => {
         like_count: blog.like_count
       });
     });
-  });
+  }
 }

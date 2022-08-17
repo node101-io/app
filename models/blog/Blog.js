@@ -351,7 +351,7 @@ BlogSchema.statics.findBlogCountByTypeAndLanguage = function (data, callback) {
         })
         .countDocuments()
         .then(number => callback(null, number))
-        .catch(err => {console.log(err);callback('database_error')});
+        .catch(err => callback('database_error'));
     });
   } else {
     Blog
