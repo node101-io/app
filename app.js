@@ -32,7 +32,8 @@ if (cluster.isMaster) {
 
   const PORT = process.env.PORT || 3000;
   const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/node101';
-  const MAX_SERVER_UPLOAD_LIMIT = '50mb';
+  const MAX_SERVER_UPLOAD_LIMIT = 52428800;
+  const MAX_SERVER_PARAMETER_LIMIT = 50000;
 
   const adminRouteController = require('./routes/adminRoute');
   const blogRouteController = require('./routes/blogRoute');
@@ -57,11 +58,12 @@ if (cluster.isMaster) {
 
   app.use(express.static(path.join(__dirname, 'public')));
   app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+  app.use(bodyParser.json({ limit: MAX_SERVER_UPLOAD_LIMIT }));
   app.use(bodyParser.urlencoded({
-    extended: false,
-    limit: MAX_SERVER_UPLOAD_LIMIT
+    extended: true,
+    limit: MAX_SERVER_UPLOAD_LIMIT,
+    parameter: MAX_SERVER_PARAMETER_LIMIT
   }));
-  app.use(bodyParser.json());
 
   const sessionOptions = session({
     secret: process.env.SESSION_SECRET,
