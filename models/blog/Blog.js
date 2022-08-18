@@ -383,7 +383,8 @@ BlogSchema.statics.getTypesWithBlogsByLanguage = function (language, callback) {
     return callback('bad_request');
 
   Blog.find({
-    language
+    language,
+    is_deleted: { $ne: true }
   }, (err, blogs) => {
     if (err) return callback('database_error');
     const types = [];
@@ -541,10 +542,10 @@ BlogSchema.statics.findBlogByIdAndUpdate = function (id, data, callback) {
    
     update.identifier = getIdentifier(update.title);
 
-    Blog.findByIdAndUpdate(blog._id, {$set: update}, err => {
+    Blog.findByIdAndUpdate(blog._id, {$set: update}, { new: true }, (err, blog) => {
       if (err) return callback('database_error');
 
-      return callback(null);
+      return callback(null, blog.identifier);
     });
   });
 };

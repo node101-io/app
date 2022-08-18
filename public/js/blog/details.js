@@ -7,7 +7,8 @@ function createBlog(_blog) {
   otherBlog.classList.add('each-other-blog');
   if (_blog._id.toString() == blog._id.toString())
     otherBlog.classList.add('each-other-blog-selected');
-  otherBlog.href = '/blog/' + _blog.identifier + (language ? '?lang=' + language : '');
+  else
+    otherBlog.href = '/blog/' + _blog.identifier + (language ? '?lang=' + language : '');
 
   const otherBlogLogo = document.createElement('div');
   otherBlogLogo.classList.add('each-other-blog-logo');

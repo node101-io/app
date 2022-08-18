@@ -409,7 +409,7 @@
 .each-other-blog-title {
   color: var(--text-color);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
