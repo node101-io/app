@@ -50,6 +50,12 @@ block content
           .each-blog-input-wrapper
             .new-blog-form-input-title.required-input Title
             input.new-blog-form-input#title-input(type='text' placeholder='Blog title')
+          .each-blog-input-wrapper#logo-input-wrapper
+            .new-blog-form-input-title.required-input Logo
+            .image-input-outer-wrapper
+              label.choose-image-input-text
+                span Click to choose an image from your device
+                input.display-none.image-input(type="file" accept="image/*")
           .each-blog-input-wrapper#image-input-wrapper
             .new-blog-form-input-title.required-input Image
             .image-input-outer-wrapper

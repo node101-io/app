@@ -7,26 +7,26 @@
   flex-direction: column;
 }
 
-.projects-title-wrapper {
+.blogs-title-wrapper {
   display: flex;
   align-items: flex-end;
   height: 60px;
   padding: 0 60px;
 }
-.projects-title {
+.blogs-title {
   color: var(--text-color);
   font-weight: 800;
   font-size: 60px;
 }
 
-.projects-wrapper {
+.blogs-wrapper {
   width: 100%;
   height: fit-content;
   min-height: fit-content;
   margin: 60px 0px;
 }
 
-.each-deleted-project {
+.each-deleted-blog {
   width: calc(100% - 120px);
   margin: 0 60px;
   border: 1px solid var(--border-color);
@@ -37,20 +37,20 @@
   border-radius: 8px;
   padding: 0 15px;
 }
-.each-deleted-project-restore-button {
+.each-deleted-blog-restore-button {
   text-decoration: none;
   margin-right: 15px;
   opacity: 0.8;
   margin-top: 5px;
 }
-.each-deleted-project-restore-button:hover {
+.each-deleted-blog-restore-button:hover {
   opacity: 1;
 }
-.each-deleted-project-restore-button svg {
+.each-deleted-blog-restore-button svg {
   width: 16px;
 } 
 
-.each-deleted-project-name {
+.each-deleted-blog-name {
   color: var(--text-color);
   font-weight: 800;
   font-size: 18px;

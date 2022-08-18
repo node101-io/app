@@ -21,6 +21,8 @@ const MAX_DATABASE_ARRAY_FIELD_LENGTH = 1e4;
 const MAX_DATABASE_TEXT_FIELD_LENGTH = 1e4;
 const LANGUAGE_LENGTH = 2;
 
+const DEFAULT_LOGO = '/res/images/blog/node101.png';
+
 const Schema = mongoose.Schema;
 
 const BlogSchema = new Schema({
@@ -65,6 +67,12 @@ const BlogSchema = new Schema({
     type: String,
     default: null,
     maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH
+  },
+  logo: {
+    type: String,
+    maxlength: MAX_DATABASE_TEXT_FIELD_LENGTH,
+    required: true,
+    default: DEFAULT_LOGO
   },
   image: {
     type: String,
@@ -118,19 +126,58 @@ BlogSchema.statics.createBlog = function (data, callback) {
   if (!data.type || !type_values.includes(data.type))
     return callback('bad_request');
 
-  Image.findImageByUrl(data.image, (err, image) => {
+  Image.findImageByUrl(data.logo, (err, logo) => {
     if (err) return callback(err);
 
-    Writer.findWriterById(data.writer_id, (err, writer) => {
+    Image.findImageByUrl(data.image, (err, image) => {
       if (err) return callback(err);
-
-      if (data.type == 'project') {
-        Project.findProjectById(data.project_id, (err, project) => {
-          if (err) return callback(err);
-
+  
+      Writer.findWriterById(data.writer_id, (err, writer) => {
+        if (err) return callback(err);
+  
+        if (data.type == 'project') {
+          Project.findProjectById(data.project_id, (err, project) => {
+            if (err) return callback(err);
+  
+            Blog.findBlogCountByTypeAndLanguage({
+              type: data.type,
+              project_id: project._id,
+              language: data.language
+            }, (err, order) => {
+              if (err) return callback(err);
+      
+              const newBlogData = {
+                identifier: getIdentifier(data.title),
+                order,
+                writer_id: writer._id,
+                language: data.language,
+                type: data.type,
+                project_id: project._id,
+                title: data.title.trim(),
+                subtitle: data.subtitle.trim(),
+                logo: logo.url,
+                image: image.url,
+                created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
+                content: getContent(data.content)
+              };
+            
+              const newBlog = new Blog(newBlogData);
+            
+              newBlog.save((err, blog) => {
+                if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+                if (err) return callback('database_error');
+          
+                Image.findImageByUrlAndSetAsUsed(blog.image, err => {
+                  if (err) return callback(err);
+          
+                  return callback(null, blog._id.toString());
+                });  
+              });
+            });
+          });
+        } else {
           Blog.findBlogCountByTypeAndLanguage({
             type: data.type,
-            project_id: project._id,
             language: data.language
           }, (err, order) => {
             if (err) return callback(err);
@@ -141,9 +188,9 @@ BlogSchema.statics.createBlog = function (data, callback) {
               writer_id: writer._id,
               language: data.language,
               type: data.type,
-              project_id: project._id,
               title: data.title.trim(),
               subtitle: data.subtitle.trim(),
+              logo: logo.url,
               image: image.url,
               created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
               content: getContent(data.content)
@@ -162,41 +209,8 @@ BlogSchema.statics.createBlog = function (data, callback) {
               });  
             });
           });
-        });
-      } else {
-        Blog.findBlogCountByTypeAndLanguage({
-          type: data.type,
-          language: data.language
-        }, (err, order) => {
-          if (err) return callback(err);
-  
-          const newBlogData = {
-            identifier: getIdentifier(data.title),
-            order,
-            writer_id: writer._id,
-            language: data.language,
-            type: data.type,
-            title: data.title.trim(),
-            subtitle: data.subtitle.trim(),
-            image: image.url,
-            created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
-            content: getContent(data.content)
-          };
-        
-          const newBlog = new Blog(newBlogData);
-        
-          newBlog.save((err, blog) => {
-            if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
-            if (err) return callback('database_error');
-      
-            Image.findImageByUrlAndSetAsUsed(blog.image, err => {
-              if (err) return callback(err);
-      
-              return callback(null, blog._id.toString());
-            });  
-          });
-        });
-      }
+        }
+      });
     });
   });
 };
@@ -337,7 +351,7 @@ BlogSchema.statics.findBlogCountByTypeAndLanguage = function (data, callback) {
         })
         .countDocuments()
         .then(number => callback(null, number))
-        .catch(err => {console.log(err);callback('database_error')});
+        .catch(err => callback('database_error'));
     });
   } else {
     Blog
@@ -360,6 +374,66 @@ BlogSchema.statics.findAllBlogs = function (callback) {
     .sort({ name: 1 })
     .then(blocks => callback(null, blocks))
     .catch(err => callback('database_error'));
+};
+
+BlogSchema.statics.getTypesWithBlogsByLanguage = function (language, callback) {
+  const Blog = this;
+
+  if (!language || !language_values.includes(language))
+    return callback('bad_request');
+
+  Blog.find({
+    language,
+    is_deleted: { $ne: true }
+  }, (err, blogs) => {
+    if (err) return callback('database_error');
+    const types = [];
+
+    async.timesSeries(
+      blogs.length,
+      (time, next) => {
+        const blog = blogs[time];
+
+        if (types.find(each => each._id == blog.type)) {
+          types.find(each => each._id == blog.type).count++;
+          return next(null);
+        }
+
+        if (blog.type != 'project') {
+          types.push({
+            _id: blog.type,
+            name: blog.type,
+            image: `/res/images/blog/${blog.type}.png`,
+            count: 1
+          });
+          return next(null)
+        }
+
+        Project.findProjectById(blog.project_id, (err, project) => {
+          if (err) return next(err);
+
+          if (types.find(each => each.name == project.name)) {
+            types.find(each => each.name == project.name).count++;
+            return next(null);
+          }
+
+          types.push({
+            _id: project._id.toString(),
+            name: project.name,
+            image: project.image,
+            count: 1
+          });
+
+          return next(null)
+        });
+      },
+      err => {
+        if (err) return callback(err);
+
+        return callback(null, types);
+      }
+    );
+  });
 };
 
 BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
@@ -403,7 +477,6 @@ BlogSchema.statics.findBlogsByTypeAndLanguage = function (data, callback) {
         language: data.language,
         is_deleted: { $ne: true } 
       })
-      .countDocuments()
       .then(blogs => async.timesSeries(
         blogs.length,
         (time, next) => Blog.findBlogByIdAndFormat(blogs[time]._id, (err, blog) => next(err, blog)),
@@ -469,10 +542,10 @@ BlogSchema.statics.findBlogByIdAndUpdate = function (id, data, callback) {
    
     update.identifier = getIdentifier(update.title);
 
-    Blog.findByIdAndUpdate(blog._id, {$set: update}, err => {
+    Blog.findByIdAndUpdate(blog._id, {$set: update}, { new: true }, (err, blog) => {
       if (err) return callback('database_error');
 
-      return callback(null);
+      return callback(null, blog.identifier);
     });
   });
 };
@@ -483,9 +556,10 @@ BlogSchema.statics.checkIfImageIsUsed = function (url, callback) {
   if (!url || typeof url != 'string')
     return callback('bad_request');
 
-  Blog.findOne({
-    image: url.trim()
-  }, (err, blog) => {
+  Blog.findOne({$or: [
+    { logo: url.trim() },
+    { image: url.trim() }
+  ]}, (err, blog) => {
     if (err)
       return callback('database_error');
     if (!blog)
@@ -516,6 +590,42 @@ BlogSchema.statics.findBlogByIdAndUpdateImage = function (id, data, callback) {
             if (res) return callback(null); // Another blog is using the image
 
             Image.findImageByUrlAndDelete(blog.image, err => {
+              if (err) return callback(err);
+      
+              return callback(null); 
+            });
+          });
+        });
+      });
+    });
+  });
+};
+
+BlogSchema.statics.findBlogByIdAndUpdateLogo = function (id, data, callback) {
+  const Blog = this;
+
+  Blog.findBlogById(id, (err, blog) => {
+    if (err) return callback(err);
+
+    Image.findImageByUrl(data.logo, (err, logo) => {
+      if (err) return callback(err);
+
+      Blog.findByIdAndUpdate(blog._id, {$set: {
+        logo: logo.url
+      }}, err => {
+        if (err) return callback('database_error');
+
+        Image.findImageByUrlAndSetAsUsed(logo.url, err => {
+          if (err) return callback(err);
+
+          if (blog.logo == DEFAULT_LOGO)
+            return callback(null);
+
+          Blog.checkIfImageIsUsed(blog.logo, (err, res) => {
+            if (err) return callback(err);
+            if (res) return callback(null); // Another blog is using the image
+
+            Image.findImageByUrlAndDelete(blog.logo, err => {
               if (err) return callback(err);
       
               return callback(null); 
