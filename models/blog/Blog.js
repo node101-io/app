@@ -383,7 +383,8 @@ BlogSchema.statics.getTypesWithBlogsByLanguage = function (language, callback) {
     return callback('bad_request');
 
   Blog.find({
-    language
+    language,
+    is_deleted: { $ne: true }
   }, (err, blogs) => {
     if (err) return callback('database_error');
     const types = [];
