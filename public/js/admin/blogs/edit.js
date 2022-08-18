@@ -318,8 +318,10 @@ window.addEventListener('load', () => {
       }
 
       serverRequest('/admin/blogs/edit?id=' + blog._id, 'POST', data, res => {
-        if (res.success)
+        if (res.success && res.identifier) {
+          window.open('/blog/' + res.identifier, '_blank');
           return window.location.reload();
+        }
         if (res.error == 'duplicated_unique_field')
           return createConfirm({
             title: 'Title Duplicate',
