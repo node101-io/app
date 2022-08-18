@@ -31,5 +31,14 @@
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "validator": "^13.7.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/node101-io/app.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/node101-io/app/issues"
+  },
+  "homepage": "https://github.com/node101-io/app#readme"
 }

@@ -72,6 +72,10 @@ block content
                 .each-new-content-item-type= content_type.substring(0, 1).toUpperCase() + content_type.substring(1)
             .new-content-item-create-button Add
           textarea.new-content-item-text-input#new-content-item-text-input.new-blog-form-input(type='text' placeholder='Enter the title')
+        .image-input-outer-wrapper
+          label.choose-image-input-text#content-image-input
+            span Click to choose an image from your device
+            input.display-none.image-input(type="file" accept="image/*")
         .new-blog-buttons-line
           .new-blog-back-button#new-blog-back-button Cancel
           .new-blog-create-button#new-blog-create-button Add
