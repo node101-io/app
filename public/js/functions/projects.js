@@ -141,7 +141,7 @@ function uploadProjects() {
     return;
 
   if (!pageLanguage)
-    pageLanguage = document.getElementById('page-language').value; // Make sure pageLanguage is loaded
+    pageLanguage = document.getElementById('page-language') ? document.getElementById('page-language').value : document.getElementById('language').value; // Make sure pageLanguage is loaded
 
   const filters = {
     language: pageLanguage,
