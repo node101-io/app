@@ -373,41 +373,65 @@ BlogSchema.statics.findBlogByIdentifierAndLanguage = function (data, callback) {
         return callback(null, blog);
       });
     } else {
-      Project.findProjectByIdAndGetEquivalanceInGivenLanguage(blog.project_id, data.language, (err, project) => {
-        if (err && err != 'document_not_found')
-          return callback(err);
-
-        if (err) {
-          Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
-            if (err) return callback(err);
+      if (blog.type == 'project') {
+        Project.findProjectByIdAndGetEquivalanceInGivenLanguage(blog.project_id, data.language, (err, project) => {
+          if (err && err != 'document_not_found')
+            return callback(err);
+  
+          if (err) {
+            Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
+              if (err) return callback(err);
+        
+              return callback(null, blog);
+            });
+          } else {
+            Blog.findOne({
+              order: blog.order,
+              type: blog.type,
+              project_id: project._id,
+              language: data.language
+            }, (err, new_blog) => {
+              if (err) return callback('database_error');
       
-            return callback(null, blog);
-          });
-        } else {
-          Blog.findOne({
-            order: blog.order,
-            type: blog.type,
-            project_id: project._id,
-            language: data.language
-          }, (err, new_blog) => {
-            if (err) return callback('database_error');
-    
-            if (!new_blog) {
-              Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
-                if (err) return callback(err);
-          
-                return callback(null, blog);
-              });
-            } else {
-              Blog.findBlogByIdAndFormat(new_blog._id, (err, blog) => {
-                if (err) return callback(err);
-          
-                return callback(null, blog);
-              });
-            }
-          });
-        }
-      });
+              if (!new_blog) {
+                Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
+                  if (err) return callback(err);
+            
+                  return callback(null, blog);
+                });
+              } else {
+                Blog.findBlogByIdAndFormat(new_blog._id, (err, blog) => {
+                  if (err) return callback(err);
+            
+                  return callback(null, blog);
+                });
+              }
+            });
+          }
+        }); 
+      } else {
+        Blog.findOne({
+          order: blog.order,
+          type: blog.type,
+          language: data.language
+        }, (err, new_blog) => {
+          if (err) return callback('database_error');
+  
+          if (!new_blog) {
+            Blog.findBlogByIdAndFormat(blog._id, (err, blog) => {
+              if (err) return callback(err);
+        
+              return callback(null, blog);
+            });
+          } else {
+            Blog.findBlogByIdAndFormat(new_blog._id, (err, blog) => {
+              if (err) return callback(err);
+        
+              return callback(null, blog);
+            });
+          }
+        });
+      }
     }
   });
 };
