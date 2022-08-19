@@ -254,8 +254,10 @@ window.addEventListener('load', () => {
 
       error.innerHTML = '';
 
-      if (!logoWrapper.querySelector('img') || !logoWrapper.querySelector('img').src)
-        return error.innerHTML = 'Please choose a logo.';
+      let logo = null;
+
+      if (logoWrapper.querySelector('img') && logoWrapper.querySelector('img').src)
+        logo = logoWrapper.querySelector('img').src;
 
       if (!imageWrapper.querySelector('img') || !imageWrapper.querySelector('img').src)
         return error.innerHTML = 'Please choose an image.';
@@ -267,7 +269,7 @@ window.addEventListener('load', () => {
         project_id: document.getElementById('project-id-input').value,
         title: document.getElementById('title-input').value,
         subtitle: document.getElementById('subtitle-input').value,
-        logo: logoWrapper.querySelector('img').src,
+        logo,
         image: imageWrapper.querySelector('img').src,
         content: []
       };
