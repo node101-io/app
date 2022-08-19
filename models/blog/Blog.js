@@ -126,9 +126,95 @@ BlogSchema.statics.createBlog = function (data, callback) {
   if (!data.type || !type_values.includes(data.type))
     return callback('bad_request');
 
-  Image.findImageByUrl(data.logo, (err, logo) => {
-    if (err) return callback(err);
-
+  if (data.logo) {
+    Image.findImageByUrl(data.logo, (err, logo) => {
+      if (err) return callback(err);
+  
+      Image.findImageByUrl(data.image, (err, image) => {
+        if (err) return callback(err);
+    
+        Writer.findWriterById(data.writer_id, (err, writer) => {
+          if (err) return callback(err);
+    
+          if (data.type == 'project') {
+            Project.findProjectById(data.project_id, (err, project) => {
+              if (err) return callback(err);
+    
+              Blog.findBlogCountByTypeAndLanguage({
+                type: data.type,
+                project_id: project._id,
+                language: data.language
+              }, (err, order) => {
+                if (err) return callback(err);
+        
+                const newBlogData = {
+                  identifier: getIdentifier(data.title),
+                  order,
+                  writer_id: writer._id,
+                  language: data.language,
+                  type: data.type,
+                  project_id: project._id,
+                  title: data.title.trim(),
+                  subtitle: data.subtitle.trim(),
+                  logo: logo.url,
+                  image: image.url,
+                  created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
+                  content: getContent(data.content)
+                };
+              
+                const newBlog = new Blog(newBlogData);
+              
+                newBlog.save((err, blog) => {
+                  if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+                  if (err) return callback('database_error');
+            
+                  Image.findImageByUrlAndSetAsUsed(blog.image, err => {
+                    if (err) return callback(err);
+            
+                    return callback(null, blog._id.toString());
+                  });  
+                });
+              });
+            });
+          } else {
+            Blog.findBlogCountByTypeAndLanguage({
+              type: data.type,
+              language: data.language
+            }, (err, order) => {
+              if (err) return callback(err);
+      
+              const newBlogData = {
+                identifier: getIdentifier(data.title),
+                order,
+                writer_id: writer._id,
+                language: data.language,
+                type: data.type,
+                title: data.title.trim(),
+                subtitle: data.subtitle.trim(),
+                logo: logo.url,
+                image: image.url,
+                created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
+                content: getContent(data.content)
+              };
+            
+              const newBlog = new Blog(newBlogData);
+            
+              newBlog.save((err, blog) => {
+                if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+                if (err) return callback('database_error');
+          
+                Image.findImageByUrlAndSetAsUsed(blog.image, err => {
+                  if (err) return callback(err);
+          
+                  return callback(null, blog._id.toString());
+                });  
+              });
+            });
+          }
+        });
+      });
+    });
+  } else {
     Image.findImageByUrl(data.image, (err, image) => {
       if (err) return callback(err);
   
@@ -155,8 +241,8 @@ BlogSchema.statics.createBlog = function (data, callback) {
                 project_id: project._id,
                 title: data.title.trim(),
                 subtitle: data.subtitle.trim(),
-                logo: logo.url,
                 image: image.url,
+                logo: DEFAULT_LOGO,
                 created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
                 content: getContent(data.content)
               };
@@ -190,8 +276,8 @@ BlogSchema.statics.createBlog = function (data, callback) {
               type: data.type,
               title: data.title.trim(),
               subtitle: data.subtitle.trim(),
-              logo: logo.url,
               image: image.url,
+              logo: DEFAULT_LOGO,
               created_at: moment().tz('Europe/Istanbul').format('DD[.]MM[.]YYYY'),
               content: getContent(data.content)
             };
@@ -212,7 +298,7 @@ BlogSchema.statics.createBlog = function (data, callback) {
         }
       });
     });
-  });
+  }
 };
 
 BlogSchema.statics.findBlogById = function (id, callback) {
