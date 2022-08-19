@@ -33,7 +33,7 @@ function createProject(project) {
 
   const projectInfo2 = document.createElement('div');
   projectInfo2.classList.add('each-project-info');
-  projectInfo2.style.color = 'rgb(130, 170, 235)';
+  projectInfo2.style.color = 'var(--main-color)';
   projectInfo2.innerHTML = project.reward;
   projectInfoWrapper.appendChild(projectInfo2);
 

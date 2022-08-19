@@ -77,7 +77,7 @@ textarea {
   --background-color: rgb(254, 254, 254);
   --active-status-color: rgb(57, 129, 29);
   --upcoming-status-color: rgb(130, 170, 235);
-  --endeed-status-color: rgb(255, 22, 3);
+  --ended-status-color: rgb(255, 22, 3);
   --high-popularity-color: rgb(57, 129, 29);
   --medium-popularity-color: rgb(255, 215, 0);
   --low-popularity-color: rgb(255, 22, 3);
