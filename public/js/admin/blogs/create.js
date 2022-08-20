@@ -233,21 +233,19 @@ window.addEventListener('load', () => {
 
       document.querySelector('.new-content-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
       selected_content_item_type = event.target.innerHTML.toLowerCase();
-      if(selected_content_item_type === 'image'){
+      if(selected_content_item_type === 'image') {
         contentItemInput.value = '';
         contentItemInput.style.display = 'none';
         contentImageInputOuter.style.display = 'flex';
         contentImageInput.style.display = 'flex';
-
         contentImageInputOuter.style.marginTop = '20px';
         contentImageInputOuter.style.marginBottom = '80px';
         inputItemsWrapper.style.marginBottom = '0px';
 
-      } else{
+      } else {
         contentImageInputOuter.style.marginTop = '0px'
         contentImageInputOuter.style.marginBottom = '0px'
         inputItemsWrapper.style.marginBottom = '80px'
-        
         contentImageInputOuter.style.display = 'none'
         contentImageInput.style.display = 'none'
         contentItemInput.style.display = 'flex'
@@ -259,7 +257,7 @@ window.addEventListener('load', () => {
     }
 
     if (event.target.classList.contains('new-content-item-create-button')) {
-      if(selected_content_item_type == 'image'){
+      if(selected_content_item_type == 'image') {
 
         const newContentItemWrapper = document.createElement('div');
         newContentItemWrapper.classList.add('content-item-outer-wrapper');
@@ -281,7 +279,7 @@ window.addEventListener('load', () => {
         contentItemsWrapper.appendChild(newContentItemWrapper);
         
         lastContentItemExists = false;
-      } else{
+      } else {
         contentItemInput.value = '';
         lastContentItemExists = false;
         contentItemInput.focus();
