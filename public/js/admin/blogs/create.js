@@ -243,8 +243,7 @@ window.addEventListener('load', () => {
         contentImageInputOuter.style.marginBottom = '80px';
         inputItemsWrapper.style.marginBottom = '0px';
 
-      }
-      else{
+      } else{
         contentImageInputOuter.style.marginTop = '0px'
         contentImageInputOuter.style.marginBottom = '0px'
         inputItemsWrapper.style.marginBottom = '80px'
@@ -261,14 +260,6 @@ window.addEventListener('load', () => {
 
     if (event.target.classList.contains('new-content-item-create-button')) {
       if(selected_content_item_type == 'image'){
-        const wrapper = contentImageInput
-    
-          // serverRequest(`/image/delete?url=${tempURL}`, 'GET', {}, res => {
-          //   console.log(tempURL)
-          //   if (!res.success) return console.log(res.error)
-    
-          //   createImagePicker(wrapper);
-          // });
 
         const newContentItemWrapper = document.createElement('div');
         newContentItemWrapper.classList.add('content-item-outer-wrapper');
@@ -277,10 +268,8 @@ window.addEventListener('load', () => {
 
         newContentItem = document.createElement('div');
         newContentItem.classList.add('content-' + selected_content_item_type);
-       
-        if (selected_content_item_type == 'image'){
-          newContentItem.style.backgroundImage = `url(${tempURL})`
-        }
+        newContentItem.style.backgroundImage = `url(${tempURL})`
+        
         newContentItemWrapper.appendChild(newContentItem);
 
         const newContentItemDeleteButton = document.createElement('i');
@@ -292,8 +281,7 @@ window.addEventListener('load', () => {
         contentItemsWrapper.appendChild(newContentItemWrapper);
         
         lastContentItemExists = false;
-      }
-      else{
+      } else{
         contentItemInput.value = '';
         lastContentItemExists = false;
         contentItemInput.focus();
@@ -364,9 +352,10 @@ window.addEventListener('load', () => {
       }
 
       serverRequest('/admin/blogs/create', 'POST', blog, res => {
+        
         if (res.success)
           return window.location = '/admin/blogs';
-
+          
         if (res.error && res.error == 'duplicated_unique_field')
           return createConfirm({
             title: 'Duplicated Blog Title',
