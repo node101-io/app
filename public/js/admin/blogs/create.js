@@ -48,6 +48,7 @@ function createImagePicker (wrapper) {
 
   wrapper.innerHTML = '';
   wrapper.appendChild(settingsImagePicker);
+  contentImageInput = wrapper
 }
 
 function createUploadedImage (url, wrapper) {
@@ -74,7 +75,14 @@ function createUploadedImage (url, wrapper) {
 window.addEventListener('load', () => {
   const contentItemsWrapper = document.querySelector('.blog-content-items-wrapper');
   const contentItemInput = document.getElementById('new-content-item-text-input');
+  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
+  let contentImageInput = document.getElementById('content-image-input');
+  const inputItemsWrapper = document.querySelector('.add-new-content-item-button');
+  contentImageInput.style.display = 'none';
   let lastContentItemExists = false;
+  let tempURL = ''
+  
+  
 
   contentItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
@@ -90,7 +98,8 @@ window.addEventListener('load', () => {
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].remove();
           lastContentItemExists = false;
         }
-      } else if (event.target.value) {
+      }
+       else if (event.target.value) {
         lastContentItemExists = true;
 
         const newContentItemWrapper = document.createElement('div');
@@ -115,7 +124,7 @@ window.addEventListener('load', () => {
         newContentItemWrapper.appendChild(newContentItem);
 
         const newContentItemDeleteButton = document.createElement('i');
-        newContentItemDeleteButton.classList.add('content-item-delete-button')
+        newContentItemDeleteButton.classList.add('content-item-delete-button');
         newContentItemDeleteButton.classList.add('fas');
         newContentItemDeleteButton.classList.add('fa-trash-alt');
         newContentItemWrapper.appendChild(newContentItemDeleteButton);
@@ -224,16 +233,57 @@ window.addEventListener('load', () => {
 
       document.querySelector('.new-content-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
       selected_content_item_type = event.target.innerHTML.toLowerCase();
-      contentItemInput.placeholder = content_item_type_placeholders[selected_content_item_type];
-      contentItemInput.focus();
+      if(selected_content_item_type === 'image') {
+        contentItemInput.value = '';
+        contentItemInput.style.display = 'none';
+        contentImageInputOuter.style.display = 'flex';
+        contentImageInput.style.display = 'flex';
+        contentImageInputOuter.style.marginTop = '20px';
+        contentImageInputOuter.style.marginBottom = '80px';
+        inputItemsWrapper.style.marginBottom = '0px';
+
+      } else {
+        contentImageInputOuter.style.marginTop = '0px'
+        contentImageInputOuter.style.marginBottom = '0px'
+        inputItemsWrapper.style.marginBottom = '80px'
+        contentImageInputOuter.style.display = 'none'
+        contentImageInput.style.display = 'none'
+        contentItemInput.style.display = 'flex'
+        contentItemInput.placeholder = content_item_type_placeholders[selected_content_item_type];
+        contentItemInput.focus();
+      }
 
       document.querySelector('.new-content-item-type-selection-button').style.overflow = 'hidden';
     }
 
     if (event.target.classList.contains('new-content-item-create-button')) {
-      contentItemInput.value = '';
-      lastContentItemExists = false;
-      contentItemInput.focus();
+      if(selected_content_item_type == 'image') {
+
+        const newContentItemWrapper = document.createElement('div');
+        newContentItemWrapper.classList.add('content-item-outer-wrapper');
+  
+        let newContentItem;
+
+        newContentItem = document.createElement('div');
+        newContentItem.classList.add('content-' + selected_content_item_type);
+        newContentItem.style.backgroundImage = `url(${tempURL})`
+        
+        newContentItemWrapper.appendChild(newContentItem);
+
+        const newContentItemDeleteButton = document.createElement('i');
+        newContentItemDeleteButton.classList.add('content-item-delete-button');
+        newContentItemDeleteButton.classList.add('fas');
+        newContentItemDeleteButton.classList.add('fa-trash-alt');
+        newContentItemWrapper.appendChild(newContentItemDeleteButton);
+
+        contentItemsWrapper.appendChild(newContentItemWrapper);
+        
+        lastContentItemExists = false;
+      } else {
+        contentItemInput.value = '';
+        lastContentItemExists = false;
+        contentItemInput.focus();
+      }
     }
 
     if (event.target.id == 'new-blog-back-button') {
@@ -302,9 +352,10 @@ window.addEventListener('load', () => {
       }
 
       serverRequest('/admin/blogs/create', 'POST', blog, res => {
+        
         if (res.success)
           return window.location = '/admin/blogs';
-
+          
         if (res.error && res.error == 'duplicated_unique_field')
           return createConfirm({
             title: 'Duplicated Blog Title',
@@ -331,7 +382,7 @@ window.addEventListener('load', () => {
 
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
-
+        tempURL = url;
         createUploadedImage(url, event.target.parentNode.parentNode);
       });
     }
