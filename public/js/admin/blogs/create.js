@@ -88,9 +88,7 @@ window.addEventListener('load', () => {
     if (event.key != 'Enter') {
       if (lastContentItemExists) {
         if (event.target.value) {
-          if (selected_content_item_type == 'image')
-            contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
-          else if (selected_content_item_type == 'video')
+          if (selected_content_item_type == 'video')
             contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].src = event.target.value;
           else
             contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');
@@ -138,12 +136,14 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('delete-image-button')) {
       const wrapper = event.target.parentNode.parentNode;
       const url = event.target.parentNode.childNodes[0].childNodes[0].src;
+      if(lastContentItemExists){
+        serverRequest(`/image/delete?url=${url}`, 'GET', {}, res => {
+          if (!res.success) return throwError(res.error);
+        });
+      }
 
-      serverRequest(`/image/delete?url=${url}`, 'GET', {}, res => {
-        if (!res.success) return throwError(res.error);
-
-        createImagePicker(wrapper);
-      });
+      createImagePicker(wrapper);
+      lastContentItemExists = false;
     }
 
     if (ancestorWithClassName(event.target, 'new-blog-selection-input')) {
@@ -298,7 +298,7 @@ window.addEventListener('load', () => {
     }
 
     if (event.target.id == 'new-blog-create-button') {
-      const error = document.getElementById('new-blog-form-error');
+      const error = document.getElementById('new-blog-form-error')
       const logoWrapper = document.getElementById('logo-input-wrapper');
       const imageWrapper = document.getElementById('image-input-wrapper');
 
@@ -345,6 +345,7 @@ window.addEventListener('load', () => {
         const contentItem = contentItems[i].childNodes[0];
         const type = contentItem.className.replace('content-', '');
         const content = type == 'image' ? contentItem.style.backgroundImage.replace('url(', '').replace(')', '').trim() : (type == 'video' ? contentItem.src : contentItem.innerHTML);
+        console.log(content)
         blog.content.push({
           type,
           content
@@ -384,6 +385,7 @@ window.addEventListener('load', () => {
         if (err) return throwError(err);
         tempURL = url;
         createUploadedImage(url, event.target.parentNode.parentNode);
+        lastContentItemExists = true;
       });
     }
   });
