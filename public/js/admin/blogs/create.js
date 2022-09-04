@@ -216,7 +216,7 @@ window.addEventListener('load', () => {
         if (event.target.innerHTML.toLowerCase() == 'image') {
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${contentItemInput.value})`
-        } else if (event.target.innerHTML.toLowerCase() == 'video') {
+        } if (event.target.innerHTML.toLowerCase() == 'video') {
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].remove();
 
           const newContentItem = document.createElement('iframe');
@@ -232,6 +232,7 @@ window.addEventListener('load', () => {
       } 
 
       document.querySelector('.new-content-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
+      
       selected_content_item_type = event.target.innerHTML.toLowerCase();
       if(selected_content_item_type === 'image') {
         contentItemInput.value = '';
@@ -345,7 +346,6 @@ window.addEventListener('load', () => {
         const contentItem = contentItems[i].childNodes[0];
         const type = contentItem.className.replace('content-', '');
         const content = type == 'image' ? contentItem.style.backgroundImage.replace('url(', '').replace(')', '').trim() : (type == 'video' ? contentItem.src : contentItem.innerHTML);
-        console.log(content)
         blog.content.push({
           type,
           content
