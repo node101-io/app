@@ -27,13 +27,13 @@ block content
           .each-blog-input-wrapper
             .new-blog-form-input-title.required-input Title
             input.new-blog-form-input#title-input(type='text' placeholder='Blog title' value=blog.title)
-          .each-blog-input-wrapper#logo-input-wrapper
+          .each-blog-input-wrapper.edit-logo-input-wrapper#logo-input-wrapper
             .new-blog-form-input-title.required-input Logo
             .image-input-outer-wrapper
               .image-input-wrapper
                 img.image-input-wrapper-image(src=blog.logo)
                 i.delete-image-button.fas.fa-times
-          .each-blog-input-wrapper#image-input-wrapper
+          .each-blog-input-wrapper.edit-image-input-wrapper#image-input-wrapper
             .new-blog-form-input-title.required-input Image
             .image-input-outer-wrapper
               .image-input-wrapper
@@ -65,8 +65,8 @@ block content
                 .each-new-content-item-type= content_type.substring(0, 1).toUpperCase() + content_type.substring(1)
             .new-content-item-create-button Add
           textarea.new-content-item-text-input#new-content-item-text-input.new-blog-form-input(type='text' placeholder='Enter the title')
-        .image-input-outer-wrapper
-          label.choose-image-input-text#content-image-input
+        .image-input-outer-wrapper#content-image-input-outer-wrapper(style='display: none')
+          label.choose-image-input-text
             span Click to choose an image from your device
             input.display-none.image-input(type='file' accept='image/*')
         .new-blog-buttons-line

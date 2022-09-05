@@ -75,14 +75,9 @@ function createUploadedImage (url, wrapper) {
 window.addEventListener('load', () => {
   const contentItemsWrapper = document.querySelector('.blog-content-items-wrapper');
   const contentItemInput = document.getElementById('new-content-item-text-input');
-  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
-  let contentImageInput = document.getElementById('content-image-input');
-  const inputItemsWrapper = document.querySelector('.add-new-content-item-button');
-  contentImageInput.style.display = 'none';
+  const contentImageInputOuterWrapper = document.getElementById('content-image-input-outer-wrapper');
+
   let lastContentItemExists = false;
-  let tempURL = ''
-  
-  
 
   contentItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
@@ -96,8 +91,7 @@ window.addEventListener('load', () => {
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].remove();
           lastContentItemExists = false;
         }
-      }
-       else if (event.target.value) {
+      } else if (event.target.value) {
         lastContentItemExists = true;
 
         const newContentItemWrapper = document.createElement('div');
@@ -136,7 +130,7 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('delete-image-button')) {
       const wrapper = event.target.parentNode.parentNode;
       const url = event.target.parentNode.childNodes[0].childNodes[0].src;
-      if(lastContentItemExists){
+      if (lastContentItemExists) {
         serverRequest(`/image/delete?url=${url}`, 'GET', {}, res => {
           if (!res.success) return throwError(res.error);
         });
@@ -214,9 +208,9 @@ window.addEventListener('load', () => {
         contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].classList.add(`content-${event.target.innerHTML.toLowerCase()}`);
 
         if (event.target.innerHTML.toLowerCase() == 'image') {
-          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
-          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${contentItemInput.value})`
-        } if (event.target.innerHTML.toLowerCase() == 'video') {
+          contentItemInput.value = '';
+          lastContentItemExists = false;
+        } else if (event.target.innerHTML.toLowerCase() == 'video') {
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].remove();
 
           const newContentItem = document.createElement('iframe');
@@ -232,24 +226,14 @@ window.addEventListener('load', () => {
       } 
 
       document.querySelector('.new-content-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
-      
       selected_content_item_type = event.target.innerHTML.toLowerCase();
-      if(selected_content_item_type === 'image') {
-        contentItemInput.value = '';
-        contentItemInput.style.display = 'none';
-        contentImageInputOuter.style.display = 'flex';
-        contentImageInput.style.display = 'flex';
-        contentImageInputOuter.style.marginTop = '20px';
-        contentImageInputOuter.style.marginBottom = '80px';
-        inputItemsWrapper.style.marginBottom = '0px';
 
+      if (selected_content_item_type == 'image') {
+        contentImageInputOuterWrapper.style.display = 'flex';
+        contentItemInput.style.display = 'none';
       } else {
-        contentImageInputOuter.style.marginTop = '0px'
-        contentImageInputOuter.style.marginBottom = '0px'
-        inputItemsWrapper.style.marginBottom = '80px'
-        contentImageInputOuter.style.display = 'none'
-        contentImageInput.style.display = 'none'
-        contentItemInput.style.display = 'flex'
+        contentImageInputOuterWrapper.style.display = 'none';
+        contentItemInput.style.display = 'flex';
         contentItemInput.placeholder = content_item_type_placeholders[selected_content_item_type];
         contentItemInput.focus();
       }
@@ -258,8 +242,7 @@ window.addEventListener('load', () => {
     }
 
     if (event.target.classList.contains('new-content-item-create-button')) {
-      if(selected_content_item_type == 'image') {
-
+      if (selected_content_item_type == 'image') {
         const newContentItemWrapper = document.createElement('div');
         newContentItemWrapper.classList.add('content-item-outer-wrapper');
   
@@ -267,7 +250,7 @@ window.addEventListener('load', () => {
 
         newContentItem = document.createElement('div');
         newContentItem.classList.add('content-' + selected_content_item_type);
-        newContentItem.style.backgroundImage = `url(${tempURL})`
+        newContentItem.style.backgroundImage = `url(${contentImageInputOuterWrapper.querySelector('img').src})`
         
         newContentItemWrapper.appendChild(newContentItem);
 
@@ -278,13 +261,24 @@ window.addEventListener('load', () => {
         newContentItemWrapper.appendChild(newContentItemDeleteButton);
 
         contentItemsWrapper.appendChild(newContentItemWrapper);
-        
-        lastContentItemExists = false;
-      } else {
-        contentItemInput.value = '';
-        lastContentItemExists = false;
-        contentItemInput.focus();
+        createImagePicker(contentImageInputOuterWrapper);
       }
+      
+      if (selected_content_item_type != 'image' && selected_content_item_type != 'video') {
+        const lastContentItem = contentItemsWrapper.children[contentItemsWrapper.children.length - 1];
+
+        const newContentItemEditButton = document.createElement('i');
+        newContentItemEditButton.classList.add('content-item-edit-button')
+        newContentItemEditButton.classList.add('fas');
+        newContentItemEditButton.classList.add('fa-cog');
+        lastContentItem.appendChild(newContentItemEditButton);
+
+        lastContentItem.insertBefore(newContentItemEditButton, newContentItemEditButton.previousElementSibling);
+      }
+
+      contentItemInput.value = '';
+      lastContentItemExists = false;
+      contentItemInput.focus();
     }
 
     if (event.target.id == 'new-blog-back-button') {
@@ -383,7 +377,6 @@ window.addEventListener('load', () => {
 
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
-        tempURL = url;
         createUploadedImage(url, event.target.parentNode.parentNode);
         lastContentItemExists = true;
       });
