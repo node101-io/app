@@ -5,7 +5,7 @@ block main
     .blog-progress-bar
   .blog-outer-wrapper
     .blog-wrapper
-      .blog-background(style=`background-image: url(${blog.image})`)
+      img.blog-background(src=blog.image alt=blog.name width='var(--blog-width)' height='calc(var(--blog-width) * 0.25)')
       .blog-title= blog.title
       .blog-subtitle= blog.subtitle
       .blog-created-at POSTED ON: #{blog.created_at}

@@ -47,8 +47,6 @@
   width: var(--blog-width);
   height: calc(var(--blog-width) * 0.25);
   min-height: calc(var(--blog-width) * 0.25);
-  background-size: cover;
-  background-position: center;
   margin-bottom: calc(2 * var(--blog-interval));
 }
 
