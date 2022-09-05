@@ -22,6 +22,13 @@ module.exports = (req, res) => {
         external: {
           css: ['confirm', 'footer', 'general', 'header', 'page'],
           js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
+        },
+        meta: {
+          author: blog.writer.name,
+          description: blog.subtitle,
+          image: blog.image,
+          keywords: blog.title.split(' ').concat(blog.subtitle.split(' ')),
+          title: blog.title
         }
       },
       url: '/blog/' + identifier,
