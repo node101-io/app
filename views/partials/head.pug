@@ -24,12 +24,16 @@ html(lang="en")
             else
               script(src=`/js/functions/${file_name}.js`)
       if includes.meta
+        meta(property='og:type' content='website')
         if includes.meta.author
           meta(name='author' content=includes.meta.author)
         if includes.meta.description
           meta(name='description' content=includes.meta.description)
         if includes.meta.image
           meta(property='og:image' content=includes.meta.image)
+          meta(property='og:image:secure_url' content=includes.meta.image)
+          meta(property='og:image:type' content='image/jpeg')
+          meta(property='og:image:alt' content=includes.meta.description)
         if includes.meta.keywords
           meta(name='keywords' content=includes.meta.keywords)
         if includes.meta.title
