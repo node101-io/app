@@ -31,9 +31,7 @@
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
     "urldecode": "^1.0.1",
-    "utf8": "^3.0.0",
-    "validator": "^13.7.0",
-    "wtf-8": "^1.0.1"
+    "validator": "^13.7.0"
   },
   "repository": {
     "type": "git",
