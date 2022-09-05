@@ -30,6 +30,7 @@
     "os": "^0.1.2",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
+    "urldecode": "^1.0.1",
     "validator": "^13.7.0"
   },
   "repository": {

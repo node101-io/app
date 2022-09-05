@@ -88,9 +88,7 @@ window.addEventListener('load', () => {
     if (event.key != 'Enter') {
       if (lastGuideItemExists) {
         if (event.target.value) {
-          if (selected_content_item_type == 'image')
-            contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
-          else if (selected_content_item_type == 'video')
+          if (selected_content_item_type == 'video')
             contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].src = event.target.value;
           else
             contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');

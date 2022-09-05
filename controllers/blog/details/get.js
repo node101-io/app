@@ -1,7 +1,9 @@
+const urldecode = require('urldecode');
+
 const Blog = require('../../../models/blog/Blog');
 
 module.exports = (req, res) => {
-  const identifier = req.originalUrl.replace('/blog/', '').split('?')[0];
+  const identifier = urldecode(req.originalUrl.replace('/blog/', '').split('?')[0])
   const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : 'en');
 
   Blog.findBlogByIdentifierAndLanguage({
