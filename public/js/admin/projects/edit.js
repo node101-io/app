@@ -79,7 +79,12 @@ window.addEventListener('load', () => {
 
   const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
   const guideItemInput = document.getElementById('new-guide-item-text-input');
+  const inputItemsWrapper = document.querySelector('.add-new-guide-item-button');
+  let guideImageInput = document.getElementById('content-image-input');
+  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
+  guideImageInput.style.display = 'none';
   let lastGuideItemExists = false;
+  let tempURL = ''
 
   guideItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
@@ -234,13 +239,52 @@ window.addEventListener('load', () => {
 
       document.querySelector('.new-guide-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
       selected_guide_item_type = event.target.innerHTML.toLowerCase();
+      if(selected_guide_item_type == 'image') {
+      guideItemInput.value = '';
+      guideItemInput.style.display = 'none';
+      contentImageInputOuter.style.display = 'flex';
+      guideImageInput.style.display = 'flex';
+      contentImageInputOuter.style.marginTop = '20px';
+      contentImageInputOuter.style.marginBottom = '60px';
+      inputItemsWrapper.style.marginBottom = '0px';
+      } else {
+      contentImageInputOuter.style.marginTop = '0px'
+      contentImageInputOuter.style.marginBottom = '0px'
+      inputItemsWrapper.style.marginBottom = '60px'
+      contentImageInputOuter.style.display = 'none'
+      guideImageInput.style.display = 'none'
+      guideItemInput.style.display = 'flex'
       guideItemInput.placeholder = guide_item_type_placeholders[selected_guide_item_type];
       guideItemInput.focus();
+      }
+      
 
       document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
     }
 
     if (event.target.classList.contains('new-guide-item-create-button')) {
+      if(selected_guide_item_type == 'image') {
+        const newContentItemWrapper = document.createElement('div');
+        newContentItemWrapper.classList.add('guide-item-outer-wrapper');
+  
+        let newContentItem;
+
+        newContentItem = document.createElement('div');
+        newContentItem.classList.add('guide-' + selected_guide_item_type);
+        newContentItem.style.backgroundImage = `url(${tempURL})`
+        
+        newContentItemWrapper.appendChild(newContentItem);
+
+        const newContentItemDeleteButton = document.createElement('i');
+        newContentItemDeleteButton.classList.add('content-item-delete-button');
+        newContentItemDeleteButton.classList.add('fas');
+        newContentItemDeleteButton.classList.add('fa-trash-alt');
+        newContentItemWrapper.appendChild(newContentItemDeleteButton);
+
+        guideItemsWrapper.appendChild(newContentItemWrapper);
+        
+        lastContentItemExists = false;
+      }
       if (selected_guide_item_type != 'image' && selected_guide_item_type != 'video') {
         const lastGuideItem = guideItemsWrapper.children[guideItemsWrapper.children.length - 1];
 
@@ -405,7 +449,7 @@ window.addEventListener('load', () => {
 
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
-
+        tempURL = url
         serverRequest('/admin/projects/image?id=' + project._id, 'POST', {
           image: url
         }, res => {
@@ -416,6 +460,7 @@ window.addEventListener('load', () => {
           }, res => { return; });
 
           createUploadedImage(url, event.target.parentNode.parentNode);
+          lastContentItemExists = true;
         });
       });
     }

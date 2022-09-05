@@ -30,7 +30,10 @@
     "os": "^0.1.2",
     "pug": "^3.0.2",
     "serve-favicon": "^2.5.0",
-    "validator": "^13.7.0"
+    "urldecode": "^1.0.1",
+    "utf8": "^3.0.0",
+    "validator": "^13.7.0",
+    "wtf-8": "^1.0.1"
   },
   "repository": {
     "type": "git",

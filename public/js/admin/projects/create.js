@@ -75,7 +75,12 @@ function createUploadedImage (url, wrapper) {
 window.addEventListener('load', () => {
   const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
   const guideItemInput = document.getElementById('new-guide-item-text-input');
+  const inputItemsWrapper = document.querySelector('.add-new-guide-item-button');
+  let guideImageInput = document.getElementById('content-image-input');
+  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
+  guideImageInput.style.display = 'none';
   let lastGuideItemExists = false;
+  let tempURL = ''
 
   guideItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
@@ -130,12 +135,13 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('delete-image-button')) {
       const wrapper = event.target.parentNode.parentNode;
       const url = event.target.parentNode.childNodes[0].childNodes[0].src;
-
+      if(lastContentItemExists){
       serverRequest(`/image/delete?url=${url}`, 'GET', {}, res => {
         if (!res.success) return throwError(res.error);
-
-        createImagePicker(wrapper);
       });
+    }
+      createImagePicker(wrapper);
+      lastContentItemExists = false;
     }
 
     if (event.target.classList.contains('guide-item-delete-button')) {
@@ -175,17 +181,58 @@ window.addEventListener('load', () => {
       } 
 
       document.querySelector('.new-guide-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
-      selected_guide_item_type = event.target.innerHTML.toLowerCase();
-      guideItemInput.placeholder = guide_item_type_placeholders[selected_guide_item_type];
-      guideItemInput.focus();
 
+      selected_guide_item_type = event.target.innerHTML.toLowerCase();
+      if(selected_guide_item_type === 'image') {
+        guideItemInput.value = '';
+        guideItemInput.style.display = 'none';
+        contentImageInputOuter.style.display = 'flex';
+        guideImageInput.style.display = 'flex';
+        contentImageInputOuter.style.marginTop = '20px';
+        contentImageInputOuter.style.marginBottom = '60px';
+        inputItemsWrapper.style.marginBottom = '0px';
+      } 
+      else { 
+        contentImageInputOuter.style.marginTop = '0px'
+        contentImageInputOuter.style.marginBottom = '0px'
+        inputItemsWrapper.style.marginBottom = '60px'
+        contentImageInputOuter.style.display = 'none'
+        guideImageInput.style.display = 'none'
+        guideItemInput.style.display = 'flex'
+        guideItemInput.placeholder = guide_item_type_placeholders[selected_guide_item_type];
+        guideItemInput.focus();
+
+      }
       document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
     }
 
     if (event.target.classList.contains('new-guide-item-create-button')) {
-      guideItemInput.value = '';
-      lastGuideItemExists = false;
-      guideItemInput.focus();
+      if(selected_guide_item_type == 'image') {
+        const newContentItemWrapper = document.createElement('div');
+        newContentItemWrapper.classList.add('guide-item-outer-wrapper');
+  
+        let newContentItem;
+
+        newContentItem = document.createElement('div');
+        newContentItem.classList.add('guide-' + selected_guide_item_type);
+        newContentItem.style.backgroundImage = `url(${tempURL})`
+        
+        newContentItemWrapper.appendChild(newContentItem);
+
+        const newContentItemDeleteButton = document.createElement('i');
+        newContentItemDeleteButton.classList.add('content-item-delete-button');
+        newContentItemDeleteButton.classList.add('fas');
+        newContentItemDeleteButton.classList.add('fa-trash-alt');
+        newContentItemWrapper.appendChild(newContentItemDeleteButton);
+
+        guideItemsWrapper.appendChild(newContentItemWrapper);
+        
+        lastContentItemExists = false;
+      } else {
+        guideItemInput.value = '';
+        lastGuideItemExists = false;
+        guideItemInput.focus();
+      }
     }
 
     if (event.target.id == 'new-project-back-button') {
@@ -348,8 +395,9 @@ window.addEventListener('load', () => {
 
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
-
+        tempURL = url
         createUploadedImage(url, event.target.parentNode.parentNode);
+        lastContentItemExists = true;
       });
     }
   });
