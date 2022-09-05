@@ -44,16 +44,12 @@
 }
 
 .blog-background {
-  display: block;
   width: var(--blog-width);
   height: calc(var(--blog-width) * 0.25);
   min-height: calc(var(--blog-width) * 0.25);
-  text-align: center;
+  background-size: cover;
+  background-position: center;
   margin-bottom: calc(2 * var(--blog-interval));
-}
-.blog-background img {
-  height: 100%;
-  width: auto;
 }
 
 .blog-title {
