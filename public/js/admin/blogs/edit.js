@@ -77,12 +77,9 @@ window.addEventListener('load', () => {
 
   const contentItemsWrapper = document.querySelector('.blog-content-items-wrapper');
   const contentItemInput = document.getElementById('new-content-item-text-input');
-  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
-  let contentImageInput = document.getElementById('content-image-input');
-  const inputItemsWrapper = document.querySelector('.add-new-content-item-button');
-  contentImageInput.style.display = 'none';
+  const contentImageInputOuterWrapper = document.getElementById('content-image-input-outer-wrapper');
+
   let lastGuideItemExists = false;
-  let tempURL = ''
 
   contentItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
@@ -233,8 +230,8 @@ window.addEventListener('load', () => {
         contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].classList.add(`content-${event.target.innerHTML.toLowerCase()}`);
 
         if (event.target.innerHTML.toLowerCase() == 'image') {
-          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
-          contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${contentItemInput.value})`
+          contentItemInput.value = '';
+          lastGuideItemExists = false;
         } else if (event.target.innerHTML.toLowerCase() == 'video') {
           contentItemsWrapper.children[contentItemsWrapper.children.length - 1].childNodes[0].remove();
 
@@ -252,31 +249,22 @@ window.addEventListener('load', () => {
 
       document.querySelector('.new-content-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
       selected_content_item_type = event.target.innerHTML.toLowerCase();
-      if(selected_content_item_type == 'image') {
-        contentItemInput.value = '';
+      
+      if (selected_content_item_type == 'image') {
+        contentImageInputOuterWrapper.style.display = 'flex';
         contentItemInput.style.display = 'none';
-        contentImageInputOuter.style.display = 'flex';
-        contentImageInput.style.display = 'flex';
-        contentImageInputOuter.style.marginTop = '20px';
-        contentImageInputOuter.style.marginBottom = '80px';
-        inputItemsWrapper.style.marginBottom = '0px';
       } else {
-        contentImageInputOuter.style.marginTop = '0px'
-        contentImageInputOuter.style.marginBottom = '0px'
-        inputItemsWrapper.style.marginBottom = '80px'
-        contentImageInputOuter.style.display = 'none'
-        contentImageInput.style.display = 'none'
-        contentItemInput.style.display = 'flex'
+        contentImageInputOuterWrapper.style.display = 'none';
+        contentItemInput.style.display = 'flex';
         contentItemInput.placeholder = content_item_type_placeholders[selected_content_item_type];
         contentItemInput.focus();
       }
-   
 
       document.querySelector('.new-content-item-type-selection-button').style.overflow = 'hidden';
     }
 
     if (event.target.classList.contains('new-content-item-create-button')) {
-      if(selected_content_item_type == 'image') {
+      if (selected_content_item_type == 'image') {
         const newContentItemWrapper = document.createElement('div');
         newContentItemWrapper.classList.add('content-item-outer-wrapper');
   
@@ -284,7 +272,7 @@ window.addEventListener('load', () => {
 
         newContentItem = document.createElement('div');
         newContentItem.classList.add('content-' + selected_content_item_type);
-        newContentItem.style.backgroundImage = `url(${tempURL})`
+        newContentItem.style.backgroundImage = `url(${contentImageInputOuterWrapper.querySelector('img').src})`
         
         newContentItemWrapper.appendChild(newContentItem);
 
@@ -295,9 +283,9 @@ window.addEventListener('load', () => {
         newContentItemWrapper.appendChild(newContentItemDeleteButton);
 
         contentItemsWrapper.appendChild(newContentItemWrapper);
-        
-        
+        createImagePicker(contentImageInputOuterWrapper);
       }
+      
       if (selected_content_item_type != 'image' && selected_content_item_type != 'video') {
         const lastGuideItem = contentItemsWrapper.children[contentItemsWrapper.children.length - 1];
 
@@ -393,18 +381,21 @@ window.addEventListener('load', () => {
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
 
-        tempURL = url
-        serverRequest(`/admin/blogs/${fileType}?id=${blog._id}`, 'POST', {
-          [fileType]: url
-        }, res => {
-          if (!res.success) return createConfirm({
-            title: 'An Error Occured',
-            text: 'An error occured while uploading the image. Please try again later or contact our developer team. Error message: ' + res.error ? res.error : 'unknown_error',
-            reject: 'Close'
-          }, res => { return; });
-
+        if (ancestorWithClassName(event.target, 'edit-logo-input-wrapper') || ancestorWithClassName(event.target, 'edit-image-input-wrapper')) {
+          serverRequest(`/admin/blogs/${fileType}?id=${blog._id}`, 'POST', {
+            [fileType]: url
+          }, res => {
+            if (!res.success) return createConfirm({
+              title: 'An Error Occured',
+              text: 'An error occured while uploading the image. Please try again later or contact our developer team. Error message: ' + res.error ? res.error : 'unknown_error',
+              reject: 'Close'
+            }, res => { return; });
+  
+            createUploadedImage(url, event.target.parentNode.parentNode);
+          });
+        } else {
           createUploadedImage(url, event.target.parentNode.parentNode);
-        });
+        }
       });
     }
   });
