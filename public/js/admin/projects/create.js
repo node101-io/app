@@ -75,12 +75,9 @@ function createUploadedImage (url, wrapper) {
 window.addEventListener('load', () => {
   const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
   const guideItemInput = document.getElementById('new-guide-item-text-input');
-  const inputItemsWrapper = document.querySelector('.add-new-guide-item-button');
-  let guideImageInput = document.getElementById('content-image-input');
-  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
-  guideImageInput.style.display = 'none';
+  const contentImageInputOuterWrapper = document.getElementById('content-image-input-outer-wrapper');
   let lastGuideItemExists = false;
-  let tempURL = ''
+
 
   guideItemInput.addEventListener('keyup', event => {
     if (event.key != 'Enter') {
@@ -163,8 +160,8 @@ window.addEventListener('load', () => {
         guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].classList.add(`guide-${event.target.innerHTML.toLowerCase()}`);
 
         if (event.target.innerHTML.toLowerCase() == 'image') {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = null;
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${guideItemInput.value})`
+          guideItemInput = '';
+          lastContentItemExists = false;
         } else if (event.target.innerHTML.toLowerCase() == 'video') {
           guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].remove();
 
@@ -181,27 +178,16 @@ window.addEventListener('load', () => {
       } 
 
       document.querySelector('.new-guide-item-type-selected').childNodes[0].innerHTML = event.target.innerHTML;
-
       selected_guide_item_type = event.target.innerHTML.toLowerCase();
-      if(selected_guide_item_type === 'image') {
-        guideItemInput.value = '';
+      if (selected_content_item_type == 'image') {
+        guideImageInputOuterWrapper.style.display = 'flex';
         guideItemInput.style.display = 'none';
-        contentImageInputOuter.style.display = 'flex';
-        guideImageInput.style.display = 'flex';
-        contentImageInputOuter.style.marginTop = '20px';
-        contentImageInputOuter.style.marginBottom = '60px';
-        inputItemsWrapper.style.marginBottom = '0px';
-      } 
-      else { 
-        contentImageInputOuter.style.marginTop = '0px'
-        contentImageInputOuter.style.marginBottom = '0px'
-        inputItemsWrapper.style.marginBottom = '60px'
-        contentImageInputOuter.style.display = 'none'
-        guideImageInput.style.display = 'none'
+      }
+      else {
+        guideImageInputOuterWrapper.style.display = 'none';
         guideItemInput.style.display = 'flex'
         guideItemInput.placeholder = guide_item_type_placeholders[selected_guide_item_type];
         guideItemInput.focus();
-
       }
       document.querySelector('.new-guide-item-type-selection-button').style.overflow = 'hidden';
     }
@@ -215,12 +201,12 @@ window.addEventListener('load', () => {
 
         newContentItem = document.createElement('div');
         newContentItem.classList.add('guide-' + selected_guide_item_type);
-        newContentItem.style.backgroundImage = `url(${tempURL})`
+        newContentItem.style.backgroundImage = `url(${guideImageInputOuterWrapper.querySelector('img').src})`
         
         newContentItemWrapper.appendChild(newContentItem);
 
         const newContentItemDeleteButton = document.createElement('i');
-        newContentItemDeleteButton.classList.add('content-item-delete-button');
+        newContentItemDeleteButton.classList.add('guide-item-delete-button');
         newContentItemDeleteButton.classList.add('fas');
         newContentItemDeleteButton.classList.add('fa-trash-alt');
         newContentItemWrapper.appendChild(newContentItemDeleteButton);
@@ -228,11 +214,11 @@ window.addEventListener('load', () => {
         guideItemsWrapper.appendChild(newContentItemWrapper);
         
         lastContentItemExists = false;
-      } else {
+      }
         guideItemInput.value = '';
         lastGuideItemExists = false;
         guideItemInput.focus();
-      }
+      
     }
 
     if (event.target.id == 'new-project-back-button') {
@@ -395,7 +381,7 @@ window.addEventListener('load', () => {
 
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
-        tempURL = url
+        
         createUploadedImage(url, event.target.parentNode.parentNode);
         lastContentItemExists = true;
       });

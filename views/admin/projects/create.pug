@@ -103,8 +103,8 @@ block content
                 .each-new-guide-item-type= guide_type.substring(0, 1).toUpperCase() + guide_type.substring(1)
             .new-guide-item-create-button Add
           textarea.new-guide-item-text-input#new-guide-item-text-input.new-project-form-input(type='text' placeholder='Enter the title')
-        .image-input-outer-wrapper
-          label.choose-image-input-text#content-image-input
+        .image-input-outer-wrapper#content-image-input-outer-wrapper
+          label.choose-image-input-text
             span Click to choose an image from your device
             input.display-none.image-input(type='file' accept='image/*')
         .new-project-form-title Project Requirements
