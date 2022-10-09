@@ -18,6 +18,12 @@ const projectsDeleteGetController = require('../controllers/admin/projects/delet
 const projectsEditGetController = require('../controllers/admin/projects/edit/get');
 const projectsRestoreGetController = require('../controllers/admin/projects/restore/get');
 
+const stakeIndexGetController = require('../controllers/admin/stake/index/get');
+const stakeCreateGetController = require('../controllers/admin/stake/create/get');
+const stakeDeleteGetController = require('../controllers/admin/stake/delete/get');
+const stakeEditGetController = require('../controllers/admin/stake/edit/get');
+const stakeRestoreGetController = require('../controllers/admin/stake/restore/get');
+
 const writersIndexGetController = require('../controllers/admin/writers/index/get');
 const writersCreateGetController = require('../controllers/admin/writers/create/get');
 const writersEditGetController = require('../controllers/admin/writers/edit/get');
@@ -37,6 +43,11 @@ const projectsEditPostController = require('../controllers/admin/projects/edit/p
 const projectsImagePostController = require('../controllers/admin/projects/image/post');
 const projectsOrderPostController = require('../controllers/admin/projects/order/post');
 const projectsStatusPostController = require('../controllers/admin/projects/status/post');
+
+const stakeCreatePostController = require('../controllers/admin/stake/create/post');
+const stakeDeletePostController = require('../controllers/admin/stake/delete/post');
+const stakeEditPostController = require('../controllers/admin/stake/edit/post');
+//const stakeImagePostController = require('../controllers/admin/stake/image/post');
 
 const writersCreatePostController = require('../controllers/admin/writers/create/post');
 const writersEditPostController = require('../controllers/admin/writers/edit/post');
@@ -102,6 +113,32 @@ router.get(
   '/projects/restore',
     isAdmin,
     projectsRestoreGetController
+);
+
+router.get(
+  '/stake',
+    isAdmin,
+    stakeIndexGetController
+);
+router.get(
+  '/stake/create',
+    isAdmin,
+    stakeCreateGetController
+);
+router.get(
+  '/stake/delete',
+    isAdmin,
+    stakeDeleteGetController
+);
+router.get(
+  '/stake/edit',
+    isAdmin,
+    stakeEditGetController
+);
+router.get(
+  '/stake/restore',
+    isAdmin,
+    stakeRestoreGetController 
 );
 
 router.get(
@@ -186,6 +223,32 @@ router.post(
     isAdmin,
     projectsStatusPostController
 );
+
+router.post(
+  '/stake/create',
+    isAdmin,
+    stakeCreatePostController
+);
+router.post(
+  '/stake/delete',
+    isAdmin,
+    stakeDeletePostController
+);
+router.post(
+  '/stake/edit',
+    isAdmin,
+    stakeEditPostController
+);
+// router.post(
+//   '/stake/image',
+//     isAdmin,
+//     stakeImagePostController
+// );
+// router.post(
+//   '/projects/order',
+//     isAdmin,
+//     stakeOrderPostController
+// );
 
 router.post(
   '/writers/create',
