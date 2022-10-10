@@ -86,55 +86,6 @@ window.addEventListener('load', () => {
   let lastGuideItemExists = false;
   let tempURL = ''
 
-  guideItemInput.addEventListener('keyup', event => {
-    if (event.key != 'Enter') {
-      if (lastGuideItemExists) {
-        if (event.target.value) {
-          if (selected_guide_item_type == 'image')
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].style.backgroundImage = `url(${event.target.value})`
-          else if (selected_guide_item_type == 'video')
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].src = event.target.value;
-          else
-            guideItemsWrapper.children[guideItemsWrapper.children.length - 1].childNodes[0].innerHTML = event.target.value.split('\n').join('<br/>');
-        } else {
-          guideItemsWrapper.children[guideItemsWrapper.children.length - 1].remove();
-          lastGuideItemExists = false;
-        }
-      } else if (event.target.value) {
-        lastGuideItemExists = true;
-
-        const newGuideItemWrapper = document.createElement('div');
-        newGuideItemWrapper.classList.add('guide-item-outer-wrapper');
-
-        let newGuideItem;
-
-        if (selected_guide_item_type == 'video') {
-          newGuideItem = document.createElement('iframe');
-          newGuideItem.classList.add('guide-video');
-        } else {
-          newGuideItem = document.createElement('div');
-          newGuideItem.classList.add('guide-' + selected_guide_item_type);
-        }
-       
-        if (selected_guide_item_type == 'image')
-          newGuideItem.style.backgroundImage = `url(${event.target.value})`
-        else if (selected_guide_item_type == 'video')
-          newGuideItem.src = event.target.value;
-        else
-          newGuideItem.innerHTML = event.target.value.split('\n').join('<br/>');
-        newGuideItemWrapper.appendChild(newGuideItem);
-
-        const newGuideItemDeleteButton = document.createElement('i');
-        newGuideItemDeleteButton.classList.add('guide-item-delete-button')
-        newGuideItemDeleteButton.classList.add('fas');
-        newGuideItemDeleteButton.classList.add('fa-trash-alt');
-        newGuideItemWrapper.appendChild(newGuideItemDeleteButton);
-
-        guideItemsWrapper.appendChild(newGuideItemWrapper);
-      }
-    }
-  });
-
   document.addEventListener('click', event => {
     if (event.target.classList.contains('delete-image-button')) {
       const wrapper = event.target.parentNode.parentNode;

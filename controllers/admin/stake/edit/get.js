@@ -11,7 +11,7 @@ module.exports = (req, res) => {
       includes: {
         external: {
           css: ['admin', 'confirm', 'fontawesome', 'general', 'page'],
-          js: ['admin', 'confirm', 'dragAndDrop', 'duplicateElement', 'page', 'projects',  'serverRequest']
+          js: ['admin', 'confirm', 'dragAndDrop', 'duplicateElement', 'page',  'serverRequest']
         }
       },
       url: '/admin/stake/edit',

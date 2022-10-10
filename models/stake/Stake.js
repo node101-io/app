@@ -401,7 +401,7 @@ StakeSchema.statics.findStakeByIdAndUpdateAPRandMarketPrice = function (id, call
   });
 };
 
-StakeSchema.statics.findDeletedStakes = function (callback) {
+StakeSchema.statics.findStakeByIdAndDeleteStakes = function (callback) {
   const Stake = this;
 
   Stake.find({

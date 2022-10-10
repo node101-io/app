@@ -13,7 +13,7 @@ block content
       input.display-none#is-admin(type='text' value='true')
       input.display-none#language(type='text' value=language)
       .projects-title-wrapper
-        .projects-title Projects
+        .projects-title Stakes
       .projects-header-wrapper
         .status-colors-wrapper
           a.each-status-color-wrapper(href='/admin/stake?lang=en' class=(language == 'en' ? 'each-status-color-wrapper-selected' : ''))
@@ -26,9 +26,5 @@ block content
             .each-status-color(style='background-color: rgb(255, 22, 3)')
             .each-status-color-text(style='color: rgb(255, 22, 3)') RU
         .projects-info-titles-wrapper 
-          .each-project-info-title= __('Dates')
-          .each-project-info-title-seperator
-          .each-project-info-title= __('Reward')
-          .each-project-info-title-seperator
           .each-project-info-title= __('Popularity')
       .projects-wrapper= __('loading...')

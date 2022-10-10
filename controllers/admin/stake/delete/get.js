@@ -1,20 +1,20 @@
-const Project = require('../../../../models/project/Project');
+const Stake = require('../../../../models/stake/Stake');
 
 module.exports = (req, res) => {
-  Project.findDeletedProjects((err, projects) => {
+  Project.findDeletedStakes((err, projects) => {
     if (err)
       return res.redirect('/error?message=' + err);
 
-    return res.render('admin/projects/delete', {
-      page: 'admin/projects/delete',
-      title: 'Deleted Projects',
+    return res.render('admin/stake/delete', {
+      page: 'admin/stake/delete',
+      title: 'Deleted Stakes',
       includes: {
         external: {
           css: ['admin', 'confirm', 'fontawesome', 'general', 'page'],
           js: ['admin', 'confirm', 'page', 'serverRequest']
         }
       },
-      url: '/admin/projects/delete',
+      url: '/admin/stake/delete',
       projects
     });
   })

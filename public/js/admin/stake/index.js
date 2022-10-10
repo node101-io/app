@@ -27,7 +27,7 @@ function createProject(project) {
   projectHeaderWrapper.appendChild(projectStatusButton);
 
   const projectEditButton = document.createElement('a');
-  projectEditButton.href = '/admin/projects/edit?id=' + project._id;
+  projectEditButton.href = '/admin/stake/edit?id=' + project._id;
   projectEditButton.classList.add('each-project-edit-button');
   projectEditButton.classList.add('fas');
   projectEditButton.classList.add('fa-cog');
@@ -91,39 +91,39 @@ function createProject(project) {
   const projectLinksWrapper = document.createElement('div');
   projectLinksWrapper.classList.add('each-project-links-wrapper');
 
-  Object.keys(project.links).forEach(key => {
-    if (project.links[key] && project.links[key].length) {
-      const eachProjectLink = document.createElement('a');
-      eachProjectLink.classList.add('each-project-link');
-      eachProjectLink.href = project.links[key];
-      eachProjectLink.target = '_blank';
+  // Object.keys(project.links).forEach(key => {
+  //   if (project.links[key] && project.links[key].length) {
+  //     const eachProjectLink = document.createElement('a');
+  //     eachProjectLink.classList.add('each-project-link');
+  //     eachProjectLink.href = project.links[key];
+  //     eachProjectLink.target = '_blank';
 
-      const icon = getProjectLinkIconDOM(key);
-      eachProjectLink.appendChild(icon);
+  //     const icon = getProjectLinkIconDOM(key);
+  //     eachProjectLink.appendChild(icon);
 
-      projectLinksWrapper.appendChild(eachProjectLink);
-    }
-  });
+  //     projectLinksWrapper.appendChild(eachProjectLink);
+  //   }
+  // });
 
   projectContentWrapper.appendChild(projectLinksWrapper);
 
   const projectDescription = document.createElement('div');
   projectDescription.classList.add('each-project-description');
-  const descriptionParts = project.description.split('\n').join('<br/>').split(' ');
-  for (let i = 0; i < descriptionParts.length; i++) {
-    if (descriptionParts[i].includes('{')) {
-      const a = document.createElement('a');
-      a.innerHTML = descriptionParts[i].substring(0, descriptionParts[i].indexOf('{'));
-      a.target = '_blank';
-      a.href = descriptionParts[i].substring(descriptionParts[i].indexOf('{')+1, descriptionParts[i].indexOf('}'));
-      projectDescription.appendChild(a);
-    } else {
-      const span = document.createElement('span');
-      span.innerHTML = (i > 0 && descriptionParts[i-1].includes('{') ? ' ' : '') + descriptionParts[i] + ' ';
-      projectDescription.appendChild(span);
-    }
-  }
-  projectContentWrapper.appendChild(projectDescription);
+  // const descriptionParts = project.description.split('\n').join('<br/>').split(' ');
+  // for (let i = 0; i < descriptionParts.length; i++) {
+  //   if (descriptionParts[i].includes('{')) {
+  //     const a = document.createElement('a');
+  //     a.innerHTML = descriptionParts[i].substring(0, descriptionParts[i].indexOf('{'));
+  //     a.target = '_blank';
+  //     a.href = descriptionParts[i].substring(descriptionParts[i].indexOf('{')+1, descriptionParts[i].indexOf('}'));
+  //     projectDescription.appendChild(a);
+  //   } else {
+  //     const span = document.createElement('span');
+  //     span.innerHTML = (i > 0 && descriptionParts[i-1].includes('{') ? ' ' : '') + descriptionParts[i] + ' ';
+  //     projectDescription.appendChild(span);
+  //   }
+  // }
+  // projectContentWrapper.appendChild(projectDescription);
 
   const projectButtonsWrapper = document.createElement('div');
   projectButtonsWrapper.classList.add('each-project-buttons-wrapper');
@@ -138,29 +138,29 @@ function createProject(project) {
     projectButtonsWrapper.appendChild(stakeButton);
   }
 
-  if (project.get_involved_url) {
-    const getInvolvedButton = document.createElement('a');
-    getInvolvedButton.classList.add('each-project-button');
-    getInvolvedButton.classList.add('each-project-get-involved-button');
-    getInvolvedButton.href = project.get_involved_url;
-    getInvolvedButton.target = '_blank';
-    getInvolvedButton.innerHTML = 'Get Involved';
-    projectButtonsWrapper.appendChild(getInvolvedButton);
-  }
+  // if (project.get_involved_url) {
+  //   const getInvolvedButton = document.createElement('a');
+  //   getInvolvedButton.classList.add('each-project-button');
+  //   getInvolvedButton.classList.add('each-project-get-involved-button');
+  //   getInvolvedButton.href = project.get_involved_url;
+  //   getInvolvedButton.target = '_blank';
+  //   getInvolvedButton.innerHTML = 'Get Involved';
+  //   projectButtonsWrapper.appendChild(getInvolvedButton);
+  // }
 
-  const setUpButton = document.createElement('a');
-  setUpButton.classList.add('each-project-button');
-  setUpButton.classList.add('each-project-guide-button');
-  setUpButton.href = '/projects/guide/' + project.identifier;
-  setUpButton.innerHTML = 'Set-Up Guide';
-  projectButtonsWrapper.appendChild(setUpButton);
+//   const setUpButton = document.createElement('a');
+//   setUpButton.classList.add('each-project-button');
+//   setUpButton.classList.add('each-project-guide-button');
+//   setUpButton.href = '/projects/guide/' + project.identifier;
+//   setUpButton.innerHTML = 'Set-Up Guide';
+//   projectButtonsWrapper.appendChild(setUpButton);
 
-  projectContentWrapper.appendChild(projectButtonsWrapper);
+//   projectContentWrapper.appendChild(projectButtonsWrapper);
 
-  projectWrapper.appendChild(projectContentWrapper);
+//   projectWrapper.appendChild(projectContentWrapper);
 
   document.querySelector('.projects-wrapper').appendChild(projectWrapper);
-}
+ }
 
 window.addEventListener('load', () => {
   document.addEventListener('click', event => {
@@ -191,7 +191,7 @@ window.addEventListener('load', () => {
         isDeleteOnAction = true;
         const id = event.target.parentNode.parentNode.id;
 
-        serverRequest('/admin/projects/delete?id=' + id, 'POST', {}, res => {
+        serverRequest('/admin/stake/delete?id=' + id, 'POST', {}, res => {
           isDeleteOnAction = false;
 
           if (!res.success) return createConfirm({
@@ -199,7 +199,7 @@ window.addEventListener('load', () => {
             text: 'An unknown error occured while deleting the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
             reject: 'Close'
           }, res => { return; });
-  
+  edit
           event.target.parentNode.parentNode.remove();
         });
       });
@@ -208,7 +208,7 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('each-project-status-button')) {
       const id = event.target.parentNode.parentNode.id;
 
-      serverRequest('/admin/projects/status?id=' + id, 'POST', {}, res => {
+      serverRequest('/admin/stake/status?id=' + id, 'POST', {}, res => {
         if (!res.success) return createConfirm({
           title: 'An Error Occured',
           text: 'An unknown error occured while updating the status of the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),
@@ -228,7 +228,7 @@ window.addEventListener('load', () => {
     if (event.target.classList.contains('each-project-order-button')) {
       const id = event.target.parentNode.parentNode.id;
 
-      serverRequest('/admin/projects/order?id=' + id, 'POST', {}, res => {
+      serverRequest('/admin/stake/order?id=' + id, 'POST', {}, res => {
         if (!res.success) return createConfirm({
           title: 'An Error Occured',
           text: 'An unknown error occured while increasing the order of the project. Error Message: ' + (res.error ? res.error : 'unknown_error'),

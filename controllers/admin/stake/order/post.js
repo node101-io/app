@@ -1,7 +1,7 @@
 const Stake = require('../../../../models/stake/Stake');
 
 module.exports = (req, res) => {
-  Stake.findStakeByIdAndDelete(req.query.id, err => {
+  Stake.findStakeByIdAndIncreaseOrder(req.query.id, err => {
     if (err) {
       res.write(JSON.stringify({ error: err, success: false }));
       return res.end();

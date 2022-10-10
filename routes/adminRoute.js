@@ -49,6 +49,7 @@ const stakeDeletePostController = require('../controllers/admin/stake/delete/pos
 const stakeEditPostController = require('../controllers/admin/stake/edit/post');
 //const stakeImagePostController = require('../controllers/admin/stake/image/post');
 
+
 const writersCreatePostController = require('../controllers/admin/writers/create/post');
 const writersEditPostController = require('../controllers/admin/writers/edit/post');
 const writersImagePostController = require('../controllers/admin/writers/image/post');

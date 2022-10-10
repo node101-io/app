@@ -1,13 +1,13 @@
 const Stake = require('../../../../models/stake/Stake');
 
 module.exports = (req, res) => {
-  Stake.findStakeByIdAndDelete(req.query.id, err => {
+  Stake.findStakesByFilters(req.body, (err, stakes) => {
     if (err) {
       res.write(JSON.stringify({ error: err, success: false }));
       return res.end();
     }
 
-    res.write(JSON.stringify({ success: true }));
+    res.write(JSON.stringify({ success: true, stakes }));
     return res.end();
   });
 }
