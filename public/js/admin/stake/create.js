@@ -1,4 +1,3 @@
-let selected_guide_item_type = 'title'; // Default
 const language_values = ['all', 'en', 'tr', 'ru'];
 
 function uploadImage (file, callback) {
