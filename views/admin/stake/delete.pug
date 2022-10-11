@@ -10,111 +10,12 @@ block content
         a.each-all-header-button(href='/admin/projects/delete') Deleted Projects
       a.all-header-create-button(href='/admin/projects/create') Create Project
     .all-content-wrapper
-      .new-project-form
-        .new-project-form-title New Project
-        .new-project-form-subtitle The new project will be created as 'inactive'. You may activate the project once you create it. Users cannot see inactive projects.
-        .new-project-form-subtitle IMPORTANT: In order to add a link, use text{link} syntax. For instance, "Please follow the link{https://ex.com} to open the site."
-        .new-project-form-title General Information
-        .project-inputs-outer-wrapper
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Language
-            input.new-project-form-input#language-input(type='text' placeholder='Allowed Values: all, en, tr, ru' autofocus)
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Name
-            input.new-project-form-input#name-input(type='text' placeholder='Project name')
-          .each-project-input-wrapper#image-input-wrapper
-            .new-project-form-input-title.required-input Image
-            .image-input-outer-wrapper
-              label.choose-image-input-text
-                span Click to choose an image from your device
-                input.display-none.image-input(type="file" accept="image/*")
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Description
-            textarea.new-project-form-input#description-input(type='text' placeholder='Project description (multiline)')
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Dates
-            input.new-project-form-input#dates-input(type='text' placeholder='Project dates. Leave empty for TBA')
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Reward
-            input.new-project-form-input#reward-input(type='text' placeholder='Project reward. Leave empty for TBA')
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Status
-            input.new-project-form-input#status-input(type='text' placeholder='Allowed Values: active, upcoming, ended')
-          .each-project-input-wrapper
-            .new-project-form-input-title.required-input Popularity
-            input.new-project-form-input#popularity-input(type='text' placeholder='Allowed Values: low, medium, high')
-          .each-project-input-wrapper
-            .new-project-form-input-title Get Involved URL
-            input.new-project-form-input#get-involved-url-input(type='text' placeholder='Optional. Project web-site, discord link, or such')
-          .each-project-input-wrapper
-            .new-project-form-input-title Will Be Stakable
-            input.new-project-form-input#will-be-stakable-input(type='text' placeholder='Write \'true\' if the the project will be stakable in the future')
-        .new-project-form-title Stakable Projects
-        .new-project-form-subtitle Fill only if the project is stakable. All the fields should be completed for the project to be stakable.
-        .project-inputs-outer-wrapper
-          .each-project-input-wrapper
-            .new-project-form-input-title Stake URL
-            input.new-project-form-input#stake-url-input(type='text' placeholder='Enter only if the project is stakable')
-          .each-project-input-wrapper
-            .new-project-form-input-title Stake Rate API Title
-            input.new-project-form-input#stake-api-title-input(type='text' placeholder='This string should match the title of project in the stake rate api')
-        .new-project-form-title Project Links
-        .project-inputs-outer-wrapper
-          .each-project-input-wrapper
-            .new-project-form-input-title Web
-            input.new-project-form-input#links-web-input(type='text' placeholder='Project website url')
-          .each-project-input-wrapper
-            .new-project-form-input-title GitHub
-            input.new-project-form-input#links-github-input(type='text' placeholder='Project GitHub url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Telegram
-            input.new-project-form-input#links-telegram-input(type='text' placeholder='Project Telegram url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Medium
-            input.new-project-form-input#links-medium-input(type='text' placeholder='Project Medium url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Twitter
-            input.new-project-form-input#links-twitter-input(type='text' placeholder='Project Twitter url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Instagram
-            input.new-project-form-input#links-instagram-input(type='text' placeholder='Project Instagram url')
-          .each-project-input-wrapper
-            .new-project-form-input-title GitBook
-            input.new-project-form-input#links-gitbook-input(type='text' placeholder='Project GitBook url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Google Docs
-            input.new-project-form-input#links-docs-input(type='text' placeholder='Project Google Docs url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Discord
-            input.new-project-form-input#links-discord-input(type='text' placeholder='Project Discord url')
-          .each-project-input-wrapper
-            .new-project-form-input-title Explorer
-            input.new-project-form-input#links-explorer-input(type='text' placeholder='Project explorer url')
-        .new-project-form-title Project Guide
-        .new-project-form-subtitle Items you add below will be created in the order shown.
-        .project-guide-items-wrapper.drag-and-drop-wrapper
-        .add-new-guide-item-button
-          .add-new-guide-item-buttons-line
-            .new-guide-item-type-selection-button
-              .new-guide-item-type-selected
-                span Title
-                i.fas.fa-chevron-down
-              each guide_type in guide_type_values
-                .each-new-guide-item-type= guide_type.substring(0, 1).toUpperCase() + guide_type.substring(1)
-            .new-guide-item-create-button Add
-          textarea.new-guide-item-text-input#new-guide-item-text-input.new-project-form-input(type='text' placeholder='Enter the title')
-        .image-input-outer-wrapper#content-image-input-outer-wrapper
-          label.choose-image-input-text
-            span Click to choose an image from your device
-            input.display-none.image-input(type='file' accept='image/*')
-        .new-project-form-title Project Requirements
-        .new-project-form-subtitle Items you add below will be created in order.
-        .project-requirements-wrapper
-          .add-new-requirement-form
-            input.new-requirement-name-input#new-requirement-name-input(type='text' placeholder='Enter the name of the requirement')
-            textarea.new-requirement-value-input#new-requirement-value-input(placeholder='Enter the value of the requirement')
-            .new-requirement-add-button Add Requirement
-        .new-project-buttons-line
-          .new-project-back-button#new-project-back-button Cancel
-          .new-project-create-button#new-project-create-button Add
-        .new-project-error#new-project-form-error
+      .projects-title-wrapper
+        .projects-title Deleted Projects
+      .projects-wrapper
+        each project in projects
+          .each-deleted-project
+            a.each-deleted-project-restore-button(href='/admin/projects/restore?id=' + project._id)
+              svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512' fill='rgb(10, 10, 20)')
+                path(d='M284.2 0C296.3 0 307.4 6.848 312.8 17.69L320 32H416C433.7 32 448 46.33 448 64C448 81.67 433.7 96 416 96H32C14.33 96 0 81.67 0 64C0 46.33 14.33 32 32 32H128L135.2 17.69C140.6 6.848 151.7 0 163.8 0H284.2zM31.1 128H416L394.8 466.1C393.2 492.3 372.3 512 346.9 512H101.1C75.75 512 54.77 492.3 53.19 466.1L31.1 128zM207 199L127 279C117.7 288.4 117.7 303.6 127 312.1C136.4 322.3 151.6 322.3 160.1 312.1L199.1 273.9V408C199.1 421.3 210.7 432 223.1 432C237.3 432 248 421.3 248 408V273.9L287 312.1C296.4 322.3 311.6 322.3 320.1 312.1C330.3 303.6 330.3 288.4 320.1 279L240.1 199C236.5 194.5 230.4 191.1 223.1 191.1C217.6 191.1 211.5 194.5 207 199V199z')
+            .each-deleted-project-name #{project.name} (#{project.language.toUpperCase()})
