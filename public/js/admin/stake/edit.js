@@ -66,14 +66,6 @@ function createUploadedImage (url, wrapper) {
 window.addEventListener('load', () => {
   project = JSON.parse(document.getElementById('project-json').value);
 
-  const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
-  const guideItemInput = document.getElementById('new-guide-item-text-input');
-  const inputItemsWrapper = document.querySelector('.add-new-guide-item-button');
-  let guideImageInput = document.getElementById('content-image-input');
-  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
-  guideImageInput.style.display = 'none';
-  let lastGuideItemExists = false;
-  let tempURL = ''
 
   document.addEventListener('click', event => {
     if (event.target.classList.contains('delete-image-button')) {
@@ -82,70 +74,6 @@ window.addEventListener('load', () => {
       // Do not delete the image. This is edit, will delete image when the new one is uploaded
 
       createImagePicker(wrapper);
-    }
-
-    if (event.target.classList.contains('guide-item-edit-button')) {
-      currentGuideItemCountOnEdit++;
-
-      const guideItemType = event.target.previousElementSibling.className.replace('guide-', '');
-
-      const guideItemEditInput = document.createElement('textarea');
-      guideItemEditInput.classList.add('new-project-form-input');
-      guideItemEditInput.classList.add('guide-item-edit-input');
-
-      guideItemEditInput.id = 'guide-edit-input-' + guideItemType;
-      guideItemEditInput.placeholder = 'Please enter a value.';
-      guideItemEditInput.value = event.target.previousElementSibling.innerHTML;
-
-      event.target.previousElementSibling.remove();
-
-      event.target.parentNode.appendChild(guideItemEditInput);
-      while (guideItemEditInput.previousElementSibling)
-        event.target.parentNode.insertBefore(guideItemEditInput, guideItemEditInput.previousElementSibling);
-
-      guideItemEditInput.focus();
-
-      setTimeout(() => {
-        event.target.classList.remove('guide-item-edit-button');
-        event.target.classList.add('guide-item-edit-finish-button');
-        event.target.classList.remove('fa-cog');
-        event.target.classList.add('fa-check');
-      }, 500);
-    }
-
-    if (event.target.classList.contains('guide-item-edit-finish-button')) {
-      const guideInput = event.target.previousElementSibling;
-
-      if (!guideInput || !guideInput.value || !guideInput.value.length)
-        return;
-
-      currentGuideItemCountOnEdit--;
-
-      const guideItemType = guideInput.id.replace('guide-edit-input-', '');
-
-      const guideItem = document.createElement('div');
-      guideItem.classList.add('guide-' + guideItemType);
-      guideItem.innerHTML = guideInput.value.split('\n').join('<br/>');
-
-      guideInput.remove();
-
-      event.target.parentNode.appendChild(guideItem);
-      while (guideItem.previousElementSibling)
-        event.target.parentNode.insertBefore(guideItem, guideItem.previousElementSibling);
-
-      setTimeout(() => {
-        event.target.classList.remove('guide-item-edit-finish-button');
-        event.target.classList.add('guide-item-edit-button');
-        event.target.classList.remove('fa-check');
-        event.target.classList.add('fa-cog');
-      }, 500);
-    }
-
-    if (event.target.classList.contains('guide-item-delete-button')) {
-      event.target.parentNode.remove();
-      lastGuideItemExists = false;
-      guideItemInput.value = '';
-      guideItemInput.focus();
     }
 
     if (event.target.id == 'edit-project-save-button') {
@@ -172,7 +100,7 @@ window.addEventListener('load', () => {
       if (!data.status || !status_values.includes(data.status))
         return error.innerHTML = 'Please enter a valid status.';
 
-      serverRequest('/admin/projects/edit?id=' + project._id, 'POST', data, res => {
+      serverRequest('/admin/stake/edit?id=' + project._id, 'POST', data, res => {
         if (res.success)
           return window.location.reload();
 
