@@ -24,6 +24,12 @@ const stakeDeleteGetController = require('../controllers/admin/stake/delete/get'
 const stakeEditGetController = require('../controllers/admin/stake/edit/get');
 const stakeRestoreGetController = require('../controllers/admin/stake/restore/get');
 
+const testnetIndexGetController = require('../controllers/admin/testnet/index/get');
+const testnetCreateGetController = require('../controllers/admin/testnet/create/get');
+const testnetDeleteGetController = require('../controllers/admin/testnet/delete/get');
+const testnetEditGetController = require('../controllers/admin/testnet/edit/get');
+const testnetRestoreGetController = require('../controllers/admin/testnet/restore/get');
+
 const writersIndexGetController = require('../controllers/admin/writers/index/get');
 const writersCreateGetController = require('../controllers/admin/writers/create/get');
 const writersEditGetController = require('../controllers/admin/writers/edit/get');
@@ -49,6 +55,12 @@ const stakeDeletePostController = require('../controllers/admin/stake/delete/pos
 const stakeEditPostController = require('../controllers/admin/stake/edit/post');
 //const stakeImagePostController = require('../controllers/admin/stake/image/post');
 
+const testnetCreatePostController = require('../controllers/admin/testnet/create/post');
+// const testnetDeletePostController = require('../controllers/admin/testnet/delete/post');
+// const testnetEditPostController = require('../controllers/admin/testnet/edit/post');
+// const testnetImagePostController = require('../controllers/admin/testnet/image/post');
+// const testnetOrderPostController = require('../controllers/admin/testnet/order/post');
+// const testnetStatusPostController = require('../controllers/admin/testnet/status/post');
 
 const writersCreatePostController = require('../controllers/admin/writers/create/post');
 const writersEditPostController = require('../controllers/admin/writers/edit/post');
@@ -140,6 +152,32 @@ router.get(
   '/stake/restore',
     isAdmin,
     stakeRestoreGetController 
+);
+
+router.get(
+  '/testnet/',
+    isAdmin,
+    testnetIndexGetController 
+);
+router.get(
+  '/testnet/create',
+    isAdmin,
+    testnetCreateGetController 
+);
+router.get(
+  '/testnet/edit',
+    isAdmin,
+    testnetEditGetController 
+);
+router.get(
+  '/testnet/delete',
+    isAdmin,
+    testnetDeleteGetController 
+);
+router.get(
+  '/testnet/restore',
+    isAdmin,
+    testnetRestoreGetController 
 );
 
 router.get(
@@ -249,6 +287,22 @@ router.post(
 //   '/projects/order',
 //     isAdmin,
 //     stakeOrderPostController
+// );
+
+router.post(
+  '/testnet/create',
+    isAdmin,
+    testnetCreatePostController
+);
+// router.post(
+//   '/stake/edit',
+//     isAdmin,
+//     testnetEditPostController
+// );
+// router.post(
+//   '/stake/delete',
+//     isAdmin,
+//     testnetDeletePostController
 // );
 
 router.post(

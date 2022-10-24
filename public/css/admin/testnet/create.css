@@ -1,0 +1,460 @@
+.new-project-form {
+  margin: 60px;
+  width: calc(100% - 120px);
+  height: fit-content;
+  min-height: fit-content;
+  background-color: var(--background-color);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  border-radius: 5px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.new-project-form-title {
+  color: var(--main-color);
+  font-weight: 800;
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+.new-project-form-subtitle {
+  color: var(--text-color-light);
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 40px;
+}
+
+.project-inputs-outer-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+  margin-bottom: 60px;
+}
+.each-project-input-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.new-project-form-input-title {
+  color: var(--text-color);
+  font-weight: 800;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.new-project-form-input {
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  outline: none;
+  border-radius: 5px;
+  width: calc(min(500px, 100%));
+  height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 8px 20px;
+  margin-bottom: 20px;
+}
+.new-project-form-input::placeholder {
+  color: var(--placeholder-color);
+}
+.new-project-form-input:focus {
+  border: 2px solid var(--main-color);
+}
+.required-input::after {
+  content: "*";
+  color: var(--main-color);
+  font-weight: 800;
+  font-size: 16px;
+  margin-left: 5px;
+}
+
+.image-input-outer-wrapper {
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+}
+.choose-image-input-text {
+  width: calc(min(500px, 100%));
+  height: 40px;
+  min-height: 40px;
+  padding: 0px 20px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  margin-bottom: 20px;
+  color: var(--text-color-light);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+}
+.image-input-wrapper {
+  width: calc(min(500px, 100%));
+  height: 40px;
+  min-height: 40px;
+  padding: 0px 20px;
+  margin-bottom: 20px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.image-input-wrapper i {
+  color: rgba(167, 167, 168, 0.8);
+  font-size: 14px;
+  cursor: pointer;
+}
+.image-input-wrapper i:hover {
+  color: rgb(167, 167, 160);
+}
+.image-input-wrapper-image {
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.image-input-wrapper-image img {
+  height: 100%;
+}
+
+.project-guide-items-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.project-guide-items-wrapper div {
+  cursor: move;
+}
+.guide-item-outer-wrapper {
+  display: flex;
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.guide-title {
+  color: var(--text-color);
+  font-weight: 800;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+.guide-text {
+  color: var(--text-color-light);
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 30px;
+}
+.guide-code {
+  padding: 15px 20px;
+  background-color: var(--text-color);
+  color: rgb(65,144,34);
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+.guide-info {
+  color: var(--main-color);
+  font-weight: 800;
+  font-size: 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.guide-info::before {
+  content: "!";
+  background-color: var(--main-color);
+  color: var(--background-color);
+  font-weight: 900;
+  font-size: 17px;
+  width: 20px;
+  min-width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.guide-image {
+  width: 200px;
+  min-width: 200px;
+  height: 200px;
+  margin-bottom: 30px;
+  background-size: cover;
+  background-color: var(--highlight-color);
+  border-radius: 8px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+.guide-video {
+  width: 400px;
+  min-width: 400px;
+  height: 250px;
+  min-height: 250px;
+  margin-bottom: 30px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+.guide-item-delete-button {
+  color: rgba(255, 22, 3, 0.8);
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.guide-item-delete-button:hover {
+  color: rgb(255, 22, 3);
+}
+
+.add-new-guide-item-button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 80px;
+}
+.add-new-guide-item-buttons-line {
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+.new-guide-item-type-selection-button {
+  display: flex;
+  flex-direction: column;
+  width: 150px;
+  height: 40px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  overflow: hidden;
+  z-index: 2;
+  border-radius: 5px;
+}
+.new-guide-item-type-selected {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 40px;
+  min-height: 40px;
+  color: var(--text-color);
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+}
+.new-guide-item-type-selected i {
+  margin-left: 7px;
+}
+.each-new-guide-item-type {
+  background-color: var(--background-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 40px;
+  min-height: 40px;
+  color: rgba(10, 10, 20, 0.3);
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  border: 1px solid var(--border-color);
+  border-top: 0;
+  margin-left: -1px;
+}
+.each-new-guide-item-type:hover {
+  background-color: var(--highlight-color);
+}
+.new-guide-item-create-button {
+  margin-left: 15px;
+  height: 40px;
+  padding: 0 20px;
+  background-color: var(--main-color);
+  color: var(--background-color);
+  font-weight: 800;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.new-guide-item-text-input {
+  margin: 0px !important;
+  margin-top: 15px !important;
+  height: 150px !important;
+}
+
+.project-requirements-wrapper {
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+  margin-bottom: 30px;
+}
+.each-project-requirement {
+  margin-right: 30px;
+  width: 350px;
+  height: 160px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+  display: inline-flex;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+.each-project-requirement-delete-button {
+  font-size: 14px;
+  color: rgba(255, 22, 3, 0.8);
+  cursor: pointer;
+  margin-left: auto;
+}
+.each-project-requirement-delete-button:hover {
+  color: rgb(255, 22, 3);
+}
+.each-project-requirement-content-wrapper {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: flex-start;
+  margin-top: auto;
+}
+.each-project-requirement-name {
+  width: 90px;
+  min-width: 90px;
+  height: 100%;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-color);
+}
+.each-project-requirement-seperator {
+  width: 20px;
+  min-width: 20px;
+  height: 100%;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--text-color);
+  display: flex;
+}
+.each-project-requirement-value {
+  width: 200px;
+  height: 100%;
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--text-color-light);
+}
+
+.add-new-requirement-form {
+  display: inline-flex;
+  flex-direction: column;
+  height: 150px;
+  margin-bottom: 30px;
+  width: 350px;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 0 10px var(--border-color);
+}
+.new-requirement-name-input {
+  width: 100%;
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 5px;
+  padding-bottom: 1px;
+}
+.new-requirement-value-input {
+  height: 100px;
+  color: var(--text-color);
+  font-weight: 700;
+  font-size: 14px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1px;
+}
+.new-requirement-name-input::placeholder, .new-requirement-value-input::placeholder {
+  color: var(--text-color-light);
+}
+.new-requirement-add-button {
+  margin-left: auto;
+  padding: 5px 14px;
+  background-color: var(--main-color);
+  color: var(--background-color);
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.new-project-buttons-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  height: fit-content;
+  min-height: fit-content;
+}
+
+.new-project-back-button {
+  width: calc(min(100%, 235px));
+  height: 45px;
+  background-color: var(--background-color);
+  color: rgb(255, 22, 3);
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 0 0 8px rgba(255, 22, 3, 0.3);
+  border: 2px solid rgb(255, 22, 3);
+  margin-right: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.new-project-back-button:hover {
+  box-shadow: 0 0 8px rgba(255, 22, 3, 0.4);
+}
+.new-project-create-button {
+  width: calc(min(100%, 235px));
+  height: 45px;
+  background-color: var(--main-color);
+  color: var(--background-color);
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  box-shadow: 0 0 8px rgba(130, 170, 235, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.new-project-create-button:hover {
+  box-shadow: 0 0 8px rgba(130, 170, 235, 0.7);
+}
+
+.new-project-error {
+  margin-top: 25px;
+  height: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 800;
+  color: rgb(255, 22, 3);
+  margin-left: auto;
+}
