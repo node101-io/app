@@ -164,12 +164,12 @@ function uploadProjects() {
         accept: 'Close'
       }, res => { return; });
     }
-    console.log(res.projects)
+    console.log(res.stakes)
     if (isUploadFistCall) {
       isUploadFistCall = false;
 
       if (document.querySelector('.projects-wrapper')) {
-        if (res.projects && res.projects.length) {
+        if (res.stakes && res.stakes.length) {
           document.querySelector('.projects-wrapper').style.alingItems = 'initial';
           document.querySelector('.projects-wrapper').style.justifyContent = 'initial';
           document.querySelector('.projects-wrapper').innerHTML = '';
@@ -179,16 +179,16 @@ function uploadProjects() {
       }
     }
 
-    for (let i = 0; i < res.projects.length; i++) {
-      console.log(res.projects[i])
-      stakes.push(res.projects[i]);
-      stakeIds.push(res.projects[i]._id.toString());
+    for (let i = 0; i < res.stakes.length; i++) {
+      console.log(res.stakes[i])
+      stakes.push(res.stakes[i]);
+      stakeIds.push(res.stakes[i]._id.toString());
 
       if (typeof createProject == 'function'){
-        createProject(res.projects[i]);
+        createProject(res.stakes[i]);
         console.log('happened')
       }if (typeof createSearchProject == 'function')
-        createSearchProject(res.projects[i]);
+        createSearchProject(res.stakes[i]);
         console.log('happened2' + isUploadingFinished)
     }
 

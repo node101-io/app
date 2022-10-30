@@ -1,4 +1,4 @@
-let project;
+let stake;
 let selected_guide_item_type = 'title'; // Default
 let currentGuideItemCountOnEdit = 0;
 
@@ -64,16 +64,7 @@ function createUploadedImage (url, wrapper) {
 }
 
 window.addEventListener('load', () => {
-  project = JSON.parse(document.getElementById('project-json').value);
-
-  const guideItemsWrapper = document.querySelector('.project-guide-items-wrapper');
-  const guideItemInput = document.getElementById('new-guide-item-text-input');
-  const inputItemsWrapper = document.querySelector('.add-new-guide-item-button');
-  let guideImageInput = document.getElementById('content-image-input');
-  const contentImageInputOuter = document.getElementById('content-image-input').parentNode;
-  guideImageInput.style.display = 'none';
-  let lastGuideItemExists = false;
-  let tempURL = ''
+  stake = JSON.parse(document.getElementById('stake-json').value);
 
   document.addEventListener('click', event => {
     if (event.target.classList.contains('delete-image-button')) {
@@ -172,7 +163,7 @@ window.addEventListener('load', () => {
       if (!data.status || !status_values.includes(data.status))
         return error.innerHTML = 'Please enter a valid status.';
 
-      serverRequest('/admin/projects/edit?id=' + project._id, 'POST', data, res => {
+      serverRequest('/admin/projects/edit?id=' + stake._id, 'POST', data, res => {
         if (res.success)
           return window.location.reload();
 
@@ -196,7 +187,7 @@ window.addEventListener('load', () => {
       uploadImage(file, (err, url) => {
         if (err) return throwError(err);
         tempURL = url
-        serverRequest('/admin/projects/image?id=' + project._id, 'POST', {
+        serverRequest('/admin/projects/image?id=' + stake._id, 'POST', {
           image: url
         }, res => {
           if (!res.success) return createConfirm({
