@@ -6,6 +6,8 @@ const s3 = new AWS.S3({
 });
 
 module.exports = async (url, callback) => {
+  return callback(null); // Temporarily stop all delete operations on DB
+
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,	
     Key: url.split('/')[url.split('/').length-1]
