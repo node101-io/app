@@ -5,12 +5,12 @@ block main
     .blog-progress-bar
   .blog-outer-wrapper
     .blog-wrapper
-      .blog-background(style=`background-image: url(${blog.image})`)
+      .blog-background(style='background-image: ' + blog.image + ')')
       .blog-title= blog.title
       .blog-subtitle= blog.subtitle
       .blog-created-at POSTED ON: #{blog.created_at}
       .blog-writer
-        .writer-image(style=`background-image: url(${blog.writer.image})`)
+        .writer-image(style='background-image: ' + blog.writer.image + ')')
         .writer-info-wrapper
           .writer-name= blog.writer.name
           .writer-position= blog.writer.position
@@ -29,19 +29,35 @@ block main
             .blog-content-info-wrapper
               .blog-content-info-sign !
               div(class='blog-content-' + item.type)
-                each text, i in par.split(' ')
-                  if text.includes('{')
-                    a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                each text2, i in par.split('/*/')
+                  if i % 2 == 0
+                    each text, i in text2.split(' ')
+                      if text.includes('{')
+                        a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                      else
+                        span= (i > 0 && text2.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
                   else
-                    span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
+                    each text, i in text2.split(' ')
+                      if text.includes('{')
+                        a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank' style='font-style: italic')= text.substring(0, text.indexOf('{'))
+                      else
+                        span(style='font-style: italic')= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
         else
           each par in item.content.split('\n').filter(each => each.trim().length)
             div(class='blog-content-' + item.type)
-              each text, i in par.split(' ')
-                if text.includes('{')
-                  a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+              each text2, i in par.split('/*/')
+                if i % 2 == 0
+                  each text, i in text2.split(' ')
+                    if text.includes('{')
+                      a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank')= text.substring(0, text.indexOf('{'))
+                    else
+                      span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
                 else
-                  span= (i > 0 && par.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
+                  each text, i in text2.split(' ')
+                    if text.includes('{')
+                      a(href=text.substring(text.indexOf('{')+1, text.indexOf('}')) target='_blank' style='font-style: italic')= text.substring(0, text.indexOf('{'))
+                    else
+                      span(style='font-style: italic')= (i > 0 && text2.split(' ')[i-1].includes('{') ? ' ' : '') + text + ' '
       .blog-buttons-wrapper
         if blog.previous_blog
           a.each-blog-button(href='/blog/' + blog.previous_blog.identifier)
