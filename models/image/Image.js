@@ -82,6 +82,8 @@ ImageSchema.statics.findImageByUrlAndDelete = function (url, callback) {
 
     deleteImage(image.url, err => {
       if (err) return callback('aws_database_error');
+
+      return callback(null);
   
       Image.findByIdAndDelete(mongoose.Types.ObjectId(image._id.toString())  , err => {
         if (err) return callback('database_error');

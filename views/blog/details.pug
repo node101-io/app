@@ -5,12 +5,12 @@ block main
     .blog-progress-bar
   .blog-outer-wrapper
     .blog-wrapper
-      .blog-background(style='background-image: ' + blog.image + ')')
+      .blog-background(style='background-image: url(' + blog.image + ')')
       .blog-title= blog.title
       .blog-subtitle= blog.subtitle
       .blog-created-at POSTED ON: #{blog.created_at}
       .blog-writer
-        .writer-image(style='background-image: ' + blog.writer.image + ')')
+        .writer-image(style='background-image: url(' + blog.writer.image + ')')
         .writer-info-wrapper
           .writer-name= blog.writer.name
           .writer-position= blog.writer.position
