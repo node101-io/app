@@ -1,12 +1,19 @@
 doctype html
-html(lang="en")
+html(lang='en')
   head
-    meta(name="viewport", content="width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=0")
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, shrink-to-fit=no, maximum-scale=1.0, user-scalable=0')
     if title
       title node101 | #{title}
     else
       title node101
-    link(href="https://fonts.googleapis.com/css?family=Nunito+Sans:100,200,300,400,500,600,700,800,900" rel="stylesheet")
+    link(href='https://fonts.googleapis.com/css?family=Nunito+Sans:100,200,300,400,500,600,700,800,900' rel='stylesheet')
+    script(async src='https://www.googletagmanager.com/gtag/js?id=G-JXMNECY7QP')
+    script.
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-JXMNECY7QP');
     if includes
       if includes.external
         if includes.external.css
