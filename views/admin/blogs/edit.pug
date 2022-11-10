@@ -42,6 +42,9 @@ block content
           .each-blog-input-wrapper
             .new-blog-form-input-title.required-input Subtitle
             input.new-blog-form-input#subtitle-input(type='text' placeholder='Blog subtitle' value=blog.subtitle)
+          .each-blog-input-wrapper
+            .new-blog-form-input-title Created At
+            input.new-blog-form-input#created-at-input(type='text' placeholder='Blog date. Please keep the format while changing, or else it will not be updated' value=blog.created_at)
         .new-blog-form-title Blog Content
         .new-blog-form-subtitle Items you add below will be created in the order shown.
         .blog-content-items-wrapper.drag-and-drop-wrapper

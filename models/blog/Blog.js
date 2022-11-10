@@ -649,7 +649,8 @@ BlogSchema.statics.findBlogByIdAndUpdate = function (id, data, callback) {
     const update = {
       title: data.title && typeof data.title == 'string' && data.title.trim().length && data.title.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.title.trim() : blog.title,
       subtitle: data.subtitle && typeof data.subtitle == 'string' && data.subtitle.trim().length && data.subtitle.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.subtitle.trim() : blog.subtitle,
-      content: getContent(data.content)
+      content: getContent(data.content),
+      created_at: data.created_at && typeof data.created_at == 'string' && data.created_at.trim().length && data.created_at.trim().length == DATABASE_CREATED_AT_LENGTH ? data.created_at.trim() : blog.created_at
     }
    
     update.identifier = getIdentifier(update.title);
