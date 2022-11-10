@@ -326,6 +326,7 @@ window.addEventListener('load', () => {
         writer_id: document.getElementById('writer-input').value,
         title: document.getElementById('title-input').value,
         subtitle: document.getElementById('subtitle-input').value,
+        created_at: document.getElementById('created-at-input').value,
         content: []
       };
 
