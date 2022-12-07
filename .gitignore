@@ -2,3 +2,7 @@ node_modules/
 .env
 public/res/uploads/*
 **/.DS_Store
+public/devnet/*
+public/mainnet/*
+public/testnet/*
+public/guide/*

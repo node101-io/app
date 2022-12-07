@@ -1,10 +1,15 @@
 const express = require('express');
+const multer = require('multer');
+
 const router = express.Router();
+const upload = multer({ dest: './public/res/uploads/' });
 
 const isAdmin = require('../middleware/isAdmin');
 
 const indexGetController = require('../controllers/admin/index/get');
 const loginGetController = require('../controllers/admin/login/get');
+
+const bashUploadGetController = require('../controllers/admin/bash/get');
 
 const blogsIndexGetController = require('../controllers/admin/blogs/index/get');
 const blogsCreateGetController = require('../controllers/admin/blogs/create/get');
@@ -29,6 +34,7 @@ const writersCreateGetController = require('../controllers/admin/writers/create/
 const writersEditGetController = require('../controllers/admin/writers/edit/get');
 
 const loginPostController = require('../controllers/admin/login/post');
+const bashPostController = require('../controllers/admin/bash/post');
 
 const blogsCreatePostController = require('../controllers/admin/blogs/create/post');
 const blogsDeletePostController = require('../controllers/admin/blogs/delete/post');
@@ -62,6 +68,11 @@ router.get(
 router.get(
   '/login',
     loginGetController
+);
+router.get(
+  '/bash',
+    isAdmin,
+    bashUploadGetController
 );
 
 router.get(
@@ -161,6 +172,12 @@ router.get(
 router.post(
   '/login',
     loginPostController
+);
+router.post(
+  '/bash',
+    upload.single('file'),
+    isAdmin,
+    bashPostController
 );
 
 router.post(
