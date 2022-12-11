@@ -3,7 +3,7 @@ module.exports = (req, res) => {
 
   return res.render('index/index', {
     page: 'index/index',
-    title: res.__('Everything you need to know to start earning with krypto'),
+    title: res.__('Everything you need to know to start earning with crypto'),
     includes: {
       external: {
         css: ['confirm', 'footer', 'general', 'header', 'page', 'projects'],
