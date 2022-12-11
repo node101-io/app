@@ -1,2 +1,2 @@
 #node101.io
-Everything you need to know to start earning with krypto.
+Everything you need to know to start earning with crypto.
