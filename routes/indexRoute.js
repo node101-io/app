@@ -7,6 +7,7 @@ const indexGetController = require('../controllers/index/index/get');
 const stakeGetController = require('../controllers/index/stake/get');
 
 const umeeEndpointsGetController = require('../controllers/index/umee/endpoints');
+const bandEndpointsGetController = require('../controllers/index/band/endpoints');
 
 router.get(
   '/',
@@ -28,6 +29,10 @@ router.get(
 router.get(
   '/umee/endpoints',
     umeeEndpointsGetController
+);
+router.get(
+  '/band/endpoints',
+    bandEndpointsGetController
 );
 
 module.exports = router;
