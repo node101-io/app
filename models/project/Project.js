@@ -216,48 +216,41 @@ ProjectSchema.statics.createProject = function (data, callback) {
       Project.findProjectCountByLanguage(data.language, (err, order) => {
         if (err) return callback(err);
 
-        const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
+        const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) ? true : false;
 
         if (is_stakable) {
-          fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
-            if (err) return callback(err);
-    
-            const newProjectData = {
-              identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
-              order,
-              is_active: data.is_active ? true : false,
-              language: data.language,
-              name: data.name.trim(),
-              image: image.url,
-              created_at: parseInt((new Date()).getTime()),
-              description: data.description.trim(),
-              guide: getGuide(data.guide),
-              requirements: getRequirements(data.requirements),
-              status: data.status,
-              dates: data.dates.trim(),
-              reward: data.reward.trim(),
-              get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
-              popularity: data.popularity,
-              links: getLinks(data.links),
-              is_stakable,
-              stake_url: data.stake_url.toString(),
-              stake_api_title: data.stake_api_title.toString(),
-              stake_rate,
-              last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
-            };
-          
-            const newProject = new Project(newProjectData);
-          
-            newProject.save((err, project) => {
-              if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
-              if (err) return callback('database_error');
+          const newProjectData = {
+            identifier: data.name.split(' ').join('_').toLowerCase().trim() + (data.language != 'en' ? ('_' + data.language) : ''),
+            order,
+            is_active: data.is_active ? true : false,
+            language: data.language,
+            name: data.name.trim(),
+            image: image.url,
+            created_at: parseInt((new Date()).getTime()),
+            description: data.description.trim(),
+            guide: getGuide(data.guide),
+            requirements: getRequirements(data.requirements),
+            status: data.status,
+            dates: data.dates.trim(),
+            reward: data.reward.trim(),
+            get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : null,
+            popularity: data.popularity,
+            links: getLinks(data.links),
+            is_stakable,
+            stake_url: data.stake_url.toString()
+          };
         
-              Image.findImageByUrlAndSetAsUsed(project.image, err => {
-                if (err) return callback(err);
+          const newProject = new Project(newProjectData);
         
-                return callback(null, project._id.toString());
-              });  
-            });
+          newProject.save((err, project) => {
+            if (err && err.code == DUPLICATED_UNIQUE_FIELD_ERROR_CODE) return callback('duplicated_unique_field');
+            if (err) return callback('database_error');
+      
+            Image.findImageByUrlAndSetAsUsed(project.image, err => {
+              if (err) return callback(err);
+      
+              return callback(null, project._id.toString());
+            });  
           });
         } else {
           const newProjectData = {
@@ -426,32 +419,28 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
     const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) ? true : false;
 
     if (is_stakable) {
-      fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
-        if (err) return callback(err);
+      const update = {
+        name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
+        description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
+        guide: getGuide(data.guide),
+        requirements: getRequirements(data.requirements),
+        status: data.status && status_values.includes(data.status) ? data.status : project.status,
+        dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH && data.dates != 'TBA' && data.dates != 'tba' ? data.dates.toLowerCase().trim() : 'TBA',
+        reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH && data.reward != 'TBA' && data.reward != 'tba' ? data.reward.toLowerCase().trim() : 'TBA',
+        get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
+        will_be_stakable: false,
+        popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
+        links: getLinks(data.links),
+        is_stakable: true,
+        stake_url: data.stake_url.toString()
+      };
 
-        const update = {
-          name: data.name && typeof data.name == 'string' && data.name.trim().length && data.name.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.name.trim() : project.name,
-          description: data.description && typeof data.description == 'string' && data.description.trim().length && data.description.length < MAX_DATABASE_TEXT_FIELD_LENGTH ? data.description.trim() : project.description,
-          guide: getGuide(data.guide),
-          requirements: getRequirements(data.requirements),
-          status: data.status && status_values.includes(data.status) ? data.status : project.status,
-          dates: data.dates && typeof data.dates == 'string' && data.dates.trim().length && data.dates.length < MAX_DATABASE_TEXT_FIELD_LENGTH && data.dates != 'TBA' && data.dates != 'tba' ? data.dates.toLowerCase().trim() : 'TBA',
-          reward: data.reward && typeof data.reward == 'string' && data.reward.trim().length && data.reward.length < MAX_DATABASE_TEXT_FIELD_LENGTH && data.reward != 'TBA' && data.reward != 'tba' ? data.reward.toLowerCase().trim() : 'TBA',
-          get_involved_url: data.get_involved_url && validator.isURL(data.get_involved_url.toString()) ? data.get_involved_url.toString() : project.get_involved_url,
-          will_be_stakable: false,
-          popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
-          links: getLinks(data.links),
-          is_stakable: true,
-          stake_url: data.stake_url.toString()
-        };
+      update.identifier = update.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : '');
 
-        update.identifier = update.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : '');
-
-        Project.findByIdAndUpdate(project._id, {$set: update}, err => {
-          if (err) return callback('database_error');
-    
-          return callback(null);
-        });
+      Project.findByIdAndUpdate(project._id, {$set: update}, err => {
+        if (err) return callback('database_error');
+  
+        return callback(null);
       });
     } else {
       const update = {
