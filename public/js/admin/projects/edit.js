@@ -390,8 +390,7 @@ window.addEventListener('load', () => {
           discord: document.getElementById('links-discord-input').value,
           explorer: document.getElementById('links-explorer-input').value
         },
-        stake_url: document.getElementById('stake-url-input').value,
-        stake_api_title: document.getElementById('stake-api-title-input').value
+        stake_url: document.getElementById('stake-url-input').value
       };
 
       if (!data.name || !data.name.length)

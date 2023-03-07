@@ -423,7 +423,7 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
   Project.findProjectById(id, (err, project) => {
     if (err) return callback(err);
 
-    const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) && data.stake_api_title && typeof data.stake_api_title == 'string' ? true : false;
+    const is_stakable = data.stake_url && validator.isURL(data.stake_url.toString()) ? true : false;
 
     if (is_stakable) {
       fetchStakeRate(data.stake_api_title.toString(), (err, stake_rate) => {
@@ -442,10 +442,7 @@ ProjectSchema.statics.findProjectByIdAndUpdate = function (id, data, callback) {
           popularity: data.popularity && popularity_values.includes(data.popularity) ? data.popularity : project.popularity,
           links: getLinks(data.links),
           is_stakable: true,
-          stake_url: data.stake_url.toString(),
-          stake_api_title: data.stake_api_title.toString(),
-          stake_rate,
-          last_stake_rate_update_time_in_ms: parseInt((new Date()).getTime())
+          stake_url: data.stake_url.toString()
         };
 
         update.identifier = update.name.split(' ').join('_').toLowerCase().trim() + (project.language != 'en' ? ('_' + project.language) : '');
@@ -599,18 +596,23 @@ ProjectSchema.statics.findStakableProjects = function (data, callback) {
     .then(projects => async.timesSeries(
       projects.length,
       (time, next) => {
-        Project.findProjectByIdAndUpdateStakeRate(projects[time]._id, (err, stake_rate) => {
-          if (err)
-            console.log(err);
-          else
-            projects[time].stake_rate = stake_rate;
+        getProject(projects[time], (err, project) => {
+          if (err) return next(err);
 
-          getProject(projects[time], (err, project) => {
-            if (err) return next(err);
-
-            return next(null, project);
-          });
+          return next(null, project);
         });
+        // Project.findProjectByIdAndUpdateStakeRate(projects[time]._id, (err, stake_rate) => {
+        //   if (err)
+        //     console.log(err);
+        //   else
+        //     projects[time].stake_rate = stake_rate;
+
+        //   getProject(projects[time], (err, project) => {
+        //     if (err) return next(err);
+
+        //     return next(null, project);
+        //   });
+        // });
       },
       (err, projects) => {
         if (err) return callback(err);
