@@ -237,7 +237,8 @@ ProjectSchema.statics.createProject = function (data, callback) {
             popularity: data.popularity,
             links: getLinks(data.links),
             is_stakable,
-            stake_url: data.stake_url.toString()
+            stake_url: data.stake_url.toString(),
+            will_be_stakable: false
           };
         
           const newProject = new Project(newProjectData);

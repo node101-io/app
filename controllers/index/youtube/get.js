@@ -8,7 +8,7 @@ module.exports = (req, res) => {
     includes: {
       external: {
         css: ['general'],
-        js: ['page']
+        js: []
       }
     },
     id
