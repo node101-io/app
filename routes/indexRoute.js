@@ -27,7 +27,7 @@ router.get(
     stakeGetController
 );
 router.get(
-  '/youtube',
+  '/youtube/*',
     youtubeGetController
 );
 
