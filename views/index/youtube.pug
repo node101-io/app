@@ -1,9 +1,11 @@
-extends ../partials/head
-block content
-  input.display-none#id(value=JSON.stringify(id))
+doctype html
+html
   script.
     window.onload = function() {
-      const id = JSON.parse(document.getElementById('id').value);
+      const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+      const id = params.id;
 
       var desktopFallback = `https://youtu.be/${id}`,
       mobileFallback = `https://youtu.be/${id}`,
