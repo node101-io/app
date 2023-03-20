@@ -2,10 +2,7 @@ doctype html
 html
   script.
     window.onload = function() {
-      const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-      });
-      const id = params.id;
+      const id = window.location.pathname.split('?')[0].split('/youtube/')[1];
 
       var desktopFallback = `https://youtu.be/${id}`,
       mobileFallback = `https://youtu.be/${id}`,
