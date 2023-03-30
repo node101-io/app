@@ -1,11 +1,11 @@
 const Project = require('../../../models/project/Project');
 
 module.exports = (req, res) => {
-  const identifier = req.originalUrl.replace('/projects/guide/', '');
+  const identifier = req.originalUrl.replace('/projects/guide/', '').split('?')[0];
   const page_lang = req.query.lang ? req.query.lang : (req.headers['accept-language'] ? req.headers['accept-language'].split('-')[0] : 'en');
-  const identifier_prefix = identifier.split('_')[0];
+  const identifier_prefix = identifier.split('_').filter(each => each != 'tr' && each != 'ru' && each != 'en').join('_');
 
-  Project.findProjectByIdentifier(identifier_prefix + (page_lang != 'en' ? '_' + page_lang : ''), (err, project) => {
+  Project.findProjectByIdentifier(identifier_prefix + (page_lang != 'en' ? ('_' + page_lang) : ''), (err, project) => {
     if (!err)
       return res.render('projects/guide', {
         page: 'projects/guide',
@@ -16,7 +16,7 @@ module.exports = (req, res) => {
             js: ['ancestorWithClassName', 'confirm', 'header', 'page', 'projects', 'serverRequest']
           }
         },
-        url: '/projects/guide/' + identifier_prefix + (page_lang != 'en' ? '_' + page_lang : ''),
+        url: '/projects/guide/' + identifier_prefix + (page_lang != 'en' ? ('_' + page_lang) : ''),
         lang: req.query.lang,
         page_lang,
         project
