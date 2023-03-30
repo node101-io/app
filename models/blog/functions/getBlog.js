@@ -3,6 +3,12 @@ const Writer = require('../../writer/Writer');
 
 const DEFAULT_LOGO = '/res/images/blog/node101.png';
 
+function formatContent(content) {
+  return content
+    .split('&lt;').join('<')
+    .split('&gt;').join('>')
+};
+
 module.exports = (blog, callback) => {
   if (!blog || !blog._id)
     return callback('bad_request');
@@ -29,7 +35,7 @@ module.exports = (blog, callback) => {
           created_at: blog.created_at,
           logo: blog.logo || DEFAULT_LOGO,
           image: blog.image,
-          content: blog.content,
+          content: formatContent(blog.content),
           view_count: blog.view_count,
           like_count: blog.like_count
         });
@@ -51,7 +57,7 @@ module.exports = (blog, callback) => {
         created_at: blog.created_at,
         logo: blog.logo || DEFAULT_LOGO,
         image: blog.image,
-        content: blog.content,
+        content: formatContent(blog.content),
         view_count: blog.view_count,
         like_count: blog.like_count
       });
