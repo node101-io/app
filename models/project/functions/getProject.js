@@ -1,3 +1,17 @@
+function formatGuide(guide) {
+  if (!guide)
+    return guide;
+
+  return guide.map(each => {
+    return {
+      type: each.type,
+      content: each.content
+        .split('&lt;').join('<')
+        .split('&gt;').join('>')
+    }
+  });
+}
+
 module.exports = (project, callback) => {
   if (!project || !project._id)
     return callback('bad_request');
@@ -13,7 +27,7 @@ module.exports = (project, callback) => {
     name: project.name,
     image: project.image,
     description: project.description,
-    guide: project.guide,
+    guide: formatGuide(project.guide),
     requirements: project.requirements,
     status: project.status,
     dates: project.dates,

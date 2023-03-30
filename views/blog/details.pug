@@ -23,7 +23,7 @@ block main
           .blog-content-code
             .blog-content-code-lines-wrapper
               each par in item.content.split('\n').filter(each => each.trim().length)
-                .blog-content-code-line= par
+                .blog-content-code-line #{par}
         else if item.type == 'info'
           each par in item.content.split('\n').filter(each => each.trim().length)
             .blog-content-info-wrapper
