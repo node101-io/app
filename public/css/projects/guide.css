@@ -191,9 +191,12 @@
   width: 100%;
 }
 .guide-code-line {
-  display: inline;
+  display: inline-block;
   width: 100%;
   margin-bottom: 5px;
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 .guide-code-copied::after {
   content: "copied!";
@@ -338,7 +341,7 @@
   .guide-title {
     font-size: 20px;
   }
-  .guide-text, .guide-info, .guide-code {
+  .guide-text, .guide-info, .guide-code, .guide-code-copied {
     font-size: 16px;
   }
 }
@@ -386,7 +389,7 @@
   .guide-title {
     font-size: 18px;
   }
-  .guide-text, .guide-info, .guide-code {
+  .guide-text, .guide-info, .guide-code, .guide-code-copied {
     font-size: 15px;
   }
 }
@@ -444,13 +447,13 @@
   .guide-title {
     font-size: 17px;
   }
-  .guide-text, .guide-info, .guide-code {
+  .guide-text, .guide-info, .guide-code, .guide-code-copied {
     font-size: 14px;
   }
   .guide-info-wrapper {
     margin-bottom: 20px;
   }
-  .guide-text, .guide-code {
+  .guide-text, .guide-code, .guide-code-copied {
     margin-bottom: 20px;
   }
   .guide-video {
@@ -476,7 +479,7 @@
   .guide-title {
     font-size: 16px;
   }
-  .guide-text, .guide-info, .guide-code {
+  .guide-text, .guide-info, .guide-code, .guide-code-copied {
     font-size: 13px;
   }
 }

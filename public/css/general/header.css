@@ -3,7 +3,8 @@
   width: 100vw;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .all-header-wrapper {

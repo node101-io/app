@@ -5,8 +5,6 @@ const DEFAULT_LOGO = '/res/images/blog/node101.png';
 
 function formatContent(content) {
   return content
-    .split('&lt;').join('<')
-    .split('&gt;').join('>')
 };
 
 module.exports = (blog, callback) => {
