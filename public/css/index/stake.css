@@ -40,15 +40,23 @@
   cursor: pointer;
 }
 
-.stake-projects-wrapper {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-column-gap: 30px;
-  width: auto;
-  margin-left: 50%;
-  transform: translateX(-50%);
+.stake-projects-wrapper, .stake-projects-wrapper-responsive {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
   margin-top: 20px;
   margin-bottom: 60px;
+}
+.stake-projects-wrapper-responsive {
+  display: none;
+}
+
+.each-stake-project-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
 }
 
 .each-stake-project, .each-coming-stake-project {
@@ -63,13 +71,14 @@
   border-radius: 8px;
   text-decoration: none;
   cursor: pointer;
+  margin: 0 15px;
 }
 .each-coming-stake-project {
   cursor: default !important;
 }
 .each-stake-project:hover {
-  margin-top: -5px;
-  margin-bottom: 5px;
+  margin-top: -2px;
+  margin-bottom: 2px;
   box-shadow: 0 0 15px var(--border-color);
 }
 .each-stake-project-image {
@@ -116,6 +125,52 @@
     margin-top: 110px;
   }
 }
+@media only screen and (max-width: 950px) {
+  .stake-projects-wrapper {
+    display: none;
+  }
+  .stake-projects-wrapper-responsive {
+    display: flex;
+  }
+}
+@media only screen and (max-width: 600px) {
+  .stake-link-wrapper {
+    margin-bottom: 20px;
+  }
+  .stake-title {
+    margin-bottom: 10px;
+  }
+  .each-stake-project {
+    margin: 0 10px;
+    width: 220px;
+    min-width: 220px;
+    height: 300px;
+    min-height: 300px;
+  }
+  .each-stake-project:hover {
+    margin-top: -3px;
+    margin-bottom: 23px;
+  }
+  .each-stake-project-name {
+    font-size: 16px;
+  }
+  .each-stake-project-line {
+    margin-bottom: 20px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .each-stake-project {
+    height: 290px;
+    min-height: 290px;
+  }
+  .each-stake-project-line {
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+  .each-stake-project {
+    margin-bottom: 20px;
+  }
+}
 @media only screen and (max-width: 700px) {
   .all-content-wrapper {
     margin-top: 90px;
@@ -153,10 +208,6 @@
   .stake-projects-wrapper {
     flex-direction: column;
     margin-top: 0px;
-  }
-  .each-stake-project {
-    margin: 0px;
-    margin-top: 20px;
   }
 }
 @media only screen and (max-width: 400px) {
