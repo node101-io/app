@@ -14,6 +14,8 @@ const MongoStore = require('connect-mongo');
 
 const numCPUs = process.env.WEB_CONCURRENCY || require('os').cpus().length;
 
+const LANG_VALUES = ['tr', 'en', 'ru'];
+
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
 
@@ -84,6 +86,10 @@ if (cluster.isMaster) {
       req.query = {};
     if (!req.body || typeof req.body != 'object')
       req.body = {};
+
+    if (req.query.lang && !LANG_VALUES.includes(req.query.lang))
+      req.query.lang = null;
+
     next();
   });
 
