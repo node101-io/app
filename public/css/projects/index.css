@@ -31,6 +31,7 @@
 
 .status-colors-wrapper {
   display: flex;
+  visibility: hidden;
   align-items: center;
 }
 .each-status-color-wrapper {
